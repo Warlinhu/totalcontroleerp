@@ -42,13 +42,13 @@ export function AppShell({ children }: { children: ReactNode }) {
     navigate({ to: "/auth", replace: true });
   };
 
-  if (!current) {
-    // No company yet — kick to onboarding.
-    if (typeof window !== "undefined" && !pathname.startsWith("/onboarding")) {
+  useEffect(() => {
+    if (!current && !pathname.startsWith("/onboarding")) {
       navigate({ to: "/onboarding", replace: true });
     }
-    return null;
-  }
+  }, [current, pathname, navigate]);
+
+  if (!current) return null;
 
   return (
     <div className="flex min-h-screen bg-muted/20">

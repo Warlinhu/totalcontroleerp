@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import {
   LayoutDashboard, Package, Users, Truck, UserCog, HandCoins, Receipt,
   BellRing, Settings, LogOut, Building2, ChevronDown, ShieldAlert,

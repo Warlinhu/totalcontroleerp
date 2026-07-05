@@ -1,24 +1,49 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "TotalControle ERP — Gestão empresarial simples" },
+      { name: "description", content: "Sistema de gestão para pequenas e médias empresas: cadastros, financeiro, lembretes e monitoramento. Multi-empresa e seguro." },
+      { property: "og:title", content: "TotalControle ERP" },
+      { property: "og:description", content: "Gestão empresarial completa e simples." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: LandingPage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function LandingPage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="flex min-h-screen flex-col bg-background">
+      <header className="border-b">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+          <div className="text-xl font-semibold">TotalControle ERP</div>
+          <div className="flex gap-2">
+            <Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button>
+            <Button asChild><Link to="/auth">Criar conta</Link></Button>
+          </div>
+        </div>
+      </header>
+      <main className="flex-1">
+        <section className="mx-auto max-w-3xl px-4 py-24 text-center">
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            Gestão empresarial sem complicação
+          </h1>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Cadastros, financeiro, lembretes de vencimento e mais — tudo num só lugar,
+            organizado por empresa.
+          </p>
+          <div className="mt-8 flex justify-center gap-3">
+            <Button asChild size="lg"><Link to="/auth">Começar agora</Link></Button>
+          </div>
+        </section>
+      </main>
+      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
+        © {new Date().getFullYear()} TotalControle ERP
+      </footer>
     </div>
   );
 }

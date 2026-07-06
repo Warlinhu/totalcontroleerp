@@ -11,26 +11,26 @@ permissions:
   contents: write
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
   NODE_VERSION: "22"
 
 jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v7.0.0
-      - uses: actions/setup-node@v6.4.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - name: Prepare desktop shell
+        run: echo "Electron loads the published app URL, so this installer build does not need a Vite web build."
       - name: Build installer (NSIS .exe)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: npx electron-builder --win nsis --x64 --publish never
-      - uses: actions/upload-artifact@v7.0.1
+      - uses: actions/upload-artifact@v4
         with:
           name: TotalControleERP-Windows-Installer
           path: |
@@ -39,21 +39,22 @@ jobs:
           retention-days: 30
 
   macos:
-    runs-on: macos-15-intel
+    runs-on: macos-15
     steps:
-      - uses: actions/checkout@v7.0.0
-      - uses: actions/setup-node@v6.4.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - name: Prepare desktop shell
+        run: echo "Electron loads the published app URL, so this installer build does not need a Vite web build."
       - name: Build .dmg
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: npx electron-builder --mac --x64 --publish never
-      - uses: actions/upload-artifact@v7.0.1
+      - uses: actions/upload-artifact@v4
         with:
           name: TotalControleERP-macOS-Installer
           path: |
@@ -65,8 +66,8 @@ jobs:
   linux:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v7.0.0
-      - uses: actions/setup-node@v6.4.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
@@ -75,7 +76,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y libfuse2t64 fakeroot rpm
       - run: npm ci
-      - run: npm run build
+      - name: Prepare desktop shell
+        run: echo "Electron loads the published app URL, so this installer build does not need a Vite web build."
       - name: Build AppImage + .deb
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -98,7 +100,7 @@ jobs:
       group: totalcontroleerp-latest-release
       cancel-in-progress: false
     steps:
-      - uses: actions/download-artifact@v8.0.1
+      - uses: actions/download-artifact@v4
         with:
           path: installers/release
           merge-multiple: true

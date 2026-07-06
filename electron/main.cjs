@@ -10,11 +10,12 @@
 const { app, BrowserWindow, shell, Menu } = require("electron");
 const path = require("path");
 
-// Defina APP_URL em tempo de build (ex.: --define) ou via variável de ambiente.
-// Fallback para o preview enquanto o app não é publicado.
+// URL padrão: domínio estável do app publicado no Lovable.
+// Toda nova publicação chega automaticamente aos instaladores existentes.
+// Você pode sobrescrever com a variável de ambiente APP_URL ao empacotar.
 const APP_URL =
   process.env.APP_URL ||
-  "https://id-preview--ab503052-221a-48ec-9345-c94ccb06c280.lovable.app";
+  "https://project--ab503052-221a-48ec-9345-c94ccb06c280.lovable.app";
 
 function createWindow() {
   const win = new BrowserWindow({

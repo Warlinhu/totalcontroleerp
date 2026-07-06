@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,10 +26,12 @@ function LandingPage() {
           <Link to="/" className="flex items-center gap-2">
             <BrandLogo className="h-10 w-auto" />
           </Link>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
             <Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button>
             <Button asChild><Link to="/auth">Criar conta</Link></Button>
           </div>
+
         </div>
       </header>
       <main className="flex-1">

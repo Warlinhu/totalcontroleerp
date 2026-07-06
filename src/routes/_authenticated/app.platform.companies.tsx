@@ -120,14 +120,16 @@ function PlatformCompaniesPage() {
               <TableHead>Dono</TableHead>
               <TableHead>Contato</TableHead>
               <TableHead className="text-right">Membros</TableHead>
+              <TableHead className="text-right">Chamados</TableHead>
+              <TableHead className="text-right">Erros</TableHead>
               <TableHead>Cadastrada em</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {list.isLoading ? (
-              <TableRow><TableCell colSpan={6} className="py-6 text-center text-sm text-muted-foreground">Carregando...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="py-6 text-center text-sm text-muted-foreground">Carregando...</TableCell></TableRow>
             ) : filtered.length === 0 ? (
-              <TableRow><TableCell colSpan={6} className="py-6 text-center text-sm text-muted-foreground">Nenhuma empresa encontrada.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="py-6 text-center text-sm text-muted-foreground">Nenhuma empresa encontrada.</TableCell></TableRow>
             ) : filtered.map((r) => (
               <TableRow key={r.id}>
                 <TableCell className="font-medium">{r.name}</TableCell>
@@ -138,6 +140,12 @@ function PlatformCompaniesPage() {
                   <div className="text-xs text-muted-foreground">{r.phone ?? ""}</div>
                 </TableCell>
                 <TableCell className="text-right"><Badge variant="secondary">{r.member_count}</Badge></TableCell>
+                <TableCell className="text-right">
+                  {Number(r.open_tickets) > 0 ? <Badge>{r.open_tickets}</Badge> : <span className="text-muted-foreground">0</span>}
+                </TableCell>
+                <TableCell className="text-right">
+                  {Number(r.open_errors) > 0 ? <Badge variant="destructive">{r.open_errors}</Badge> : <span className="text-muted-foreground">0</span>}
+                </TableCell>
                 <TableCell className="whitespace-nowrap text-sm">{new Date(r.created_at).toLocaleString("pt-BR")}</TableCell>
               </TableRow>
             ))}

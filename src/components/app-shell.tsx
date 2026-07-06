@@ -113,6 +113,16 @@ export function AppShell({ children }: { children: ReactNode }) {
               Empresas cadastradas
             </Link>
             <Link
+              to="/app/platform/tickets"
+              className={cn(
+                "flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent",
+                pathname === "/app/platform/tickets" && "bg-accent",
+              )}
+            >
+              <MessageSquare className="h-4 w-4" />
+              Chamados dos clientes
+            </Link>
+            <Link
               to="/app/platform/errors"
               className={cn(
                 "flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent",
@@ -121,6 +131,16 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               <ShieldAlert className="h-4 w-4" />
               Monitoramento de erros
+            </Link>
+            <Link
+              to="/app/platform/admins"
+              className={cn(
+                "flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent",
+                pathname === "/app/platform/admins" && "bg-accent",
+              )}
+            >
+              <UserPlus className="h-4 w-4" />
+              Administradores
             </Link>
           </div>
 

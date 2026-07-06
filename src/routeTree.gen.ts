@@ -16,6 +16,7 @@ import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppTeamRouteImport } from './routes/_authenticated/app.team'
+import { Route as AuthenticatedAppSupportRouteImport } from './routes/_authenticated/app.support'
 import { Route as AuthenticatedAppSuppliersRouteImport } from './routes/_authenticated/app.suppliers'
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
 import { Route as AuthenticatedAppRemindersRouteImport } from './routes/_authenticated/app.reminders'
@@ -24,8 +25,10 @@ import { Route as AuthenticatedAppPayablesRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAppEmployeesRouteImport } from './routes/_authenticated/app.employees'
 import { Route as AuthenticatedAppDebtorsRouteImport } from './routes/_authenticated/app.debtors'
 import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers'
+import { Route as AuthenticatedAppPlatformTicketsRouteImport } from './routes/_authenticated/app.platform.tickets'
 import { Route as AuthenticatedAppPlatformErrorsRouteImport } from './routes/_authenticated/app.platform.errors'
 import { Route as AuthenticatedAppPlatformCompaniesRouteImport } from './routes/_authenticated/app.platform.companies'
+import { Route as AuthenticatedAppPlatformAdminsRouteImport } from './routes/_authenticated/app.platform.admins'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -59,6 +62,11 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
 const AuthenticatedAppTeamRoute = AuthenticatedAppTeamRouteImport.update({
   id: '/team',
   path: '/team',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppSupportRoute = AuthenticatedAppSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
 const AuthenticatedAppSuppliersRoute =
@@ -108,6 +116,12 @@ const AuthenticatedAppCustomersRoute =
     path: '/customers',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppPlatformTicketsRoute =
+  AuthenticatedAppPlatformTicketsRouteImport.update({
+    id: '/platform/tickets',
+    path: '/platform/tickets',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppPlatformErrorsRoute =
   AuthenticatedAppPlatformErrorsRouteImport.update({
     id: '/platform/errors',
@@ -118,6 +132,12 @@ const AuthenticatedAppPlatformCompaniesRoute =
   AuthenticatedAppPlatformCompaniesRouteImport.update({
     id: '/platform/companies',
     path: '/platform/companies',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlatformAdminsRoute =
+  AuthenticatedAppPlatformAdminsRouteImport.update({
+    id: '/platform/admins',
+    path: '/platform/admins',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 
@@ -134,10 +154,13 @@ export interface FileRoutesByFullPath {
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
+  '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
+  '/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -151,10 +174,13 @@ export interface FileRoutesByTo {
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
+  '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
+  '/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -171,10 +197,13 @@ export interface FileRoutesById {
   '/_authenticated/app/reminders': typeof AuthenticatedAppRemindersRoute
   '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
   '/_authenticated/app/suppliers': typeof AuthenticatedAppSuppliersRoute
+  '/_authenticated/app/support': typeof AuthenticatedAppSupportRoute
   '/_authenticated/app/team': typeof AuthenticatedAppTeamRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/_authenticated/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/_authenticated/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
+  '/_authenticated/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -191,10 +220,13 @@ export interface FileRouteTypes {
     | '/app/reminders'
     | '/app/settings'
     | '/app/suppliers'
+    | '/app/support'
     | '/app/team'
     | '/app/'
+    | '/app/platform/admins'
     | '/app/platform/companies'
     | '/app/platform/errors'
+    | '/app/platform/tickets'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -208,10 +240,13 @@ export interface FileRouteTypes {
     | '/app/reminders'
     | '/app/settings'
     | '/app/suppliers'
+    | '/app/support'
     | '/app/team'
     | '/app'
+    | '/app/platform/admins'
     | '/app/platform/companies'
     | '/app/platform/errors'
+    | '/app/platform/tickets'
   id:
     | '__root__'
     | '/'
@@ -227,10 +262,13 @@ export interface FileRouteTypes {
     | '/_authenticated/app/reminders'
     | '/_authenticated/app/settings'
     | '/_authenticated/app/suppliers'
+    | '/_authenticated/app/support'
     | '/_authenticated/app/team'
     | '/_authenticated/app/'
+    | '/_authenticated/app/platform/admins'
     | '/_authenticated/app/platform/companies'
     | '/_authenticated/app/platform/errors'
+    | '/_authenticated/app/platform/tickets'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -290,6 +328,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppTeamRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/support': {
+      id: '/_authenticated/app/support'
+      path: '/support'
+      fullPath: '/app/support'
+      preLoaderRoute: typeof AuthenticatedAppSupportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/suppliers': {
       id: '/_authenticated/app/suppliers'
       path: '/suppliers'
@@ -346,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppCustomersRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/platform/tickets': {
+      id: '/_authenticated/app/platform/tickets'
+      path: '/platform/tickets'
+      fullPath: '/app/platform/tickets'
+      preLoaderRoute: typeof AuthenticatedAppPlatformTicketsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/platform/errors': {
       id: '/_authenticated/app/platform/errors'
       path: '/platform/errors'
@@ -360,6 +412,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppPlatformCompaniesRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/platform/admins': {
+      id: '/_authenticated/app/platform/admins'
+      path: '/platform/admins'
+      fullPath: '/app/platform/admins'
+      preLoaderRoute: typeof AuthenticatedAppPlatformAdminsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
   }
 }
 
@@ -372,10 +431,13 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppRemindersRoute: typeof AuthenticatedAppRemindersRoute
   AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
   AuthenticatedAppSuppliersRoute: typeof AuthenticatedAppSuppliersRoute
+  AuthenticatedAppSupportRoute: typeof AuthenticatedAppSupportRoute
   AuthenticatedAppTeamRoute: typeof AuthenticatedAppTeamRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppPlatformAdminsRoute: typeof AuthenticatedAppPlatformAdminsRoute
   AuthenticatedAppPlatformCompaniesRoute: typeof AuthenticatedAppPlatformCompaniesRoute
   AuthenticatedAppPlatformErrorsRoute: typeof AuthenticatedAppPlatformErrorsRoute
+  AuthenticatedAppPlatformTicketsRoute: typeof AuthenticatedAppPlatformTicketsRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
@@ -387,11 +449,14 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppRemindersRoute: AuthenticatedAppRemindersRoute,
   AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
   AuthenticatedAppSuppliersRoute: AuthenticatedAppSuppliersRoute,
+  AuthenticatedAppSupportRoute: AuthenticatedAppSupportRoute,
   AuthenticatedAppTeamRoute: AuthenticatedAppTeamRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppPlatformAdminsRoute: AuthenticatedAppPlatformAdminsRoute,
   AuthenticatedAppPlatformCompaniesRoute:
     AuthenticatedAppPlatformCompaniesRoute,
   AuthenticatedAppPlatformErrorsRoute: AuthenticatedAppPlatformErrorsRoute,
+  AuthenticatedAppPlatformTicketsRoute: AuthenticatedAppPlatformTicketsRoute,
 }
 
 const AuthenticatedAppRouteWithChildren =

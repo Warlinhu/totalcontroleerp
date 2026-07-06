@@ -103,11 +103,13 @@ function LandingPage() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg"><Link to="/auth">Começar agora</Link></Button>
-            <Button asChild size="lg" variant="outline">
-              <a href="#downloads">
-                <Download className="mr-2 h-4 w-4" /> Baixar aplicativo
-              </a>
-            </Button>
+            {isBrowser && (
+              <Button asChild size="lg" variant="outline">
+                <a href="#downloads">
+                  <Download className="mr-2 h-4 w-4" /> Baixar aplicativo
+                </a>
+              </Button>
+            )}
           </div>
         </section>
 

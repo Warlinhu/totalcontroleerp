@@ -29,11 +29,15 @@ export function useEntityCrud<T extends { id: string }>(table: TableName, orderB
   const save = useMutation({
     mutationFn: async (payload: Record<string, unknown>) => {
       if (!currentCompanyId) throw new Error("Selecione uma empresa");
+      const client = supabase.from(table) as unknown as {
+        update: (p: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<{ error: Error | null }> };
+        insert: (p: Record<string, unknown>) => Promise<{ error: Error | null }>;
+      };
       if (editing) {
-        const { error } = await supabase.from(table).update(payload).eq("id", editing.id);
+        const { error } = await client.update(payload).eq("id", editing.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from(table).insert({ ...payload, company_id: currentCompanyId });
+        const { error } = await client.insert({ ...payload, company_id: currentCompanyId });
         if (error) throw error;
       }
     },

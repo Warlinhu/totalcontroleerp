@@ -89,7 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "TotalControle ERP — Gestão empresarial simples" },
       { name: "description", content: "Sistema de gestão para pequenas e médias empresas: cadastros, financeiro, lembretes e monitoramento. Multi-empresa e seguro." },
-      { name: "theme-color", content: "#1e40af" },
+      { name: "theme-color", content: "#2563EB" },
       { property: "og:title", content: "TotalControle ERP — Gestão empresarial simples" },
       { property: "og:description", content: "Sistema de gestão para pequenas e médias empresas: cadastros, financeiro, lembretes e monitoramento. Multi-empresa e seguro." },
       { property: "og:type", content: "website" },

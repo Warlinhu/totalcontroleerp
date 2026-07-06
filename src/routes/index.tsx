@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Download, Apple, Monitor } from "lucide-react";
+import { Download, Apple, Monitor, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
-import windowsInstaller from "@/assets/installers/windows.asset.json";
-import macosInstaller from "@/assets/installers/macos.asset.json";
-import linuxInstaller from "@/assets/installers/linux.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,35 +19,47 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
+const GH_RELEASE = "https://github.com/Warlinhu/totalcontroleerp/releases/latest/download";
+
 const DOWNLOADS = [
   {
     id: "windows",
     label: "Windows",
-    ext: ".zip",
-    size: "~145 MB",
+    ext: ".exe",
+    size: "Instalador NSIS",
     icon: Monitor,
-    href: (windowsInstaller as { url: string }).url,
-    hint: "Descompacte e execute TotalControleERP.exe.",
+    href: `${GH_RELEASE}/TotalControleERP-Setup.exe`,
+    hint: "Baixe e execute o instalador TotalControleERP-Setup.exe.",
   },
   {
     id: "macos",
     label: "macOS",
-    ext: ".zip",
-    size: "~350 MB",
+    ext: ".dmg",
+    size: "Intel/Apple Silicon",
     icon: Apple,
-    href: (macosInstaller as { url: string }).url,
-    hint: "Arraste TotalControleERP.app para Aplicativos.",
+    href: `${GH_RELEASE}/TotalControleERP-mac.dmg`,
+    hint: "Abra o .dmg e arraste TotalControle ERP para Aplicativos.",
   },
   {
     id: "linux",
     label: "Linux",
-    ext: ".tar.gz",
-    size: "~120 MB",
+    ext: ".AppImage",
+    size: "Portátil x64",
     icon: Monitor,
-    href: (linuxInstaller as { url: string }).url,
-    hint: "Descompacte e execute o binário TotalControleERP.",
+    href: `${GH_RELEASE}/TotalControleERP-linux.AppImage`,
+    hint: "Dê permissão de execução e abra o AppImage.",
+  },
+  {
+    id: "android",
+    label: "Android",
+    ext: ".apk",
+    size: "Debug build",
+    icon: Smartphone,
+    href: `${GH_RELEASE}/TotalControleERP.apk`,
+    hint: "Baixe o APK no celular e permita instalar de fontes externas.",
   },
 ];
+
 
 function LandingPage() {
   const [isBrowser, setIsBrowser] = useState(false);

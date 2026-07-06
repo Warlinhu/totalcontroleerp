@@ -76,9 +76,11 @@ function LandingPage() {
           </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <a href="#downloads" className="hidden sm:inline-flex">
-              <Button variant="ghost">Baixar</Button>
-            </a>
+            {isBrowser && (
+              <a href="#downloads" className="hidden sm:inline-flex">
+                <Button variant="ghost">Baixar</Button>
+              </a>
+            )}
             <Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button>
             <Button asChild><Link to="/auth">Criar conta</Link></Button>
           </div>

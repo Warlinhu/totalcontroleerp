@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Sun, Moon, Monitor } from "lucide-react";
 import { useTheme } from "@/lib/theme-provider";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,9 @@ type Props = { className?: string; floating?: boolean };
 
 export function ThemeToggle({ className, floating = false }: Props) {
   const { mode, setMode } = useTheme();
-  const Icon = mode === "dark" ? Moon : mode === "light" ? Sun : Monitor;
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const Icon = !mounted ? Monitor : mode === "dark" ? Moon : mode === "light" ? Sun : Monitor;
 
   return (
     <div

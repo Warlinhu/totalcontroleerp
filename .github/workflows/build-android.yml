@@ -14,17 +14,21 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  NODE_VERSION: "22"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    concurrency:
+      group: totalcontroleerp-latest-release
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v7.0.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v6.4.0
         with:
-          node-version: "24"
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
 
       - name: Setup Java 17
@@ -74,5 +78,6 @@ jobs:
           tag_name: latest
           name: Latest build
           make_latest: "true"
+          overwrite_files: true
           files: TotalControleERP.apk
 

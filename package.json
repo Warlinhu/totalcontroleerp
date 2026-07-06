@@ -78,7 +78,10 @@
       {
         "provider": "github"
       }
-    ]
+    ],
+    "toolsets": {
+      "appimage": "1.0.2"
+    }
   },
   "dependencies": {
     "@capacitor/core": "^8.4.1",

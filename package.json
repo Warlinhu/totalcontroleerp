@@ -73,9 +73,7 @@
     },
     "publish": [
       {
-        "provider": "github",
-        "owner": "REPLACE_OWNER",
-        "repo": "REPLACE_REPO"
+        "provider": "github"
       }
     ]
   },

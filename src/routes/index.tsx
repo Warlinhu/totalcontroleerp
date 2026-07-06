@@ -113,6 +113,7 @@ function LandingPage() {
           </div>
         </section>
 
+        {isBrowser && (
         <section id="downloads" className="border-t bg-muted/30 py-20">
           <div className="mx-auto max-w-5xl px-4">
             <div className="mx-auto max-w-2xl text-center">

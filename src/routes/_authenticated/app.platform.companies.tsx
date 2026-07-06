@@ -26,6 +26,8 @@ type CompanyRow = {
   created_at: string;
   member_count: number;
   owner_email: string | null;
+  open_tickets: number;
+  open_errors: number;
 };
 
 function PlatformCompaniesPage() {

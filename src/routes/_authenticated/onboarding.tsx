@@ -81,12 +81,6 @@ function OnboardingPage() {
     return "Não foi possível aceitar o convite";
   };
 
-  const handleInviteError = (error: Error) => {
-      setBusy(false);
-      toast.error("Não foi possível aceitar o convite", { description: error.message });
-      return;
-  };
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
       <div className="w-full max-w-lg space-y-6">

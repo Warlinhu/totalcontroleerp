@@ -33,7 +33,14 @@
       "output": "installers/release"
     },
     "win": {
-      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
       "icon": "public/icon-512.png",
       "publisherName": "TotalControle ERP"
     },
@@ -49,12 +56,18 @@
       "uninstallDisplayName": "TotalControle ERP"
     },
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "icon": "public/icon-512.png",
       "category": "public.app-category.business"
     },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "icon": "public/icon-512.png",
       "category": "Office"
     },
@@ -66,8 +79,8 @@
       }
     ]
   },
-
   "dependencies": {
+    "@capacitor/core": "^8.4.1",
     "@hookform/resolvers": "^5.2.2",
     "@lovable.dev/cloud-auth-js": "^1.1.2",
     "@radix-ui/react-accordion": "^1.2.12",
@@ -127,6 +140,8 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^8.4.1",
     "@electron/packager": "^20.0.2",
     "@eslint/js": "^9.32.0",
     "@lovable.dev/vite-tanstack-config": "2.7.0",

@@ -66,6 +66,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { mode, setMode, density, setDensity } = useTheme();
+  const { user } = useSession();
+
+  const { data: isPlatformAdmin = false } = useQuery({
+    queryKey: ["is-platform-admin", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("is_platform_admin", { _user_id: user!.id });
+      if (error) return false;
+      return !!data;
+    },
+  });
+
+  const visibleSections = SECTIONS.filter((s) => s.label !== "Plataforma" || isPlatformAdmin);
+
 
   const handleSignOut = async () => {
     await qc.cancelQueries();

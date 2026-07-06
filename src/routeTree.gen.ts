@@ -28,6 +28,7 @@ import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authent
 import { Route as AuthenticatedAppPlatformTicketsRouteImport } from './routes/_authenticated/app.platform.tickets'
 import { Route as AuthenticatedAppPlatformErrorsRouteImport } from './routes/_authenticated/app.platform.errors'
 import { Route as AuthenticatedAppPlatformCompaniesRouteImport } from './routes/_authenticated/app.platform.companies'
+import { Route as AuthenticatedAppPlatformAdminsRouteImport } from './routes/_authenticated/app.platform.admins'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -133,6 +134,12 @@ const AuthenticatedAppPlatformCompaniesRoute =
     path: '/platform/companies',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppPlatformAdminsRoute =
+  AuthenticatedAppPlatformAdminsRouteImport.update({
+    id: '/platform/admins',
+    path: '/platform/admins',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
   '/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
@@ -169,6 +177,7 @@ export interface FileRoutesByTo {
   '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
   '/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
@@ -191,6 +200,7 @@ export interface FileRoutesById {
   '/_authenticated/app/support': typeof AuthenticatedAppSupportRoute
   '/_authenticated/app/team': typeof AuthenticatedAppTeamRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/_authenticated/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/_authenticated/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
   '/_authenticated/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/app/support'
     | '/app/team'
     | '/app/'
+    | '/app/platform/admins'
     | '/app/platform/companies'
     | '/app/platform/errors'
     | '/app/platform/tickets'
@@ -232,6 +243,7 @@ export interface FileRouteTypes {
     | '/app/support'
     | '/app/team'
     | '/app'
+    | '/app/platform/admins'
     | '/app/platform/companies'
     | '/app/platform/errors'
     | '/app/platform/tickets'
@@ -253,6 +265,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/support'
     | '/_authenticated/app/team'
     | '/_authenticated/app/'
+    | '/_authenticated/app/platform/admins'
     | '/_authenticated/app/platform/companies'
     | '/_authenticated/app/platform/errors'
     | '/_authenticated/app/platform/tickets'
@@ -399,6 +412,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppPlatformCompaniesRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/platform/admins': {
+      id: '/_authenticated/app/platform/admins'
+      path: '/platform/admins'
+      fullPath: '/app/platform/admins'
+      preLoaderRoute: typeof AuthenticatedAppPlatformAdminsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
   }
 }
 
@@ -414,6 +434,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppSupportRoute: typeof AuthenticatedAppSupportRoute
   AuthenticatedAppTeamRoute: typeof AuthenticatedAppTeamRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppPlatformAdminsRoute: typeof AuthenticatedAppPlatformAdminsRoute
   AuthenticatedAppPlatformCompaniesRoute: typeof AuthenticatedAppPlatformCompaniesRoute
   AuthenticatedAppPlatformErrorsRoute: typeof AuthenticatedAppPlatformErrorsRoute
   AuthenticatedAppPlatformTicketsRoute: typeof AuthenticatedAppPlatformTicketsRoute
@@ -431,6 +452,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppSupportRoute: AuthenticatedAppSupportRoute,
   AuthenticatedAppTeamRoute: AuthenticatedAppTeamRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppPlatformAdminsRoute: AuthenticatedAppPlatformAdminsRoute,
   AuthenticatedAppPlatformCompaniesRoute:
     AuthenticatedAppPlatformCompaniesRoute,
   AuthenticatedAppPlatformErrorsRoute: AuthenticatedAppPlatformErrorsRoute,

@@ -36,6 +36,18 @@ export async function logAppError(input: {
       insert: (p: Record<string, unknown>) => Promise<{ error: Error | null }>;
     };
     await client.insert(payload);
+    // Fire-and-forget notification email (only for error/critical to avoid noise)
+    if (payload.severity === "error" || payload.severity === "critical") {
+      void supabase.functions.invoke("notify-error", {
+        body: {
+          source: payload.source,
+          severity: payload.severity,
+          message: payload.message,
+          route: payload.route,
+          fingerprint: payload.fingerprint,
+        },
+      }).catch(() => {});
+    }
   } catch (e) {
     // Swallow — logging must not break the app.
     console.warn("[error-logger] failed", e);

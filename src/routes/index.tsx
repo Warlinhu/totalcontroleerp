@@ -158,6 +158,7 @@ function LandingPage() {
             </p>
           </div>
         </section>
+        )}
       </main>
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">

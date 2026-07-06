@@ -47,13 +47,12 @@ export function InstallmentsDialog({
     queryKey: [installmentTable, parentId],
     enabled: !!parentId && open,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from(installmentTable)
-        .select("*")
-        .eq(parentFk, parentId!)
-        .order("sequence", { ascending: true });
+      const client = supabase.from(installmentTable) as unknown as {
+        select: (s: string) => { eq: (c: string, v: string) => { order: (c: string, o: { ascending: boolean }) => Promise<{ data: Installment[] | null; error: Error | null }> } };
+      };
+      const { data, error } = await client.select("*").eq(parentFk, parentId!).order("sequence", { ascending: true });
       if (error) throw error;
-      return (data ?? []) as unknown as Installment[];
+      return (data ?? []) as Installment[];
     },
   });
 

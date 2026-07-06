@@ -26,6 +26,8 @@ const NAV: NavItem[] = [
   { to: "/app/debtors", label: "Devedores", icon: HandCoins },
   { to: "/app/payables", label: "Contas a pagar", icon: Receipt },
   { to: "/app/reminders", label: "Lembretes", icon: BellRing },
+  { to: "/app/reminders", label: "Lembretes", icon: BellRing },
+  { to: "/app/support", label: "Chamados", icon: LifeBuoy },
   { to: "/app/team", label: "Equipe", icon: Users },
   { to: "/app/settings", label: "Configurações", icon: Settings },
 ];

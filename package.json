@@ -50,7 +50,6 @@
         }
       ],
       "icon": "public/icon-512.png",
-      "publisherName": "TotalControle ERP",
       "artifactName": "TotalControleERP-Setup.${ext}"
     },
     "nsis": {

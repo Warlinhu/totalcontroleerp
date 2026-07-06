@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { installGlobalErrorHandlers, logAppError } from "@/lib/error-logger";
 import { PwaUpdatePrompt } from "@/components/pwa-update-prompt";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/lib/theme-provider";
 
 function NotFoundComponent() {
   return (
@@ -136,10 +137,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      <Toaster richColors position="top-right" />
-      <PwaUpdatePrompt />
+      <ThemeProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+        <Toaster richColors position="top-right" />
+        <PwaUpdatePrompt />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

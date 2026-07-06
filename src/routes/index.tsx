@@ -135,7 +135,7 @@ function LandingPage() {
               </p>
             </div>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {DOWNLOADS.map((d) => (
                 <div
                   key={d.id}
@@ -152,7 +152,7 @@ function LandingPage() {
                     {d.hint}
                   </p>
                   <Button asChild className="mt-4 w-full">
-                    <a href={d.href} download>
+                    <a href={d.href} rel="noopener noreferrer">
                       <Download className="mr-2 h-4 w-4" /> Baixar
                     </a>
                   </Button>
@@ -161,9 +161,16 @@ function LandingPage() {
             </div>
 
             <p className="mx-auto mt-8 max-w-2xl text-center text-xs text-muted-foreground">
-              No macOS, ao abrir pela primeira vez, clique com o botão direito no app e
-              escolha “Abrir” para autorizar. Para Android, use o navegador do celular:
-              menu → “Adicionar à tela inicial” instala o app como PWA.
+              Downloads servidos direto da última release publicada no{" "}
+              <a
+                href="https://github.com/Warlinhu/totalcontroleerp/releases/latest"
+                className="underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
+              . No macOS, ao abrir pela primeira vez, clique com o botão direito no app e escolha “Abrir” para autorizar.
             </p>
           </div>
         </section>

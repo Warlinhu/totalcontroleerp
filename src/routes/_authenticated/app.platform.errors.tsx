@@ -18,7 +18,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 
-export const Route = createFileRoute("/_authenticated/platform/errors")({
+export const Route = createFileRoute("/_authenticated/app/platform/errors")({
   head: () => ({ meta: [{ title: "Painel de erros — TotalControle ERP" }] }),
   component: PlatformErrorsPage,
 });

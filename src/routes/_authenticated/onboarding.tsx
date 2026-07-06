@@ -57,40 +57,34 @@ function OnboardingPage() {
   const handleAcceptInvite = async () => {
     if (!search.invite) return;
     setBusy(true);
-    const { data: invite, error: fetchErr } = await supabase
-      .from("company_invites")
-      .select("id, company_id, role, expires_at, accepted_at, email")
-      .eq("token", search.invite)
-      .maybeSingle();
-    if (fetchErr || !invite) {
-      setBusy(false);
-      toast.error("Convite inválido ou expirado");
-      return;
-    }
-    if (invite.accepted_at) {
-      setBusy(false);
-      toast.error("Este convite já foi utilizado");
-      return;
-    }
-    if (new Date(invite.expires_at).getTime() < Date.now()) {
-      setBusy(false);
-      toast.error("Este convite expirou");
-      return;
-    }
-    const { error: memberErr } = await supabase
-      .from("company_members")
-      .insert({ company_id: invite.company_id, user_id: user.id, role: invite.role });
-    if (memberErr) {
-      setBusy(false);
-      toast.error("Não foi possível aceitar o convite", { description: memberErr.message });
-      return;
-    }
-    await supabase.from("company_invites").update({ accepted_at: new Date().toISOString() }).eq("id", invite.id);
-    await refresh();
-    setCurrentCompanyId(invite.company_id);
+    const { data: companyId, error } = await supabase.rpc("accept_company_invite", { _token: search.invite });
     setBusy(false);
+
+    if (error || !companyId) {
+      const message = getInviteErrorMessage(error?.message);
+      toast.error(message);
+      return;
+    }
+
+    await refresh();
+    setCurrentCompanyId(companyId);
     toast.success("Convite aceito!");
     navigate({ to: "/app", replace: true });
+  };
+
+  const getInviteErrorMessage = (message?: string) => {
+    if (!message || message.includes("invalid_invite")) return "Convite inválido ou expirado";
+    if (message.includes("invite_already_used")) return "Este convite já foi utilizado";
+    if (message.includes("invite_expired")) return "Este convite expirou";
+    if (message.includes("invite_email_mismatch")) return "Entre com o e-mail que recebeu este convite";
+    if (message.includes("not_authenticated")) return "Entre na sua conta para aceitar o convite";
+    return "Não foi possível aceitar o convite";
+  };
+
+  const handleInviteError = (error: Error) => {
+      setBusy(false);
+      toast.error("Não foi possível aceitar o convite", { description: error.message });
+      return;
   };
 
   return (

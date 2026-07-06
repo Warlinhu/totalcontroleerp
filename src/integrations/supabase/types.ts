@@ -625,15 +625,117 @@ export type Database = {
           },
         ]
       }
+      support_ticket_messages: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          is_admin_reply: boolean
+          ticket_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          is_admin_reply?: boolean
+          ticket_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          is_admin_reply?: boolean
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_ticket_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          admin_notes: string | null
+          company_id: string
+          created_at: string
+          created_by: string
+          description: string
+          id: string
+          module: string | null
+          priority: Database["public"]["Enums"]["ticket_priority"]
+          resolved_at: string | null
+          resolved_by: string | null
+          status: Database["public"]["Enums"]["ticket_status"]
+          title: string
+          type: Database["public"]["Enums"]["ticket_type"]
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          company_id: string
+          created_at?: string
+          created_by: string
+          description: string
+          id?: string
+          module?: string | null
+          priority?: Database["public"]["Enums"]["ticket_priority"]
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["ticket_status"]
+          title: string
+          type?: Database["public"]["Enums"]["ticket_type"]
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          company_id?: string
+          created_at?: string
+          created_by?: string
+          description?: string
+          id?: string
+          module?: string | null
+          priority?: Database["public"]["Enums"]["ticket_priority"]
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: Database["public"]["Enums"]["ticket_status"]
+          title?: string
+          type?: Database["public"]["Enums"]["ticket_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      find_user_by_email: {
+        Args: { _email: string }
+        Returns: {
+          email: string
+          user_id: string
+        }[]
+      }
       get_company_role: {
         Args: { _company_id: string; _user_id: string }
         Returns: Database["public"]["Enums"]["company_role"]
       }
+      grant_platform_admin: { Args: { _user_id: string }; Returns: undefined }
       has_company_access: {
         Args: { _company_id: string; _user_id: string }
         Returns: boolean
@@ -643,6 +745,14 @@ export type Database = {
         Returns: boolean
       }
       is_platform_admin: { Args: { _user_id: string }; Returns: boolean }
+      list_platform_admins: {
+        Args: never
+        Returns: {
+          created_at: string
+          email: string
+          user_id: string
+        }[]
+      }
       platform_company_overview: {
         Args: never
         Returns: {
@@ -652,16 +762,38 @@ export type Database = {
           id: string
           member_count: number
           name: string
+          open_errors: number
+          open_tickets: number
           owner_email: string
           phone: string
         }[]
       }
+      platform_ticket_stats: {
+        Args: never
+        Returns: {
+          critical_open: number
+          in_progress_count: number
+          open_count: number
+          resolved_count: number
+          total: number
+          waiting_customer_count: number
+        }[]
+      }
+      revoke_platform_admin: { Args: { _user_id: string }; Returns: undefined }
     }
     Enums: {
       company_role: "owner" | "admin" | "employee"
       error_severity: "info" | "warning" | "error" | "critical"
       installment_status: "pending" | "paid" | "overdue" | "canceled"
       product_kind: "product" | "service"
+      ticket_priority: "low" | "medium" | "high" | "critical"
+      ticket_status:
+        | "open"
+        | "in_progress"
+        | "waiting_customer"
+        | "resolved"
+        | "closed"
+      ticket_type: "bug" | "feature" | "change" | "question"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -793,6 +925,15 @@ export const Constants = {
       error_severity: ["info", "warning", "error", "critical"],
       installment_status: ["pending", "paid", "overdue", "canceled"],
       product_kind: ["product", "service"],
+      ticket_priority: ["low", "medium", "high", "critical"],
+      ticket_status: [
+        "open",
+        "in_progress",
+        "waiting_customer",
+        "resolved",
+        "closed",
+      ],
+      ticket_type: ["bug", "feature", "change", "question"],
     },
   },
 } as const

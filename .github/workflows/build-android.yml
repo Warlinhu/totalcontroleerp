@@ -57,10 +57,22 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug
 
+      - name: Rename APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk TotalControleERP.apk
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v7.0.1
         with:
           name: TotalControleERP-android-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: TotalControleERP.apk
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish to GitHub Release (latest)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest build
+          make_latest: "true"
+          files: TotalControleERP.apk
+

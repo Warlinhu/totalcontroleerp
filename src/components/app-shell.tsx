@@ -5,8 +5,9 @@ import {
   BellRing, Settings, LogOut, Building2, ChevronDown, ShieldAlert,
   LifeBuoy, MessageSquare, UserPlus, Sun, Moon, Monitor, Rows2, Rows3, Search,
 } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useSession } from "@/lib/use-session";
 import { useCompany } from "@/lib/company-context";
 import { useTheme } from "@/lib/theme-provider";
 import { Button } from "@/components/ui/button";
@@ -65,6 +66,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { mode, setMode, density, setDensity } = useTheme();
+  const { user } = useSession();
+
+  const { data: isPlatformAdmin = false } = useQuery({
+    queryKey: ["is-platform-admin", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("is_platform_admin", { _user_id: user!.id });
+      if (error) return false;
+      return !!data;
+    },
+  });
+
+  const visibleSections = SECTIONS.filter((s) => s.label !== "Plataforma" || isPlatformAdmin);
+
 
   const handleSignOut = async () => {
     await qc.cancelQueries();
@@ -117,7 +132,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
 
         <nav className="flex-1 space-y-4 overflow-y-auto p-3">
-          {SECTIONS.map((section) => (
+          {visibleSections.map((section) => (
             <div key={section.label}>
               <div className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 {section.label}

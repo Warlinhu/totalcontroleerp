@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Download, Apple, Monitor } from "lucide-react";
+import { Download, Apple, Monitor, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
-import windowsInstaller from "@/assets/installers/windows.asset.json";
-import macosInstaller from "@/assets/installers/macos.asset.json";
-import linuxInstaller from "@/assets/installers/linux.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -22,35 +19,47 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
+const GH_RELEASE = "https://github.com/Warlinhu/totalcontroleerp/releases/latest/download";
+
 const DOWNLOADS = [
   {
     id: "windows",
     label: "Windows",
-    ext: ".zip",
-    size: "~145 MB",
+    ext: ".exe",
+    size: "Instalador NSIS",
     icon: Monitor,
-    href: (windowsInstaller as { url: string }).url,
-    hint: "Descompacte e execute TotalControleERP.exe.",
+    href: `${GH_RELEASE}/TotalControleERP-Setup.exe`,
+    hint: "Baixe e execute o instalador TotalControleERP-Setup.exe.",
   },
   {
     id: "macos",
     label: "macOS",
-    ext: ".zip",
-    size: "~350 MB",
+    ext: ".dmg",
+    size: "Intel/Apple Silicon",
     icon: Apple,
-    href: (macosInstaller as { url: string }).url,
-    hint: "Arraste TotalControleERP.app para Aplicativos.",
+    href: `${GH_RELEASE}/TotalControleERP-mac.dmg`,
+    hint: "Abra o .dmg e arraste TotalControle ERP para Aplicativos.",
   },
   {
     id: "linux",
     label: "Linux",
-    ext: ".tar.gz",
-    size: "~120 MB",
+    ext: ".AppImage",
+    size: "Portátil x64",
     icon: Monitor,
-    href: (linuxInstaller as { url: string }).url,
-    hint: "Descompacte e execute o binário TotalControleERP.",
+    href: `${GH_RELEASE}/TotalControleERP-linux.AppImage`,
+    hint: "Dê permissão de execução e abra o AppImage.",
+  },
+  {
+    id: "android",
+    label: "Android",
+    ext: ".apk",
+    size: "Debug build",
+    icon: Smartphone,
+    href: `${GH_RELEASE}/TotalControleERP.apk`,
+    hint: "Baixe o APK no celular e permita instalar de fontes externas.",
   },
 ];
+
 
 function LandingPage() {
   const [isBrowser, setIsBrowser] = useState(false);
@@ -126,7 +135,7 @@ function LandingPage() {
               </p>
             </div>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {DOWNLOADS.map((d) => (
                 <div
                   key={d.id}
@@ -143,7 +152,7 @@ function LandingPage() {
                     {d.hint}
                   </p>
                   <Button asChild className="mt-4 w-full">
-                    <a href={d.href} download>
+                    <a href={d.href} rel="noopener noreferrer">
                       <Download className="mr-2 h-4 w-4" /> Baixar
                     </a>
                   </Button>
@@ -152,9 +161,16 @@ function LandingPage() {
             </div>
 
             <p className="mx-auto mt-8 max-w-2xl text-center text-xs text-muted-foreground">
-              No macOS, ao abrir pela primeira vez, clique com o botão direito no app e
-              escolha “Abrir” para autorizar. Para Android, use o navegador do celular:
-              menu → “Adicionar à tela inicial” instala o app como PWA.
+              Downloads servidos direto da última release publicada no{" "}
+              <a
+                href="https://github.com/Warlinhu/totalcontroleerp/releases/latest"
+                className="underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
+              . No macOS, ao abrir pela primeira vez, clique com o botão direito no app e escolha “Abrir” para autorizar.
             </p>
           </div>
         </section>

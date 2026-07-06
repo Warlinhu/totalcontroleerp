@@ -42,7 +42,8 @@
         }
       ],
       "icon": "public/icon-512.png",
-      "publisherName": "TotalControle ERP"
+      "publisherName": "TotalControle ERP",
+      "artifactName": "TotalControleERP-Setup.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -61,7 +62,8 @@
         "zip"
       ],
       "icon": "public/icon-512.png",
-      "category": "public.app-category.business"
+      "category": "public.app-category.business",
+      "artifactName": "TotalControleERP-mac.${ext}"
     },
     "linux": {
       "target": [
@@ -69,7 +71,8 @@
         "deb"
       ],
       "icon": "public/icon-512.png",
-      "category": "Office"
+      "category": "Office",
+      "artifactName": "TotalControleERP-linux.${ext}"
     },
     "publish": [
       {

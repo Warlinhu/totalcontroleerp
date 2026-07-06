@@ -12,12 +12,61 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "electron:dev": "electron .",
-    "electron:pack:win": "electron-packager . TotalControleERP --platform=win32 --arch=x64 --out=installers/release --overwrite --icon=public/icon-512.png --ignore=^/src --ignore=^/installers --ignore=^/supabase",
+    "electron:build:win": "electron-builder --win nsis --x64 --publish never",
+    "electron:build:mac": "electron-builder --mac --x64 --publish never",
+    "electron:build:linux": "electron-builder --linux AppImage deb --x64 --publish never",
     "electron:pack:linux": "electron-packager . TotalControleERP --platform=linux --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase",
     "electron:pack:mac": "electron-packager . TotalControleERP --platform=darwin --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase",
     "cap:sync": "cap sync android",
     "cap:apk": "cd android && ./gradlew assembleDebug"
   },
+  "build": {
+    "appId": "com.totalcontrole.erp",
+    "productName": "TotalControle ERP",
+    "copyright": "© TotalControle ERP",
+    "files": [
+      "electron/**/*",
+      "public/icon-512.png",
+      "package.json"
+    ],
+    "directories": {
+      "output": "installers/release"
+    },
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "icon": "public/icon-512.png",
+      "publisherName": "TotalControle ERP"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "TotalControle ERP",
+      "runAfterFinish": true,
+      "menuCategory": "TotalControle",
+      "uninstallDisplayName": "TotalControle ERP"
+    },
+    "mac": {
+      "target": ["dmg", "zip"],
+      "icon": "public/icon-512.png",
+      "category": "public.app-category.business"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon": "public/icon-512.png",
+      "category": "Office"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "REPLACE_OWNER",
+        "repo": "REPLACE_REPO"
+      }
+    ]
+  },
+
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@lovable.dev/cloud-auth-js": "^1.1.2",

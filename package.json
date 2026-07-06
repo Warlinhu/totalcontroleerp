@@ -1,8 +1,16 @@
 {
   "name": "tanstack_start_ts",
+  "version": "1.0.0",
+  "description": "Aplicativo TotalControle ERP para web, desktop e Android.",
+  "author": "TotalControle ERP <contato@totalcontroleerp.app>",
+  "homepage": "https://totalcontroleerp.lovable.app",
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Warlinhu/totalcontroleerp.git"
+  },
   "main": "electron/main.cjs",
   "scripts": {
     "dev": "vite dev",
@@ -70,6 +78,7 @@
         "AppImage",
         "deb"
       ],
+      "maintainer": "TotalControle ERP <contato@totalcontroleerp.app>",
       "icon": "public/icon-512.png",
       "category": "Office",
       "artifactName": "TotalControleERP-linux.${ext}"

@@ -156,12 +156,11 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="flex flex-1 flex-col overflow-hidden">
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-2 border-b bg-background/80 px-4 backdrop-blur">
-          <div className="flex items-center gap-2 lg:hidden">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-primary">
-              <LayoutDashboard className="h-3.5 w-3.5 text-primary-foreground" />
+          <Link to="/app" className="flex items-center gap-2 lg:hidden">
+            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-hero p-1 shadow-soft">
+              <BrandLogo className="h-full w-full object-contain" />
             </div>
-            <span className="text-sm font-semibold">TotalControle</span>
-          </div>
+          </Link>
 
           <button
             onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}

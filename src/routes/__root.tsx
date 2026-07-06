@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { installGlobalErrorHandlers, logAppError } from "@/lib/error-logger";
+import { PwaUpdatePrompt } from "@/components/pwa-update-prompt";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -40,6 +42,12 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    void logAppError({
+      source: "tanstack_root_error_component",
+      message: error.message ?? String(error),
+      stack: error.stack,
+      severity: "critical",
+    });
   }, [error]);
 
   return (
@@ -80,17 +88,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "TotalControle ERP" },
       { name: "description", content: "Sistema de gestão empresarial multi-tenant." },
+      { name: "theme-color", content: "#1e40af" },
       { property: "og:title", content: "TotalControle ERP" },
       { property: "og:description", content: "Sistema de gestão empresarial multi-tenant." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "TotalControle" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -116,11 +126,16 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  useEffect(() => {
+    installGlobalErrorHandlers();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <Toaster richColors position="top-right" />
+      <PwaUpdatePrompt />
     </QueryClientProvider>
   );
 }

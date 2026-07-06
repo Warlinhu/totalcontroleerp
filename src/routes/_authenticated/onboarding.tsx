@@ -96,6 +96,11 @@ function OnboardingPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
       <div className="w-full max-w-lg space-y-6">
+        {memberships.length > 0 && (
+          <Button variant="ghost" size="sm" onClick={() => navigate({ to: "/app" })}>
+            ← Voltar para o sistema
+          </Button>
+        )}
         {search.invite && (
           <Card>
             <CardHeader>

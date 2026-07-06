@@ -15,7 +15,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
-import { Route as AuthenticatedPlatformErrorsRouteImport } from './routes/_authenticated/platform.errors'
 import { Route as AuthenticatedAppTeamRouteImport } from './routes/_authenticated/app.team'
 import { Route as AuthenticatedAppSuppliersRouteImport } from './routes/_authenticated/app.suppliers'
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
@@ -25,6 +24,7 @@ import { Route as AuthenticatedAppPayablesRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAppEmployeesRouteImport } from './routes/_authenticated/app.employees'
 import { Route as AuthenticatedAppDebtorsRouteImport } from './routes/_authenticated/app.debtors'
 import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers'
+import { Route as AuthenticatedAppPlatformErrorsRouteImport } from './routes/_authenticated/app.platform.errors'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -55,12 +55,6 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const AuthenticatedPlatformErrorsRoute =
-  AuthenticatedPlatformErrorsRouteImport.update({
-    id: '/platform/errors',
-    path: '/platform/errors',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedAppTeamRoute = AuthenticatedAppTeamRouteImport.update({
   id: '/team',
   path: '/team',
@@ -113,6 +107,12 @@ const AuthenticatedAppCustomersRoute =
     path: '/customers',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppPlatformErrorsRoute =
+  AuthenticatedAppPlatformErrorsRouteImport.update({
+    id: '/platform/errors',
+    path: '/platform/errors',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -128,8 +128,8 @@ export interface FileRoutesByFullPath {
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
-  '/platform/errors': typeof AuthenticatedPlatformErrorsRoute
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -144,8 +144,8 @@ export interface FileRoutesByTo {
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
-  '/platform/errors': typeof AuthenticatedPlatformErrorsRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -163,8 +163,8 @@ export interface FileRoutesById {
   '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
   '/_authenticated/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/_authenticated/app/team': typeof AuthenticatedAppTeamRoute
-  '/_authenticated/platform/errors': typeof AuthenticatedPlatformErrorsRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -182,8 +182,8 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/suppliers'
     | '/app/team'
-    | '/platform/errors'
     | '/app/'
+    | '/app/platform/errors'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -198,8 +198,8 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/suppliers'
     | '/app/team'
-    | '/platform/errors'
     | '/app'
+    | '/app/platform/errors'
   id:
     | '__root__'
     | '/'
@@ -216,8 +216,8 @@ export interface FileRouteTypes {
     | '/_authenticated/app/settings'
     | '/_authenticated/app/suppliers'
     | '/_authenticated/app/team'
-    | '/_authenticated/platform/errors'
     | '/_authenticated/app/'
+    | '/_authenticated/app/platform/errors'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -269,13 +269,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/platform/errors': {
-      id: '/_authenticated/platform/errors'
-      path: '/platform/errors'
-      fullPath: '/platform/errors'
-      preLoaderRoute: typeof AuthenticatedPlatformErrorsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/app/team': {
       id: '/_authenticated/app/team'
@@ -340,6 +333,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppCustomersRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/platform/errors': {
+      id: '/_authenticated/app/platform/errors'
+      path: '/platform/errors'
+      fullPath: '/app/platform/errors'
+      preLoaderRoute: typeof AuthenticatedAppPlatformErrorsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
   }
 }
 
@@ -354,6 +354,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppSuppliersRoute: typeof AuthenticatedAppSuppliersRoute
   AuthenticatedAppTeamRoute: typeof AuthenticatedAppTeamRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppPlatformErrorsRoute: typeof AuthenticatedAppPlatformErrorsRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
@@ -367,6 +368,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppSuppliersRoute: AuthenticatedAppSuppliersRoute,
   AuthenticatedAppTeamRoute: AuthenticatedAppTeamRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppPlatformErrorsRoute: AuthenticatedAppPlatformErrorsRoute,
 }
 
 const AuthenticatedAppRouteWithChildren =
@@ -375,13 +377,11 @@ const AuthenticatedAppRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
-  AuthenticatedPlatformErrorsRoute: typeof AuthenticatedPlatformErrorsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
-  AuthenticatedPlatformErrorsRoute: AuthenticatedPlatformErrorsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

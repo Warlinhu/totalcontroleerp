@@ -12,7 +12,7 @@ const config: CapacitorConfig = {
   appName: "TotalControle ERP",
   webDir: "dist",
   server: {
-    url: "https://id-preview--ab503052-221a-48ec-9345-c94ccb06c280.lovable.app",
+    url: "https://totalcontroleerp.lovable.app",
     cleartext: false,
   },
   android: {

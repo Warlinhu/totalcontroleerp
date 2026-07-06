@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 
-type TableName = "products" | "customers" | "suppliers" | "employees";
+type TableName = "products" | "customers" | "suppliers" | "employees" | "debtors" | "payables";
 
 export function useEntityCrud<T extends { id: string }>(table: TableName, orderBy = "created_at") {
   const { currentCompanyId, isManager } = useCompany();

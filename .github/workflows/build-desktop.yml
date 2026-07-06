@@ -3,6 +3,7 @@ name: Build Desktop Installers
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     tags:
       - "v*"
 
@@ -27,15 +28,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
-        run: npx electron-builder --win nsis --x64 --publish onTagOrDraft
+        run: npx electron-builder --win nsis --x64 --publish never
       - uses: actions/upload-artifact@v7.0.1
         with:
           name: TotalControleERP-Windows-Installer
           path: |
             installers/release/*.exe
-            installers/release/latest.yml
           if-no-files-found: error
           retention-days: 30
+      - name: Publish to GitHub Release (latest)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest build
+          make_latest: "true"
+          files: installers/release/*.exe
 
   macos:
     runs-on: macos-15
@@ -51,16 +58,24 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
-        run: npx electron-builder --mac --x64 --publish onTagOrDraft
+        run: npx electron-builder --mac --x64 --publish never
       - uses: actions/upload-artifact@v7.0.1
         with:
           name: TotalControleERP-macOS-Installer
           path: |
             installers/release/*.dmg
             installers/release/*.zip
-            installers/release/latest-mac.yml
           if-no-files-found: error
           retention-days: 30
+      - name: Publish to GitHub Release (latest)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest build
+          make_latest: "true"
+          files: |
+            installers/release/*.dmg
+            installers/release/*.zip
 
   linux:
     runs-on: ubuntu-latest
@@ -76,13 +91,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
-        run: npx electron-builder --linux AppImage deb --x64 --publish onTagOrDraft
+        run: npx electron-builder --linux AppImage deb --x64 --publish never
       - uses: actions/upload-artifact@v7.0.1
         with:
           name: TotalControleERP-Linux-Installer
           path: |
             installers/release/*.AppImage
             installers/release/*.deb
-            installers/release/latest-linux.yml
           if-no-files-found: error
           retention-days: 30
+      - name: Publish to GitHub Release (latest)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest build
+          make_latest: "true"
+          files: |
+            installers/release/*.AppImage
+            installers/release/*.deb

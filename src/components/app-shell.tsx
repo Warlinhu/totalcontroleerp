@@ -87,14 +87,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen bg-muted/30">
       <aside className="hidden w-64 shrink-0 flex-col border-r bg-sidebar text-sidebar-foreground lg:flex">
         <div className="border-b border-sidebar-border p-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-primary shadow-elegant">
-              <LayoutDashboard className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <div className="text-sm font-semibold leading-tight">
-              TotalControle<span className="ml-1 text-xs font-normal text-muted-foreground">ERP</span>
-            </div>
-          </div>
+          <Link to="/app" className="flex items-center justify-center rounded-md bg-gradient-hero p-3 shadow-elegant transition-transform hover:scale-[1.02]">
+            <BrandLogo className="h-16 w-auto" />
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="mt-3 w-full justify-between bg-background/60">

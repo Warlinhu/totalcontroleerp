@@ -132,7 +132,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
 
         <nav className="flex-1 space-y-4 overflow-y-auto p-3">
-          {SECTIONS.map((section) => (
+          {visibleSections.map((section) => (
             <div key={section.label}>
               <div className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                 {section.label}

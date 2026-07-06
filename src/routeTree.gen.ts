@@ -16,6 +16,7 @@ import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppTeamRouteImport } from './routes/_authenticated/app.team'
+import { Route as AuthenticatedAppSupportRouteImport } from './routes/_authenticated/app.support'
 import { Route as AuthenticatedAppSuppliersRouteImport } from './routes/_authenticated/app.suppliers'
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
 import { Route as AuthenticatedAppRemindersRouteImport } from './routes/_authenticated/app.reminders'
@@ -59,6 +60,11 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
 const AuthenticatedAppTeamRoute = AuthenticatedAppTeamRouteImport.update({
   id: '/team',
   path: '/team',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
+const AuthenticatedAppSupportRoute = AuthenticatedAppSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
 const AuthenticatedAppSuppliersRoute =
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
+  '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
@@ -151,6 +158,7 @@ export interface FileRoutesByTo {
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
+  '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
@@ -171,6 +179,7 @@ export interface FileRoutesById {
   '/_authenticated/app/reminders': typeof AuthenticatedAppRemindersRoute
   '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
   '/_authenticated/app/suppliers': typeof AuthenticatedAppSuppliersRoute
+  '/_authenticated/app/support': typeof AuthenticatedAppSupportRoute
   '/_authenticated/app/team': typeof AuthenticatedAppTeamRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/app/reminders'
     | '/app/settings'
     | '/app/suppliers'
+    | '/app/support'
     | '/app/team'
     | '/app/'
     | '/app/platform/companies'
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/app/reminders'
     | '/app/settings'
     | '/app/suppliers'
+    | '/app/support'
     | '/app/team'
     | '/app'
     | '/app/platform/companies'
@@ -227,6 +238,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/reminders'
     | '/_authenticated/app/settings'
     | '/_authenticated/app/suppliers'
+    | '/_authenticated/app/support'
     | '/_authenticated/app/team'
     | '/_authenticated/app/'
     | '/_authenticated/app/platform/companies'
@@ -288,6 +300,13 @@ declare module '@tanstack/react-router' {
       path: '/team'
       fullPath: '/app/team'
       preLoaderRoute: typeof AuthenticatedAppTeamRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/support': {
+      id: '/_authenticated/app/support'
+      path: '/support'
+      fullPath: '/app/support'
+      preLoaderRoute: typeof AuthenticatedAppSupportRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/suppliers': {
@@ -372,6 +391,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppRemindersRoute: typeof AuthenticatedAppRemindersRoute
   AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
   AuthenticatedAppSuppliersRoute: typeof AuthenticatedAppSuppliersRoute
+  AuthenticatedAppSupportRoute: typeof AuthenticatedAppSupportRoute
   AuthenticatedAppTeamRoute: typeof AuthenticatedAppTeamRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppPlatformCompaniesRoute: typeof AuthenticatedAppPlatformCompaniesRoute
@@ -387,6 +407,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppRemindersRoute: AuthenticatedAppRemindersRoute,
   AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
   AuthenticatedAppSuppliersRoute: AuthenticatedAppSuppliersRoute,
+  AuthenticatedAppSupportRoute: AuthenticatedAppSupportRoute,
   AuthenticatedAppTeamRoute: AuthenticatedAppTeamRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
   AuthenticatedAppPlatformCompaniesRoute:

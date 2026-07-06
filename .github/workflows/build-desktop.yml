@@ -12,6 +12,7 @@ permissions:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+  NODE_VERSION: "22"
 
 jobs:
   windows:
@@ -20,7 +21,7 @@ jobs:
       - uses: actions/checkout@v7.0.0
       - uses: actions/setup-node@v6.4.0
         with:
-          node-version: "24"
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
       - run: npm run build
@@ -36,21 +37,14 @@ jobs:
             installers/release/*.exe
           if-no-files-found: error
           retention-days: 30
-      - name: Publish to GitHub Release (latest)
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: latest
-          name: Latest build
-          make_latest: "true"
-          files: installers/release/*.exe
 
   macos:
-    runs-on: macos-15
+    runs-on: macos-15-intel
     steps:
       - uses: actions/checkout@v7.0.0
       - uses: actions/setup-node@v6.4.0
         with:
-          node-version: "24"
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci
       - run: npm run build
@@ -67,30 +61,26 @@ jobs:
             installers/release/*.zip
           if-no-files-found: error
           retention-days: 30
-      - name: Publish to GitHub Release (latest)
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: latest
-          name: Latest build
-          make_latest: "true"
-          files: |
-            installers/release/*.dmg
-            installers/release/*.zip
 
   linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7.0.0
       - uses: actions/setup-node@v6.4.0
         with:
-          node-version: "24"
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
+      - name: Install Linux packaging dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y libfuse2t64 fakeroot rpm
       - run: npm ci
       - run: npm run build
       - name: Build AppImage + .deb
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
+          APPIMAGE_EXTRACT_AND_RUN: "1"
         run: npx electron-builder --linux AppImage deb --x64 --publish never
       - uses: actions/upload-artifact@v7.0.1
         with:
@@ -100,12 +90,30 @@ jobs:
             installers/release/*.deb
           if-no-files-found: error
           retention-days: 30
+
+  release:
+    runs-on: ubuntu-24.04
+    needs: [windows, macos, linux]
+    concurrency:
+      group: totalcontroleerp-latest-release
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          path: installers/release
+          merge-multiple: true
+      - name: List release files
+        run: ls -la installers/release
       - name: Publish to GitHub Release (latest)
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           name: Latest build
           make_latest: "true"
+          overwrite_files: true
           files: |
+            installers/release/*.exe
+            installers/release/*.dmg
+            installers/release/*.zip
             installers/release/*.AppImage
             installers/release/*.deb

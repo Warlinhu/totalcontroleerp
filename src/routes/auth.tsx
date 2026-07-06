@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BrandLogo } from "@/components/brand-logo";
 
 const searchSchema = z.object({
   redirect: z.string().optional(),
@@ -85,6 +86,9 @@ function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
+          <div className="mx-auto mb-2 flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-hero p-3 shadow-elegant">
+            <BrandLogo className="h-full w-full object-contain" />
+          </div>
           <CardTitle className="text-2xl">TotalControle ERP</CardTitle>
           <CardDescription>Acesse sua conta para continuar</CardDescription>
         </CardHeader>

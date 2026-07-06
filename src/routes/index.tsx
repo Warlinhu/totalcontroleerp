@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand-logo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,7 +21,9 @@ function LandingPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <header className="border-b">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <div className="text-xl font-semibold">TotalControle ERP</div>
+          <Link to="/" className="flex items-center gap-2">
+            <BrandLogo className="h-10 w-auto" />
+          </Link>
           <div className="flex gap-2">
             <Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button>
             <Button asChild><Link to="/auth">Criar conta</Link></Button>
@@ -29,6 +32,11 @@ function LandingPage() {
       </header>
       <main className="flex-1">
         <section className="mx-auto max-w-3xl px-4 py-24 text-center">
+          <div className="mb-8 flex justify-center">
+            <div className="rounded-2xl bg-gradient-hero p-6 shadow-elegant">
+              <BrandLogo className="h-32 w-auto" />
+            </div>
+          </div>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             Gestão empresarial sem complicação
           </h1>

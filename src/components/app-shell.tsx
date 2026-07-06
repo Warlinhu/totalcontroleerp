@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import { useTheme } from "@/lib/theme-provider";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand-logo";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
@@ -86,14 +87,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen bg-muted/30">
       <aside className="hidden w-64 shrink-0 flex-col border-r bg-sidebar text-sidebar-foreground lg:flex">
         <div className="border-b border-sidebar-border p-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-gradient-primary shadow-elegant">
-              <LayoutDashboard className="h-4 w-4 text-primary-foreground" />
-            </div>
-            <div className="text-sm font-semibold leading-tight">
-              TotalControle<span className="ml-1 text-xs font-normal text-muted-foreground">ERP</span>
-            </div>
-          </div>
+          <Link to="/app" className="flex items-center justify-center rounded-md bg-gradient-hero p-3 shadow-elegant transition-transform hover:scale-[1.02]">
+            <BrandLogo className="h-16 w-auto" />
+          </Link>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="mt-3 w-full justify-between bg-background/60">
@@ -160,12 +156,11 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="flex flex-1 flex-col overflow-hidden">
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-2 border-b bg-background/80 px-4 backdrop-blur">
-          <div className="flex items-center gap-2 lg:hidden">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-gradient-primary">
-              <LayoutDashboard className="h-3.5 w-3.5 text-primary-foreground" />
+          <Link to="/app" className="flex items-center gap-2 lg:hidden">
+            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-hero p-1 shadow-soft">
+              <BrandLogo className="h-full w-full object-contain" />
             </div>
-            <span className="text-sm font-semibold">TotalControle</span>
-          </div>
+          </Link>
 
           <button
             onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}

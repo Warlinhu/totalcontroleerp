@@ -44,12 +44,33 @@ export function registerPWA(opts: Opts = {}): PwaUpdater | null {
 
   let updateFn: ((reload?: boolean) => Promise<void> | void) | null = null;
   let disposed = false;
+  let pollTimer: ReturnType<typeof setInterval> | null = null;
+  let onFocus: (() => void) | null = null;
+  let onVisibility: (() => void) | null = null;
 
   (async () => {
     try {
       const mod = await import("virtual:pwa-register");
       updateFn = mod.registerSW({
         immediate: true,
+        onRegisteredSW(_swUrl, registration) {
+          if (!registration) return;
+          const check = () => {
+            if (disposed) return;
+            registration.update().catch(() => {});
+          };
+          // Verifica a cada 60s enquanto o app estiver aberto (essencial no Electron,
+          // onde a janela pode ficar aberta por dias sem recarregar).
+          pollTimer = setInterval(check, 60_000);
+          onFocus = () => check();
+          onVisibility = () => {
+            if (document.visibilityState === "visible") check();
+          };
+          window.addEventListener("focus", onFocus);
+          document.addEventListener("visibilitychange", onVisibility);
+          // Primeira checagem imediata (após registrar).
+          check();
+        },
         onNeedRefresh() { if (!disposed) opts.onNeedRefresh?.(); },
         onOfflineReady() { if (!disposed) opts.onOfflineReady?.(); },
       });
@@ -60,6 +81,12 @@ export function registerPWA(opts: Opts = {}): PwaUpdater | null {
 
   return {
     update: () => updateFn?.(true),
-    dispose: () => { disposed = true; },
+    dispose: () => {
+      disposed = true;
+      if (pollTimer) clearInterval(pollTimer);
+      if (onFocus) window.removeEventListener("focus", onFocus);
+      if (onVisibility) document.removeEventListener("visibilitychange", onVisibility);
+    },
   };
 }
+

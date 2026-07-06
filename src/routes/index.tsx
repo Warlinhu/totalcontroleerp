@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Download, Apple, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand-logo";
@@ -52,6 +53,20 @@ const DOWNLOADS = [
 ];
 
 function LandingPage() {
+  const [isBrowser, setIsBrowser] = useState(false);
+  useEffect(() => {
+    const ua = navigator.userAgent || "";
+    const standalone =
+      window.matchMedia?.("(display-mode: standalone)").matches ||
+      // @ts-expect-error iOS Safari
+      window.navigator.standalone === true;
+    const isElectron = /Electron/i.test(ua);
+    const isCapacitor =
+      // @ts-expect-error Capacitor global
+      !!window.Capacitor?.isNativePlatform?.();
+    setIsBrowser(!standalone && !isElectron && !isCapacitor);
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="border-b">
@@ -61,9 +76,11 @@ function LandingPage() {
           </Link>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <a href="#downloads" className="hidden sm:inline-flex">
-              <Button variant="ghost">Baixar</Button>
-            </a>
+            {isBrowser && (
+              <a href="#downloads" className="hidden sm:inline-flex">
+                <Button variant="ghost">Baixar</Button>
+              </a>
+            )}
             <Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button>
             <Button asChild><Link to="/auth">Criar conta</Link></Button>
           </div>
@@ -86,14 +103,17 @@ function LandingPage() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg"><Link to="/auth">Começar agora</Link></Button>
-            <Button asChild size="lg" variant="outline">
-              <a href="#downloads">
-                <Download className="mr-2 h-4 w-4" /> Baixar aplicativo
-              </a>
-            </Button>
+            {isBrowser && (
+              <Button asChild size="lg" variant="outline">
+                <a href="#downloads">
+                  <Download className="mr-2 h-4 w-4" /> Baixar aplicativo
+                </a>
+              </Button>
+            )}
           </div>
         </section>
 
+        {isBrowser && (
         <section id="downloads" className="border-t bg-muted/30 py-20">
           <div className="mx-auto max-w-5xl px-4">
             <div className="mx-auto max-w-2xl text-center">
@@ -138,6 +158,7 @@ function LandingPage() {
             </p>
           </div>
         </section>
+        )}
       </main>
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">

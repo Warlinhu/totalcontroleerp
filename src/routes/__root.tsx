@@ -11,6 +11,8 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { installGlobalErrorHandlers, logAppError } from "@/lib/error-logger";
+import { PwaUpdatePrompt } from "@/components/pwa-update-prompt";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -40,6 +42,12 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
+    void logAppError({
+      source: "tanstack_root_error_component",
+      message: error.message ?? String(error),
+      stack: error.stack,
+      severity: "critical",
+    });
   }, [error]);
 
   return (

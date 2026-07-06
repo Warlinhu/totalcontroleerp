@@ -42,7 +42,7 @@ export function registerPWA(opts: Opts = {}): PwaUpdater | null {
     return null;
   }
 
-  let updateFn: (() => void) | null = null;
+  let updateFn: ((reload?: boolean) => Promise<void> | void) | null = null;
   let disposed = false;
 
   (async () => {

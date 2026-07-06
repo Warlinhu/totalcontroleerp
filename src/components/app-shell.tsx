@@ -5,8 +5,9 @@ import {
   BellRing, Settings, LogOut, Building2, ChevronDown, ShieldAlert,
   LifeBuoy, MessageSquare, UserPlus, Sun, Moon, Monitor, Rows2, Rows3, Search,
 } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useSession } from "@/lib/use-session";
 import { useCompany } from "@/lib/company-context";
 import { useTheme } from "@/lib/theme-provider";
 import { Button } from "@/components/ui/button";

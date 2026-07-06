@@ -98,17 +98,29 @@ export function AppShell({ children }: { children: ReactNode }) {
             );
           })}
           <div className="pt-4">
+            <div className="px-3 pb-1 text-xs font-medium uppercase text-muted-foreground">Plataforma</div>
+            <Link
+              to="/app/platform/companies"
+              className={cn(
+                "flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent",
+                pathname === "/app/platform/companies" && "bg-accent",
+              )}
+            >
+              <Building2 className="h-4 w-4" />
+              Empresas cadastradas
+            </Link>
             <Link
               to="/app/platform/errors"
               className={cn(
                 "flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent",
-                pathname.startsWith("/app/platform") && "bg-accent",
+                pathname === "/app/platform/errors" && "bg-accent",
               )}
             >
               <ShieldAlert className="h-4 w-4" />
-              Painel da plataforma
+              Monitoramento de erros
             </Link>
           </div>
+
         </nav>
         <div className="border-t p-2">
           <Button variant="ghost" size="sm" className="w-full justify-start" onClick={handleSignOut}>

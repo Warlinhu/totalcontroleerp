@@ -643,6 +643,19 @@ export type Database = {
         Returns: boolean
       }
       is_platform_admin: { Args: { _user_id: string }; Returns: boolean }
+      platform_company_overview: {
+        Args: never
+        Returns: {
+          created_at: string
+          document: string
+          email: string
+          id: string
+          member_count: number
+          name: string
+          owner_email: string
+          phone: string
+        }[]
+      }
     }
     Enums: {
       company_role: "owner" | "admin" | "employee"

@@ -25,6 +25,7 @@ import { Route as AuthenticatedAppEmployeesRouteImport } from './routes/_authent
 import { Route as AuthenticatedAppDebtorsRouteImport } from './routes/_authenticated/app.debtors'
 import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers'
 import { Route as AuthenticatedAppPlatformErrorsRouteImport } from './routes/_authenticated/app.platform.errors'
+import { Route as AuthenticatedAppPlatformCompaniesRouteImport } from './routes/_authenticated/app.platform.companies'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -113,6 +114,12 @@ const AuthenticatedAppPlatformErrorsRoute =
     path: '/platform/errors',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppPlatformCompaniesRoute =
+  AuthenticatedAppPlatformCompaniesRouteImport.update({
+    id: '/platform/companies',
+    path: '/platform/companies',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
 }
 export interface FileRoutesByTo {
@@ -145,6 +153,7 @@ export interface FileRoutesByTo {
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
 }
 export interface FileRoutesById {
@@ -164,6 +173,7 @@ export interface FileRoutesById {
   '/_authenticated/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/_authenticated/app/team': typeof AuthenticatedAppTeamRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/_authenticated/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
 }
 export interface FileRouteTypes {
@@ -183,6 +193,7 @@ export interface FileRouteTypes {
     | '/app/suppliers'
     | '/app/team'
     | '/app/'
+    | '/app/platform/companies'
     | '/app/platform/errors'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/app/suppliers'
     | '/app/team'
     | '/app'
+    | '/app/platform/companies'
     | '/app/platform/errors'
   id:
     | '__root__'
@@ -217,6 +229,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/suppliers'
     | '/_authenticated/app/team'
     | '/_authenticated/app/'
+    | '/_authenticated/app/platform/companies'
     | '/_authenticated/app/platform/errors'
   fileRoutesById: FileRoutesById
 }
@@ -340,6 +353,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppPlatformErrorsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/platform/companies': {
+      id: '/_authenticated/app/platform/companies'
+      path: '/platform/companies'
+      fullPath: '/app/platform/companies'
+      preLoaderRoute: typeof AuthenticatedAppPlatformCompaniesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
   }
 }
 
@@ -354,6 +374,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppSuppliersRoute: typeof AuthenticatedAppSuppliersRoute
   AuthenticatedAppTeamRoute: typeof AuthenticatedAppTeamRoute
   AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
+  AuthenticatedAppPlatformCompaniesRoute: typeof AuthenticatedAppPlatformCompaniesRoute
   AuthenticatedAppPlatformErrorsRoute: typeof AuthenticatedAppPlatformErrorsRoute
 }
 
@@ -368,6 +389,8 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppSuppliersRoute: AuthenticatedAppSuppliersRoute,
   AuthenticatedAppTeamRoute: AuthenticatedAppTeamRoute,
   AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppPlatformCompaniesRoute:
+    AuthenticatedAppPlatformCompaniesRoute,
   AuthenticatedAppPlatformErrorsRoute: AuthenticatedAppPlatformErrorsRoute,
 }
 

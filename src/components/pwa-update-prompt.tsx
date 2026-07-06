@@ -9,23 +9,30 @@ export function PwaUpdatePrompt() {
   useEffect(() => {
     const u = registerPWA({
       onNeedRefresh: () => {
-        toast("Nova versão do TotalControle disponível", {
-          description: "Recarregar agora para aplicar as atualizações?",
-          duration: Infinity,
+        // Notificação discreta: canto, curta, com ação opcional.
+        // Não bloqueia o usuário — se ele ignorar, a nova versão será
+        // aplicada automaticamente na próxima abertura do app.
+        toast("Nova versão disponível", {
+          description: "Atualize quando quiser para aplicar as melhorias.",
+          duration: 10000,
+          position: "bottom-right",
           action: {
-            label: "Atualizar",
+            label: "Atualizar agora",
             onClick: () => u?.update(),
           },
-          cancel: { label: "Depois", onClick: () => {} },
         });
       },
       onOfflineReady: () => {
-        toast.success("Pronto para uso offline");
+        toast.success("Pronto para uso offline", {
+          duration: 4000,
+          position: "bottom-right",
+        });
       },
     });
     if (u) setUpdater(u);
     return () => u?.dispose();
   }, []);
+
 
   // Hidden component; UI is emitted via toasts.
   void updater;

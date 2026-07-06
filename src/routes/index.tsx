@@ -53,6 +53,20 @@ const DOWNLOADS = [
 ];
 
 function LandingPage() {
+  const [isBrowser, setIsBrowser] = useState(false);
+  useEffect(() => {
+    const ua = navigator.userAgent || "";
+    const standalone =
+      window.matchMedia?.("(display-mode: standalone)").matches ||
+      // @ts-expect-error iOS Safari
+      window.navigator.standalone === true;
+    const isElectron = /Electron/i.test(ua);
+    const isCapacitor =
+      // @ts-expect-error Capacitor global
+      !!window.Capacitor?.isNativePlatform?.();
+    setIsBrowser(!standalone && !isElectron && !isCapacitor);
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="border-b">

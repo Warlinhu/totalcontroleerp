@@ -724,6 +724,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_company_invite: { Args: { _token: string }; Returns: string }
       find_user_by_email: {
         Args: { _email: string }
         Returns: {

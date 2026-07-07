@@ -110,6 +110,24 @@ function PayablesPage() {
 
   return (
     <>
+      <div className="mb-4 flex flex-wrap items-end gap-3 rounded-lg border bg-card p-4">
+        <div className="space-y-1">
+          <Label className="text-xs">Venc. de</Label>
+          <Input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="h-9" />
+        </div>
+        <div className="space-y-1">
+          <Label className="text-xs">Até</Label>
+          <Input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="h-9" />
+        </div>
+        <Button variant="ghost" size="sm" onClick={() => { setDateFrom(""); setDateTo(""); }}>Limpar</Button>
+      </div>
+      <PayablesInner />
+    </>
+  );
+}
+
+function PayablesInner() { return null;
+    <>
       <EntityList<Payable>
         title="Contas a pagar"
         description="Registre despesas e obrigações com fornecedores."

@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
+
 
 
 const searchSchema = z.object({
@@ -122,6 +123,11 @@ function AuthPage() {
                   <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </div>
                 <Button type="submit" disabled={loading} className="w-full">Entrar</Button>
+                <div className="text-center text-sm">
+                  <Link to="/forgot-password" className="text-muted-foreground hover:text-primary hover:underline">
+                    Esqueci minha senha
+                  </Link>
+                </div>
               </form>
             </TabsContent>
             <TabsContent value="signup">

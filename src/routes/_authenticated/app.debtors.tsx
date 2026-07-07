@@ -93,10 +93,22 @@ function DebtorsPage() {
 
   return (
     <>
+      <div className="mb-4 flex flex-wrap items-end gap-3 rounded-lg border bg-card p-4">
+        <div className="space-y-1">
+          <Label className="text-xs">Venc. de</Label>
+          <Input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="h-9" />
+        </div>
+        <div className="space-y-1">
+          <Label className="text-xs">Até</Label>
+          <Input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="h-9" />
+        </div>
+        <Button variant="ghost" size="sm" onClick={() => { setDateFrom(""); setDateTo(""); }}>Limpar</Button>
+      </div>
+
       <EntityList<Debtor>
         title="Devedores"
         description="Registre pessoas que devem à sua empresa e acompanhe as parcelas."
-        rows={crud.rows}
+        rows={filteredRows}
         loading={crud.loading}
         canManage={crud.canManage}
         columns={[
@@ -106,7 +118,7 @@ function DebtorsPage() {
           {
             header: "Parcelas",
             cell: (r) => {
-              const s = summary.data?.get(r.id);
+              const s = summary.data?.map.get(r.id);
               if (!s) return "—";
               return <span className="text-sm">{s.paid}/{s.total} pagas</span>;
             },
@@ -114,7 +126,7 @@ function DebtorsPage() {
           {
             header: "Próx. venc.",
             cell: (r) => {
-              const s = summary.data?.get(r.id);
+              const s = summary.data?.map.get(r.id);
               if (!s?.nextDue) return "—";
               return (
                 <div className="flex items-center gap-2">

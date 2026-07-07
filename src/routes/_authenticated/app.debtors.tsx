@@ -30,6 +30,8 @@ function DebtorsPage() {
   const { currentCompanyId } = useCompany();
   const creator = useInstallmentsCreator();
   const [installmentsOpen, setInstallmentsOpen] = useState<Debtor | null>(null);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   const [form, setForm] = useState({
     name: "", document: "", description: "", total_amount: "0",
@@ -73,8 +75,20 @@ function DebtorsPage() {
         }
         map.set(row.debtor_id, s);
       });
-      return map;
+      return { map, raw: data ?? [] };
     },
+  });
+
+  // Filtra devedores que possuem ao menos uma parcela no intervalo (por due_date)
+  const filteredRows = crud.rows.filter((r) => {
+    if (!dateFrom && !dateTo) return true;
+    const parcels = summary.data?.raw.filter((p) => p.debtor_id === r.id) ?? [];
+    if (parcels.length === 0) return false;
+    return parcels.some((p) => {
+      if (dateFrom && p.due_date < dateFrom) return false;
+      if (dateTo && p.due_date > dateTo) return false;
+      return true;
+    });
   });
 
   return (

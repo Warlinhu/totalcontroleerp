@@ -121,13 +121,6 @@ function PayablesPage() {
         </div>
         <Button variant="ghost" size="sm" onClick={() => { setDateFrom(""); setDateTo(""); }}>Limpar</Button>
       </div>
-      <PayablesInner />
-    </>
-  );
-}
-
-function PayablesInner() { return null;
-    <>
       <EntityList<Payable>
         title="Contas a pagar"
         description="Registre despesas e obrigações com fornecedores."

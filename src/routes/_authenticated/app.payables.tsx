@@ -33,6 +33,8 @@ function PayablesPage() {
   const { currentCompanyId } = useCompany();
   const creator = useInstallmentsCreator();
   const [installmentsOpen, setInstallmentsOpen] = useState<Payable | null>(null);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   const suppliers = useQuery({
     queryKey: ["suppliers-lite", currentCompanyId],
@@ -89,8 +91,19 @@ function PayablesPage() {
         }
         map.set(row.payable_id, s);
       });
-      return map;
+      return { map, raw: data ?? [] };
     },
+  });
+
+  const filteredRows = crud.rows.filter((r) => {
+    if (!dateFrom && !dateTo) return true;
+    const parcels = summary.data?.raw.filter((p) => p.payable_id === r.id) ?? [];
+    if (parcels.length === 0) return false;
+    return parcels.some((p) => {
+      if (dateFrom && p.due_date < dateFrom) return false;
+      if (dateTo && p.due_date > dateTo) return false;
+      return true;
+    });
   });
 
   const supplierName = (id: string | null) => suppliers.data?.find((s) => s.id === id)?.name ?? "—";

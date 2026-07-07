@@ -24,6 +24,7 @@ import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAppRemindersRouteImport } from './routes/_authenticated/app.reminders'
 import { Route as AuthenticatedAppProductsRouteImport } from './routes/_authenticated/app.products'
 import { Route as AuthenticatedAppPayablesRouteImport } from './routes/_authenticated/app.payables'
+import { Route as AuthenticatedAppInvoicesRouteImport } from './routes/_authenticated/app.invoices'
 import { Route as AuthenticatedAppEmployeesRouteImport } from './routes/_authenticated/app.employees'
 import { Route as AuthenticatedAppDebtorsRouteImport } from './routes/_authenticated/app.debtors'
 import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers'
@@ -111,6 +112,12 @@ const AuthenticatedAppPayablesRoute =
     path: '/payables',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppInvoicesRoute =
+  AuthenticatedAppInvoicesRouteImport.update({
+    id: '/invoices',
+    path: '/invoices',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppEmployeesRoute =
   AuthenticatedAppEmployeesRouteImport.update({
     id: '/employees',
@@ -163,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/app/customers': typeof AuthenticatedAppCustomersRoute
   '/app/debtors': typeof AuthenticatedAppDebtorsRoute
   '/app/employees': typeof AuthenticatedAppEmployeesRoute
+  '/app/invoices': typeof AuthenticatedAppInvoicesRoute
   '/app/payables': typeof AuthenticatedAppPayablesRoute
   '/app/products': typeof AuthenticatedAppProductsRoute
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
@@ -185,6 +193,7 @@ export interface FileRoutesByTo {
   '/app/customers': typeof AuthenticatedAppCustomersRoute
   '/app/debtors': typeof AuthenticatedAppDebtorsRoute
   '/app/employees': typeof AuthenticatedAppEmployeesRoute
+  '/app/invoices': typeof AuthenticatedAppInvoicesRoute
   '/app/payables': typeof AuthenticatedAppPayablesRoute
   '/app/products': typeof AuthenticatedAppProductsRoute
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
@@ -210,6 +219,7 @@ export interface FileRoutesById {
   '/_authenticated/app/customers': typeof AuthenticatedAppCustomersRoute
   '/_authenticated/app/debtors': typeof AuthenticatedAppDebtorsRoute
   '/_authenticated/app/employees': typeof AuthenticatedAppEmployeesRoute
+  '/_authenticated/app/invoices': typeof AuthenticatedAppInvoicesRoute
   '/_authenticated/app/payables': typeof AuthenticatedAppPayablesRoute
   '/_authenticated/app/products': typeof AuthenticatedAppProductsRoute
   '/_authenticated/app/reminders': typeof AuthenticatedAppRemindersRoute
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
     | '/app/customers'
     | '/app/debtors'
     | '/app/employees'
+    | '/app/invoices'
     | '/app/payables'
     | '/app/products'
     | '/app/reminders'
@@ -257,6 +268,7 @@ export interface FileRouteTypes {
     | '/app/customers'
     | '/app/debtors'
     | '/app/employees'
+    | '/app/invoices'
     | '/app/payables'
     | '/app/products'
     | '/app/reminders'
@@ -281,6 +293,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/customers'
     | '/_authenticated/app/debtors'
     | '/_authenticated/app/employees'
+    | '/_authenticated/app/invoices'
     | '/_authenticated/app/payables'
     | '/_authenticated/app/products'
     | '/_authenticated/app/reminders'
@@ -410,6 +423,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppPayablesRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/invoices': {
+      id: '/_authenticated/app/invoices'
+      path: '/invoices'
+      fullPath: '/app/invoices'
+      preLoaderRoute: typeof AuthenticatedAppInvoicesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/employees': {
       id: '/_authenticated/app/employees'
       path: '/employees'
@@ -466,6 +486,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppCustomersRoute: typeof AuthenticatedAppCustomersRoute
   AuthenticatedAppDebtorsRoute: typeof AuthenticatedAppDebtorsRoute
   AuthenticatedAppEmployeesRoute: typeof AuthenticatedAppEmployeesRoute
+  AuthenticatedAppInvoicesRoute: typeof AuthenticatedAppInvoicesRoute
   AuthenticatedAppPayablesRoute: typeof AuthenticatedAppPayablesRoute
   AuthenticatedAppProductsRoute: typeof AuthenticatedAppProductsRoute
   AuthenticatedAppRemindersRoute: typeof AuthenticatedAppRemindersRoute
@@ -484,6 +505,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppCustomersRoute: AuthenticatedAppCustomersRoute,
   AuthenticatedAppDebtorsRoute: AuthenticatedAppDebtorsRoute,
   AuthenticatedAppEmployeesRoute: AuthenticatedAppEmployeesRoute,
+  AuthenticatedAppInvoicesRoute: AuthenticatedAppInvoicesRoute,
   AuthenticatedAppPayablesRoute: AuthenticatedAppPayablesRoute,
   AuthenticatedAppProductsRoute: AuthenticatedAppProductsRoute,
   AuthenticatedAppRemindersRoute: AuthenticatedAppRemindersRoute,

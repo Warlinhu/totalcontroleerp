@@ -3,7 +3,7 @@ import { useEffect, type ReactNode } from "react";
 import {
   LayoutDashboard, Package, Users, Truck, UserCog, HandCoins, Receipt,
   BellRing, Settings, LogOut, Building2, ChevronDown, ShieldAlert,
-  LifeBuoy, MessageSquare, UserPlus, Sun, Moon, Monitor, Rows2, Rows3, Search,
+  LifeBuoy, MessageSquare, UserPlus, Sun, Moon, Monitor, Rows2, Rows3, Search, FileText,
 } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -38,6 +38,7 @@ const SECTIONS: NavSection[] = [
     items: [
       { to: "/app/debtors", label: "A receber", icon: HandCoins },
       { to: "/app/payables", label: "A pagar", icon: Receipt },
+      { to: "/app/invoices", label: "Notas Fiscais", icon: FileText },
       { to: "/app/reminders", label: "Lembretes", icon: BellRing },
     ],
   },

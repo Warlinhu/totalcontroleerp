@@ -33,6 +33,8 @@ function PayablesPage() {
   const { currentCompanyId } = useCompany();
   const creator = useInstallmentsCreator();
   const [installmentsOpen, setInstallmentsOpen] = useState<Payable | null>(null);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   const suppliers = useQuery({
     queryKey: ["suppliers-lite", currentCompanyId],
@@ -89,18 +91,40 @@ function PayablesPage() {
         }
         map.set(row.payable_id, s);
       });
-      return map;
+      return { map, raw: data ?? [] };
     },
+  });
+
+  const filteredRows = crud.rows.filter((r) => {
+    if (!dateFrom && !dateTo) return true;
+    const parcels = summary.data?.raw.filter((p) => p.payable_id === r.id) ?? [];
+    if (parcels.length === 0) return false;
+    return parcels.some((p) => {
+      if (dateFrom && p.due_date < dateFrom) return false;
+      if (dateTo && p.due_date > dateTo) return false;
+      return true;
+    });
   });
 
   const supplierName = (id: string | null) => suppliers.data?.find((s) => s.id === id)?.name ?? "—";
 
   return (
     <>
+      <div className="mb-4 flex flex-wrap items-end gap-3 rounded-lg border bg-card p-4">
+        <div className="space-y-1">
+          <Label className="text-xs">Venc. de</Label>
+          <Input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="h-9" />
+        </div>
+        <div className="space-y-1">
+          <Label className="text-xs">Até</Label>
+          <Input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="h-9" />
+        </div>
+        <Button variant="ghost" size="sm" onClick={() => { setDateFrom(""); setDateTo(""); }}>Limpar</Button>
+      </div>
       <EntityList<Payable>
         title="Contas a pagar"
         description="Registre despesas e obrigações com fornecedores."
-        rows={crud.rows}
+        rows={filteredRows}
         loading={crud.loading}
         canManage={crud.canManage}
         columns={[
@@ -110,14 +134,14 @@ function PayablesPage() {
           {
             header: "Parcelas",
             cell: (r) => {
-              const s = summary.data?.get(r.id);
+              const s = summary.data?.map.get(r.id);
               return s ? `${s.paid}/${s.total} pagas` : "—";
             },
           },
           {
             header: "Próx. venc.",
             cell: (r) => {
-              const s = summary.data?.get(r.id);
+              const s = summary.data?.map.get(r.id);
               if (!s?.nextDue) return "—";
               return (
                 <div className="flex items-center gap-2">

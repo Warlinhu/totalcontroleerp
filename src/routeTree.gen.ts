@@ -9,6 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -22,6 +24,7 @@ import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAppRemindersRouteImport } from './routes/_authenticated/app.reminders'
 import { Route as AuthenticatedAppProductsRouteImport } from './routes/_authenticated/app.products'
 import { Route as AuthenticatedAppPayablesRouteImport } from './routes/_authenticated/app.payables'
+import { Route as AuthenticatedAppInvoicesRouteImport } from './routes/_authenticated/app.invoices'
 import { Route as AuthenticatedAppEmployeesRouteImport } from './routes/_authenticated/app.employees'
 import { Route as AuthenticatedAppDebtorsRouteImport } from './routes/_authenticated/app.debtors'
 import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers'
@@ -30,6 +33,16 @@ import { Route as AuthenticatedAppPlatformErrorsRouteImport } from './routes/_au
 import { Route as AuthenticatedAppPlatformCompaniesRouteImport } from './routes/_authenticated/app.platform.companies'
 import { Route as AuthenticatedAppPlatformAdminsRouteImport } from './routes/_authenticated/app.platform.admins'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -99,6 +112,12 @@ const AuthenticatedAppPayablesRoute =
     path: '/payables',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppInvoicesRoute =
+  AuthenticatedAppInvoicesRouteImport.update({
+    id: '/invoices',
+    path: '/invoices',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppEmployeesRoute =
   AuthenticatedAppEmployeesRouteImport.update({
     id: '/employees',
@@ -144,11 +163,14 @@ const AuthenticatedAppPlatformAdminsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/app/customers': typeof AuthenticatedAppCustomersRoute
   '/app/debtors': typeof AuthenticatedAppDebtorsRoute
   '/app/employees': typeof AuthenticatedAppEmployeesRoute
+  '/app/invoices': typeof AuthenticatedAppInvoicesRoute
   '/app/payables': typeof AuthenticatedAppPayablesRoute
   '/app/products': typeof AuthenticatedAppProductsRoute
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
@@ -165,10 +187,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/app/customers': typeof AuthenticatedAppCustomersRoute
   '/app/debtors': typeof AuthenticatedAppDebtorsRoute
   '/app/employees': typeof AuthenticatedAppEmployeesRoute
+  '/app/invoices': typeof AuthenticatedAppInvoicesRoute
   '/app/payables': typeof AuthenticatedAppPayablesRoute
   '/app/products': typeof AuthenticatedAppProductsRoute
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
@@ -187,11 +212,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/app/customers': typeof AuthenticatedAppCustomersRoute
   '/_authenticated/app/debtors': typeof AuthenticatedAppDebtorsRoute
   '/_authenticated/app/employees': typeof AuthenticatedAppEmployeesRoute
+  '/_authenticated/app/invoices': typeof AuthenticatedAppInvoicesRoute
   '/_authenticated/app/payables': typeof AuthenticatedAppPayablesRoute
   '/_authenticated/app/products': typeof AuthenticatedAppProductsRoute
   '/_authenticated/app/reminders': typeof AuthenticatedAppRemindersRoute
@@ -210,11 +238,14 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/forgot-password'
+    | '/reset-password'
     | '/app'
     | '/onboarding'
     | '/app/customers'
     | '/app/debtors'
     | '/app/employees'
+    | '/app/invoices'
     | '/app/payables'
     | '/app/products'
     | '/app/reminders'
@@ -231,10 +262,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/forgot-password'
+    | '/reset-password'
     | '/onboarding'
     | '/app/customers'
     | '/app/debtors'
     | '/app/employees'
+    | '/app/invoices'
     | '/app/payables'
     | '/app/products'
     | '/app/reminders'
@@ -252,11 +286,14 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/forgot-password'
+    | '/reset-password'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
     | '/_authenticated/app/customers'
     | '/_authenticated/app/debtors'
     | '/_authenticated/app/employees'
+    | '/_authenticated/app/invoices'
     | '/_authenticated/app/payables'
     | '/_authenticated/app/products'
     | '/_authenticated/app/reminders'
@@ -275,10 +312,26 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -370,6 +423,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppPayablesRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/invoices': {
+      id: '/_authenticated/app/invoices'
+      path: '/invoices'
+      fullPath: '/app/invoices'
+      preLoaderRoute: typeof AuthenticatedAppInvoicesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/employees': {
       id: '/_authenticated/app/employees'
       path: '/employees'
@@ -426,6 +486,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppCustomersRoute: typeof AuthenticatedAppCustomersRoute
   AuthenticatedAppDebtorsRoute: typeof AuthenticatedAppDebtorsRoute
   AuthenticatedAppEmployeesRoute: typeof AuthenticatedAppEmployeesRoute
+  AuthenticatedAppInvoicesRoute: typeof AuthenticatedAppInvoicesRoute
   AuthenticatedAppPayablesRoute: typeof AuthenticatedAppPayablesRoute
   AuthenticatedAppProductsRoute: typeof AuthenticatedAppProductsRoute
   AuthenticatedAppRemindersRoute: typeof AuthenticatedAppRemindersRoute
@@ -444,6 +505,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppCustomersRoute: AuthenticatedAppCustomersRoute,
   AuthenticatedAppDebtorsRoute: AuthenticatedAppDebtorsRoute,
   AuthenticatedAppEmployeesRoute: AuthenticatedAppEmployeesRoute,
+  AuthenticatedAppInvoicesRoute: AuthenticatedAppInvoicesRoute,
   AuthenticatedAppPayablesRoute: AuthenticatedAppPayablesRoute,
   AuthenticatedAppProductsRoute: AuthenticatedAppProductsRoute,
   AuthenticatedAppRemindersRoute: AuthenticatedAppRemindersRoute,
@@ -479,6 +541,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

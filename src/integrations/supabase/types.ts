@@ -23,6 +23,7 @@ export type Database = {
           id: string
           name: string
           phone: string | null
+          suspended_at: string | null
           updated_at: string
         }
         Insert: {
@@ -33,6 +34,7 @@ export type Database = {
           id?: string
           name: string
           phone?: string | null
+          suspended_at?: string | null
           updated_at?: string
         }
         Update: {
@@ -43,6 +45,7 @@ export type Database = {
           id?: string
           name?: string
           phone?: string | null
+          suspended_at?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -411,6 +414,84 @@ export type Database = {
         }
         Relationships: []
       }
+      invoices: {
+        Row: {
+          access_key: string | null
+          company_id: string
+          created_at: string
+          created_by: string | null
+          customer_document: string | null
+          customer_id: string | null
+          customer_name: string
+          id: string
+          issue_date: string
+          nfe_number: string
+          nfe_series: string | null
+          notes: string | null
+          pdf_url: string | null
+          status: Database["public"]["Enums"]["invoice_status"]
+          tax_amount: number
+          total_amount: number
+          updated_at: string
+          xml_url: string | null
+        }
+        Insert: {
+          access_key?: string | null
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          customer_document?: string | null
+          customer_id?: string | null
+          customer_name: string
+          id?: string
+          issue_date?: string
+          nfe_number: string
+          nfe_series?: string | null
+          notes?: string | null
+          pdf_url?: string | null
+          status?: Database["public"]["Enums"]["invoice_status"]
+          tax_amount?: number
+          total_amount?: number
+          updated_at?: string
+          xml_url?: string | null
+        }
+        Update: {
+          access_key?: string | null
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          customer_document?: string | null
+          customer_id?: string | null
+          customer_name?: string
+          id?: string
+          issue_date?: string
+          nfe_number?: string
+          nfe_series?: string | null
+          notes?: string | null
+          pdf_url?: string | null
+          status?: Database["public"]["Enums"]["invoice_status"]
+          tax_amount?: number
+          total_amount?: number
+          updated_at?: string
+          xml_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payable_installments: {
         Row: {
           amount: number
@@ -767,7 +848,16 @@ export type Database = {
           open_tickets: number
           owner_email: string
           phone: string
+          suspended_at: string
         }[]
+      }
+      platform_delete_company: {
+        Args: { _company_id: string }
+        Returns: undefined
+      }
+      platform_suspend_company: {
+        Args: { _company_id: string }
+        Returns: undefined
       }
       platform_ticket_stats: {
         Args: never
@@ -780,12 +870,17 @@ export type Database = {
           waiting_customer_count: number
         }[]
       }
+      platform_unsuspend_company: {
+        Args: { _company_id: string }
+        Returns: undefined
+      }
       revoke_platform_admin: { Args: { _user_id: string }; Returns: undefined }
     }
     Enums: {
       company_role: "owner" | "admin" | "employee"
       error_severity: "info" | "warning" | "error" | "critical"
       installment_status: "pending" | "paid" | "overdue" | "canceled"
+      invoice_status: "issued" | "cancelled"
       product_kind: "product" | "service"
       ticket_priority: "low" | "medium" | "high" | "critical"
       ticket_status:
@@ -925,6 +1020,7 @@ export const Constants = {
       company_role: ["owner", "admin", "employee"],
       error_severity: ["info", "warning", "error", "critical"],
       installment_status: ["pending", "paid", "overdue", "canceled"],
+      invoice_status: ["issued", "cancelled"],
       product_kind: ["product", "service"],
       ticket_priority: ["low", "medium", "high", "critical"],
       ticket_status: [

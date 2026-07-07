@@ -113,7 +113,7 @@ function PayablesPage() {
       <EntityList<Payable>
         title="Contas a pagar"
         description="Registre despesas e obrigações com fornecedores."
-        rows={crud.rows}
+        rows={filteredRows}
         loading={crud.loading}
         canManage={crud.canManage}
         columns={[
@@ -123,14 +123,14 @@ function PayablesPage() {
           {
             header: "Parcelas",
             cell: (r) => {
-              const s = summary.data?.get(r.id);
+              const s = summary.data?.map.get(r.id);
               return s ? `${s.paid}/${s.total} pagas` : "—";
             },
           },
           {
             header: "Próx. venc.",
             cell: (r) => {
-              const s = summary.data?.get(r.id);
+              const s = summary.data?.map.get(r.id);
               if (!s?.nextDue) return "—";
               return (
                 <div className="flex items-center gap-2">

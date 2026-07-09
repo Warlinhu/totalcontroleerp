@@ -1,75 +1,94 @@
-# Plano de correções e novas funcionalidades
+## Plano de implementação — PDV, Dashboard analítico, Assistente e Changelog
 
-## 1. Correções de bugs críticos
+### 1. PDV (Ponto de Venda) — nova rota `/app/pos`
 
-### 1.1 macOS `.zip` não abre após descompactar
-Causa: `@electron/packager` cross-compilado a partir do Linux gera um `.app` sem assinatura e sem o bit executável no binário interno. macOS Gatekeeper bloqueia com "app está danificado".
+Novo módulo estilo carrinho com:
 
-Correção:
-- Trocar o job `macos` no `.github/workflows/build-desktop.yml` para rodar em `macos-latest` (não Linux) e usar `--platform=darwin --arch=universal` (universal2) para funcionar em Intel e Apple Silicon.
-- Após empacotar, rodar `chmod +x` no binário dentro do `.app/Contents/MacOS/` e assinar ad-hoc: `codesign --force --deep --sign - TotalControleERP.app` antes de compactar.
-- Compactar com `ditto -c -k --sequesterRsrc --keepParent` (preserva permissões do `.app`, ao contrário de `zip -r`).
-- Na tela de download, adicionar instrução: após descompactar, rodar `xattr -cr TotalControleERP.app` uma vez (remove quarentena) caso o macOS ainda bloqueie.
+- **Busca de produtos** (por nome/SKU) já cadastrados em `products`, adição ao carrinho com controle de quantidade, desconto por item e desconto geral.
+- **Seleção de cliente** (opcional, exceto para "Nota" onde é obrigatório).
+- **Formas de pagamento** suportadas: `dinheiro`, `credito`, `debito`, `pix`, `alimentacao`, `voucher`, `nota`. Permite pagamento **misto** (parte em dinheiro + parte em cartão etc.).
+- **Finalização da venda**: cria registro em `sales` + `sale_items` + `sale_payments`.
+- **Cupom/recibo imprimível** ao finalizar (formato térmico 80mm + A4, `window.print()`).
 
-### 1.2 Erro "column subscription_id does not exist"
-Não existe nenhuma referência a `subscription_id` no código do projeto — o erro vem do backend gerenciado (provavelmente do runtime de auth/cloud consultando uma coluna esperada mas ausente).
-- Investigar via `supabase--read_query` a origem exata (tabelas do schema `public` que tenham colunas de assinatura, ou triggers/funções que referenciem `subscription_id`).
-- Se for um trigger/função órfã, remover via migração. Se for uma tabela esperada pelo runtime, criar a coluna `subscription_id TEXT` na tabela apropriada.
-- Consultar `supabase--cloud_status` e `supabase--linter` para confirmar diagnóstico antes de migrar.
+**Regra da "Nota" (fiado):**
+- Cliente obrigatório.
+- Cria automaticamente registro em `debtors` + `debtor_installments` (parcela única no vencimento escolhido).
+- O valor da parte "Nota" **não conta em faturamento** enquanto não for pago. Conforme o cliente paga (marca parcelas como `paid`), o valor pago passa a compor o faturamento.
+- Partes pagas em outras formas (dinheiro, pix, cartão) contam em faturamento **imediatamente**.
 
-### 1.3 Android: login Google não volta para o app
-Causa: fluxo web OAuth redireciona para browser externo (Chrome Custom Tabs) e o retorno via `window.location.origin` não é capturado pelo APK Capacitor.
+**Baixa de estoque:** não incluída nesta rodada (você não marcou como obrigatório — posso adicionar depois).
 
-Correção:
-- Instalar `@capacitor/browser` e `@capacitor-community/generic-oauth2` (ou usar `@codetrix-studio/capacitor-google-auth` para login nativo dentro do app, sem sair).
-- Detectar ambiente Capacitor (`Capacitor.isNativePlatform()`) na tela `/auth` e, em vez de `lovable.auth.signInWithOAuth("google")`, usar `GoogleAuth.signIn()` nativo que retorna `idToken`, então chamar `supabase.auth.signInWithIdToken({ provider: "google", token: idToken })`.
-- Configurar `capacitor.config.ts` com plugin `GoogleAuth` (clientId Web + Android).
-- Fallback deep-link: registrar `com.totalcontroleerp://` no `AndroidManifest.xml` e adicionar listener `App.addListener('appUrlOpen', ...)` no `src/routes/__root.tsx` para capturar retorno OAuth caso o modo browser seja usado.
+### 2. Dashboard analítico revisado — `/app`
 
-## 2. Novas funcionalidades
+Substituo os 4 "stat cards" atuais por painel com:
 
-### 2.1 Trocar senha (com verificação por e-mail) em Configurações
-- Adicionar seção "Segurança" em `app.settings.tsx` com botão "Alterar senha".
-- Fluxo: usuário clica → chama `supabase.auth.reauthenticate()` (envia código nonce por e-mail) → digita código + nova senha → `supabase.auth.updateUser({ password, nonce })`.
+- **Ticket médio** (faturamento realizado ÷ nº de vendas no período).
+- **Faturamento do período** (soma dos pagamentos realizados; "Nota" não pago não entra).
+- **Vendas por forma de pagamento** — gráfico rosquinha (Recharts `PieChart`) com seletor para trocar entre: rosquinha, barras, pizza.
+- **Vendas por categoria de produto** — mesmo padrão de gráfico configurável.
+- **Horário de maior movimento** — gráfico de linha (0h–23h) com nº de vendas por hora, filtro por período (hoje/semana/mês).
+- **Evolução do faturamento** — gráfico de linha por dia.
+- **Filtro global de período** no topo (hoje, 7 dias, 30 dias, mês atual, customizado).
 
-### 2.2 Recuperação de senha na tela `/auth`
-- Adicionar link "Esqueci minha senha" em `src/routes/auth.tsx`.
-- Nova rota pública `src/routes/forgot-password.tsx`: input de e-mail → `supabase.auth.resetPasswordForEmail(email, { redirectTo: ${origin}/reset-password })`.
-- Nova rota pública `src/routes/reset-password.tsx`: detecta `type=recovery` no hash, form de nova senha → `supabase.auth.updateUser({ password })`.
-- Scaffold de templates de auth email via `email_domain--scaffold_auth_email_templates` se ainda não estiver ativo.
+### 3. Assistente "TotalControle Assist" (sem IA) — rota `/app/assist`
 
-### 2.3 Botões admin para gerenciar empresas cadastradas
-Em `app.platform.companies.tsx`, adicionar por linha:
-- Botão "Ver detalhes" (drawer com membros, tickets, erros da empresa).
-- Botão "Suspender empresa" (marca `companies.suspended_at`; RLS bloqueia acesso enquanto suspensa).
-- Botão "Excluir empresa" (soft delete com confirmação dupla).
-- Botão "Impersonar" (opcional, se solicitado depois — não incluído nesta rodada).
-- Migração: adicionar coluna `suspended_at TIMESTAMPTZ` em `companies`, função `platform_suspend_company(_id)` / `platform_delete_company(_id)` com `SECURITY DEFINER` verificando `is_platform_admin`.
+Interface de chat com perguntas rápidas + campo de texto. Sem chamadas a modelos de IA, sem custo:
 
-### 2.4 Filtro por data em Recebimentos e Pagamentos
-Em `app.debtors.tsx` e `app.payables.tsx`:
-- Adicionar dois `DatePicker` (De / Até) no topo da lista, aplicando filtro em `due_date` (ou `created_at` a definir com base no schema real das parcelas).
-- Botões rápidos: "Este mês", "Próximos 30 dias", "Vencidas", "Limpar".
+- Parser de intenções por palavras-chave em português (regex/keywords) que mapeia perguntas a consultas SQL parametrizadas na sua base.
+- Perguntas suportadas de largada: faturamento (dia/semana/mês/ano), ticket médio, top clientes devedores, top produtos vendidos, contas a pagar/receber vencendo, horário de pico, comparação mês vs. mês anterior, saldo de "Nota" em aberto.
+- Perguntas fora do escopo retornam: "Ainda não sei responder isso — tente uma das sugestões abaixo".
+- Botões de sugestão sempre visíveis para facilitar o uso.
 
-### 2.5 Aba de Notas Fiscais Emitidas
-- Nova migração: tabela `public.invoices` com colunas: `company_id`, `nfe_number` (int), `nfe_series`, `nfe_key` (44 chars), `customer_id` (FK opcional), `customer_name`, `customer_document`, `issue_date`, `total_amount` (numeric), `tax_amount`, `status` (enum: `issued`|`cancelled`), `access_key`, `xml_url`, `pdf_url`, `notes`. GRANT + RLS por `company_id`.
-- Nova rota `src/routes/_authenticated/app.invoices.tsx`: CRUD via `useEntityCrud`, listagem com filtros por data e status.
-- Botão destacado "Emitir NF-e no Portal da Receita" → abre `https://www.nfe.fazenda.gov.br/portal/principal.aspx` em nova aba.
-- Adicionar item "Notas Fiscais" no menu lateral (`app-shell.tsx`).
+### 4. Changelog + notificação de correções — `/app/changelog`
+
+- Nova tabela `app_releases` (versão, título, descrição resumida, categoria: `bugfix`|`feature`|`melhoria`, publicado_em).
+- Nova tabela `user_release_reads` (marca quais releases o usuário já viu).
+- No `AppShell`: badge no ícone de sino mostrando releases não lidos + popover com resumo.
+- Página `/app/changelog` com histórico completo.
+- Como popular: quando eu (ou você) corrigir um bug/lançar melhoria, insiro uma linha em `app_releases` via migração ou via painel admin (adiciono formulário em `/app/platform/releases` para admins da plataforma criarem entradas).
+
+### 5. Pesquisa de recursos de mercado — documento
+
+Entrego `docs/recursos-mercado-erp.md` com sugestões baseadas em ERPs populares (Bling, Omie, Tiny, Conta Azul, SAP Business One, Sankhya, TOTVS Protheus), agrupados por porte da empresa e prioridade sugerida. Não implemento nada — é material de apoio para você priorizar próximas fases.
+
+---
+
+## Detalhes técnicos
+
+**Migrações (uma migração agrupada):**
+- `sales` (id, company_id, customer_id nullable, subtotal, discount, total, sold_at, sold_by, notes)
+- `sale_items` (id, sale_id, product_id, description, quantity, unit_price, discount, total)
+- `sale_payments` (id, sale_id, method enum, amount, status enum `settled`|`pending`, debtor_installment_id nullable)
+- `app_releases` + `user_release_reads`
+- Triggers: quando `debtor_installments.status` vira `paid`, atualiza `sale_payments.status` correspondente (para a regra da "Nota").
+- Todas com `GRANT` + `ENABLE RLS` + policies por `has_company_access(company_id, auth.uid())`.
+- Faturamento = soma de `sale_payments` onde `status='settled'` (parcelas pagas + métodos à vista).
+
+**Frontend:**
+- Recharts (já instalado no ecossistema shadcn) para gráficos.
+- Novas rotas: `app.pos.tsx`, `app.changelog.tsx`, `app.assist.tsx`, `app.platform.releases.tsx`.
+- Atualizo `app-shell.tsx` para incluir os novos itens de menu e badge de novidades.
+- Refatoro `app.index.tsx` para o novo dashboard.
+
+**Assistente (sem IA):**
+- Módulo `src/lib/assist/intents.ts` — array de intents com regex + função que monta a query Supabase.
+- Módulo `src/lib/assist/formatters.ts` — formata resposta em markdown/tabelas simples.
+- Renderização com `react-markdown` (adicionar via `bun add`).
+
+**Fora de escopo desta rodada** (deixo registrado):
+- IA de verdade que responde qualquer coisa (requer créditos/API key).
+- Auto-correção automática de código (não é possível — código só muda no editor).
+- Baixa automática de estoque no PDV.
+- Impressão em impressora térmica dedicada (uso `window.print()` com CSS 80mm).
+
+---
 
 ## Ordem de execução
-1. Migração DB (suspend, invoices, investigação subscription_id).
-2. Bugfix macOS workflow.
-3. Bugfix Android OAuth (nativo).
-4. Recuperação e troca de senha.
-5. Filtros de data em recebimentos/pagamentos.
-6. Aba de NF-e.
-7. Ações admin de empresas.
+1. Migração DB (sales, sale_items, sale_payments, app_releases, user_release_reads, trigger de faturamento).
+2. PDV (`/app/pos`) + integração com Contas a Receber para "Nota".
+3. Dashboard novo com Recharts.
+4. Assistente sem IA.
+5. Changelog + badge de novidades + painel admin de releases.
+6. Documento `docs/recursos-mercado-erp.md`.
 
-## Aspectos técnicos
-- Todas as tabelas novas com `GRANT SELECT,INSERT,UPDATE,DELETE ON ... TO authenticated;` + `GRANT ALL ... TO service_role;` + RLS por `has_company_access(company_id, auth.uid())`.
-- Login Google nativo Android: requer Client ID Android adicional no Google Cloud Console — vou pedir ao usuário após implementar o código base.
-- macOS universal build ~2x tamanho do zip atual (~700MB); aceitável.
-
-## Perguntas antes de implementar
-Nenhuma bloqueante — vou seguir os padrões existentes do projeto. Confirma que posso executar?
+Confirma que posso executar?

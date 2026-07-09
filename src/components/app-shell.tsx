@@ -4,7 +4,11 @@ import {
   LayoutDashboard, Package, Users, Truck, UserCog, HandCoins, Receipt,
   BellRing, Settings, LogOut, Building2, ChevronDown, ShieldAlert,
   LifeBuoy, MessageSquare, UserPlus, Sun, Moon, Monitor, Rows2, Rows3, Search, FileText,
+  ShoppingCart, Sparkles, Bell, Megaphone,
 } from "lucide-react";
+import {
+  Popover, PopoverContent, PopoverTrigger,
+} from "@/components/ui/popover";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/use-session";
@@ -27,6 +31,7 @@ const SECTIONS: NavSection[] = [
     label: "Operação",
     items: [
       { to: "/app", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/app/pos", label: "PDV", icon: ShoppingCart },
       { to: "/app/products", label: "Produtos/Serviços", icon: Package },
       { to: "/app/customers", label: "Clientes", icon: Users },
       { to: "/app/suppliers", label: "Fornecedores", icon: Truck },
@@ -40,6 +45,13 @@ const SECTIONS: NavSection[] = [
       { to: "/app/payables", label: "A pagar", icon: Receipt },
       { to: "/app/invoices", label: "Notas Fiscais", icon: FileText },
       { to: "/app/reminders", label: "Lembretes", icon: BellRing },
+    ],
+  },
+  {
+    label: "Assistente",
+    items: [
+      { to: "/app/assist", label: "Assistente", icon: Sparkles },
+      { to: "/app/changelog", label: "Novidades", icon: Megaphone },
     ],
   },
   {
@@ -57,6 +69,7 @@ const SECTIONS: NavSection[] = [
       { to: "/app/platform/tickets", label: "Chamados clientes", icon: MessageSquare },
       { to: "/app/platform/errors", label: "Erros", icon: ShieldAlert },
       { to: "/app/platform/admins", label: "Administradores", icon: UserPlus },
+      { to: "/app/platform/releases", label: "Publicar releases", icon: Megaphone },
     ],
   },
 ];

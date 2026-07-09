@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_releases: {
+        Row: {
+          category: Database["public"]["Enums"]["release_category"]
+          created_at: string
+          details: string | null
+          id: string
+          published_at: string
+          summary: string
+          title: string
+          updated_at: string
+          version: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["release_category"]
+          created_at?: string
+          details?: string | null
+          id?: string
+          published_at?: string
+          summary: string
+          title: string
+          updated_at?: string
+          version: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["release_category"]
+          created_at?: string
+          details?: string | null
+          id?: string
+          published_at?: string
+          summary?: string
+          title?: string
+          updated_at?: string
+          version?: string
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           created_at: string
@@ -659,6 +695,182 @@ export type Database = {
           },
         ]
       }
+      sale_items: {
+        Row: {
+          company_id: string
+          created_at: string
+          description: string
+          discount: number
+          id: string
+          product_id: string | null
+          quantity: number
+          sale_id: string
+          total: number
+          unit_price: number
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          description: string
+          discount?: number
+          id?: string
+          product_id?: string | null
+          quantity?: number
+          sale_id: string
+          total?: number
+          unit_price?: number
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          description?: string
+          discount?: number
+          id?: string
+          product_id?: string | null
+          quantity?: number
+          sale_id?: string
+          total?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sale_items_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sale_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sale_items_sale_id_fkey"
+            columns: ["sale_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sale_payments: {
+        Row: {
+          amount: number
+          company_id: string
+          created_at: string
+          debtor_installment_id: string | null
+          id: string
+          method: Database["public"]["Enums"]["sale_payment_method"]
+          sale_id: string
+          settled_at: string | null
+          status: Database["public"]["Enums"]["sale_payment_status"]
+        }
+        Insert: {
+          amount?: number
+          company_id: string
+          created_at?: string
+          debtor_installment_id?: string | null
+          id?: string
+          method: Database["public"]["Enums"]["sale_payment_method"]
+          sale_id: string
+          settled_at?: string | null
+          status?: Database["public"]["Enums"]["sale_payment_status"]
+        }
+        Update: {
+          amount?: number
+          company_id?: string
+          created_at?: string
+          debtor_installment_id?: string | null
+          id?: string
+          method?: Database["public"]["Enums"]["sale_payment_method"]
+          sale_id?: string
+          settled_at?: string | null
+          status?: Database["public"]["Enums"]["sale_payment_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sale_payments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sale_payments_debtor_installment_id_fkey"
+            columns: ["debtor_installment_id"]
+            isOneToOne: false
+            referencedRelation: "debtor_installments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sale_payments_sale_id_fkey"
+            columns: ["sale_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sales: {
+        Row: {
+          company_id: string
+          created_at: string
+          customer_id: string | null
+          discount: number
+          id: string
+          notes: string | null
+          sold_at: string
+          sold_by: string | null
+          subtotal: number
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          customer_id?: string | null
+          discount?: number
+          id?: string
+          notes?: string | null
+          sold_at?: string
+          sold_by?: string | null
+          subtotal?: number
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          customer_id?: string | null
+          discount?: number
+          id?: string
+          notes?: string | null
+          sold_at?: string
+          sold_by?: string | null
+          subtotal?: number
+          total?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sales_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       suppliers: {
         Row: {
           address: string | null
@@ -800,6 +1012,32 @@ export type Database = {
           },
         ]
       }
+      user_release_reads: {
+        Row: {
+          read_at: string
+          release_id: string
+          user_id: string
+        }
+        Insert: {
+          read_at?: string
+          release_id: string
+          user_id: string
+        }
+        Update: {
+          read_at?: string
+          release_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_release_reads_release_id_fkey"
+            columns: ["release_id"]
+            isOneToOne: false
+            referencedRelation: "app_releases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -882,6 +1120,16 @@ export type Database = {
       installment_status: "pending" | "paid" | "overdue" | "canceled"
       invoice_status: "issued" | "cancelled"
       product_kind: "product" | "service"
+      release_category: "bugfix" | "feature" | "melhoria"
+      sale_payment_method:
+        | "dinheiro"
+        | "credito"
+        | "debito"
+        | "pix"
+        | "alimentacao"
+        | "voucher"
+        | "nota"
+      sale_payment_status: "settled" | "pending"
       ticket_priority: "low" | "medium" | "high" | "critical"
       ticket_status:
         | "open"
@@ -1022,6 +1270,17 @@ export const Constants = {
       installment_status: ["pending", "paid", "overdue", "canceled"],
       invoice_status: ["issued", "cancelled"],
       product_kind: ["product", "service"],
+      release_category: ["bugfix", "feature", "melhoria"],
+      sale_payment_method: [
+        "dinheiro",
+        "credito",
+        "debito",
+        "pix",
+        "alimentacao",
+        "voucher",
+        "nota",
+      ],
+      sale_payment_status: ["settled", "pending"],
       ticket_priority: ["low", "medium", "high", "critical"],
       ticket_status: [
         "open",

@@ -23,12 +23,16 @@ import { Route as AuthenticatedAppSuppliersRouteImport } from './routes/_authent
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
 import { Route as AuthenticatedAppRemindersRouteImport } from './routes/_authenticated/app.reminders'
 import { Route as AuthenticatedAppProductsRouteImport } from './routes/_authenticated/app.products'
+import { Route as AuthenticatedAppPosRouteImport } from './routes/_authenticated/app.pos'
 import { Route as AuthenticatedAppPayablesRouteImport } from './routes/_authenticated/app.payables'
 import { Route as AuthenticatedAppInvoicesRouteImport } from './routes/_authenticated/app.invoices'
 import { Route as AuthenticatedAppEmployeesRouteImport } from './routes/_authenticated/app.employees'
 import { Route as AuthenticatedAppDebtorsRouteImport } from './routes/_authenticated/app.debtors'
 import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers'
+import { Route as AuthenticatedAppChangelogRouteImport } from './routes/_authenticated/app.changelog'
+import { Route as AuthenticatedAppAssistRouteImport } from './routes/_authenticated/app.assist'
 import { Route as AuthenticatedAppPlatformTicketsRouteImport } from './routes/_authenticated/app.platform.tickets'
+import { Route as AuthenticatedAppPlatformReleasesRouteImport } from './routes/_authenticated/app.platform.releases'
 import { Route as AuthenticatedAppPlatformErrorsRouteImport } from './routes/_authenticated/app.platform.errors'
 import { Route as AuthenticatedAppPlatformCompaniesRouteImport } from './routes/_authenticated/app.platform.companies'
 import { Route as AuthenticatedAppPlatformAdminsRouteImport } from './routes/_authenticated/app.platform.admins'
@@ -106,6 +110,11 @@ const AuthenticatedAppProductsRoute =
     path: '/products',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppPosRoute = AuthenticatedAppPosRouteImport.update({
+  id: '/pos',
+  path: '/pos',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
 const AuthenticatedAppPayablesRoute =
   AuthenticatedAppPayablesRouteImport.update({
     id: '/payables',
@@ -135,10 +144,27 @@ const AuthenticatedAppCustomersRoute =
     path: '/customers',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppChangelogRoute =
+  AuthenticatedAppChangelogRouteImport.update({
+    id: '/changelog',
+    path: '/changelog',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppAssistRoute = AuthenticatedAppAssistRouteImport.update({
+  id: '/assist',
+  path: '/assist',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
 const AuthenticatedAppPlatformTicketsRoute =
   AuthenticatedAppPlatformTicketsRouteImport.update({
     id: '/platform/tickets',
     path: '/platform/tickets',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlatformReleasesRoute =
+  AuthenticatedAppPlatformReleasesRouteImport.update({
+    id: '/platform/releases',
+    path: '/platform/releases',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppPlatformErrorsRoute =
@@ -167,11 +193,14 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/assist': typeof AuthenticatedAppAssistRoute
+  '/app/changelog': typeof AuthenticatedAppChangelogRoute
   '/app/customers': typeof AuthenticatedAppCustomersRoute
   '/app/debtors': typeof AuthenticatedAppDebtorsRoute
   '/app/employees': typeof AuthenticatedAppEmployeesRoute
   '/app/invoices': typeof AuthenticatedAppInvoicesRoute
   '/app/payables': typeof AuthenticatedAppPayablesRoute
+  '/app/pos': typeof AuthenticatedAppPosRoute
   '/app/products': typeof AuthenticatedAppProductsRoute
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
@@ -182,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
+  '/app/platform/releases': typeof AuthenticatedAppPlatformReleasesRoute
   '/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
 }
 export interface FileRoutesByTo {
@@ -190,11 +220,14 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/app/assist': typeof AuthenticatedAppAssistRoute
+  '/app/changelog': typeof AuthenticatedAppChangelogRoute
   '/app/customers': typeof AuthenticatedAppCustomersRoute
   '/app/debtors': typeof AuthenticatedAppDebtorsRoute
   '/app/employees': typeof AuthenticatedAppEmployeesRoute
   '/app/invoices': typeof AuthenticatedAppInvoicesRoute
   '/app/payables': typeof AuthenticatedAppPayablesRoute
+  '/app/pos': typeof AuthenticatedAppPosRoute
   '/app/products': typeof AuthenticatedAppProductsRoute
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
@@ -205,6 +238,7 @@ export interface FileRoutesByTo {
   '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
+  '/app/platform/releases': typeof AuthenticatedAppPlatformReleasesRoute
   '/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
 }
 export interface FileRoutesById {
@@ -216,11 +250,14 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/app/assist': typeof AuthenticatedAppAssistRoute
+  '/_authenticated/app/changelog': typeof AuthenticatedAppChangelogRoute
   '/_authenticated/app/customers': typeof AuthenticatedAppCustomersRoute
   '/_authenticated/app/debtors': typeof AuthenticatedAppDebtorsRoute
   '/_authenticated/app/employees': typeof AuthenticatedAppEmployeesRoute
   '/_authenticated/app/invoices': typeof AuthenticatedAppInvoicesRoute
   '/_authenticated/app/payables': typeof AuthenticatedAppPayablesRoute
+  '/_authenticated/app/pos': typeof AuthenticatedAppPosRoute
   '/_authenticated/app/products': typeof AuthenticatedAppProductsRoute
   '/_authenticated/app/reminders': typeof AuthenticatedAppRemindersRoute
   '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
@@ -231,6 +268,7 @@ export interface FileRoutesById {
   '/_authenticated/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/_authenticated/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/_authenticated/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
+  '/_authenticated/app/platform/releases': typeof AuthenticatedAppPlatformReleasesRoute
   '/_authenticated/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
 }
 export interface FileRouteTypes {
@@ -242,11 +280,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/app'
     | '/onboarding'
+    | '/app/assist'
+    | '/app/changelog'
     | '/app/customers'
     | '/app/debtors'
     | '/app/employees'
     | '/app/invoices'
     | '/app/payables'
+    | '/app/pos'
     | '/app/products'
     | '/app/reminders'
     | '/app/settings'
@@ -257,6 +298,7 @@ export interface FileRouteTypes {
     | '/app/platform/admins'
     | '/app/platform/companies'
     | '/app/platform/errors'
+    | '/app/platform/releases'
     | '/app/platform/tickets'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -265,11 +307,14 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/reset-password'
     | '/onboarding'
+    | '/app/assist'
+    | '/app/changelog'
     | '/app/customers'
     | '/app/debtors'
     | '/app/employees'
     | '/app/invoices'
     | '/app/payables'
+    | '/app/pos'
     | '/app/products'
     | '/app/reminders'
     | '/app/settings'
@@ -280,6 +325,7 @@ export interface FileRouteTypes {
     | '/app/platform/admins'
     | '/app/platform/companies'
     | '/app/platform/errors'
+    | '/app/platform/releases'
     | '/app/platform/tickets'
   id:
     | '__root__'
@@ -290,11 +336,14 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/app'
     | '/_authenticated/onboarding'
+    | '/_authenticated/app/assist'
+    | '/_authenticated/app/changelog'
     | '/_authenticated/app/customers'
     | '/_authenticated/app/debtors'
     | '/_authenticated/app/employees'
     | '/_authenticated/app/invoices'
     | '/_authenticated/app/payables'
+    | '/_authenticated/app/pos'
     | '/_authenticated/app/products'
     | '/_authenticated/app/reminders'
     | '/_authenticated/app/settings'
@@ -305,6 +354,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/platform/admins'
     | '/_authenticated/app/platform/companies'
     | '/_authenticated/app/platform/errors'
+    | '/_authenticated/app/platform/releases'
     | '/_authenticated/app/platform/tickets'
   fileRoutesById: FileRoutesById
 }
@@ -416,6 +466,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppProductsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/pos': {
+      id: '/_authenticated/app/pos'
+      path: '/pos'
+      fullPath: '/app/pos'
+      preLoaderRoute: typeof AuthenticatedAppPosRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/payables': {
       id: '/_authenticated/app/payables'
       path: '/payables'
@@ -451,11 +508,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppCustomersRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/changelog': {
+      id: '/_authenticated/app/changelog'
+      path: '/changelog'
+      fullPath: '/app/changelog'
+      preLoaderRoute: typeof AuthenticatedAppChangelogRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/assist': {
+      id: '/_authenticated/app/assist'
+      path: '/assist'
+      fullPath: '/app/assist'
+      preLoaderRoute: typeof AuthenticatedAppAssistRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/platform/tickets': {
       id: '/_authenticated/app/platform/tickets'
       path: '/platform/tickets'
       fullPath: '/app/platform/tickets'
       preLoaderRoute: typeof AuthenticatedAppPlatformTicketsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/platform/releases': {
+      id: '/_authenticated/app/platform/releases'
+      path: '/platform/releases'
+      fullPath: '/app/platform/releases'
+      preLoaderRoute: typeof AuthenticatedAppPlatformReleasesRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/platform/errors': {
@@ -483,11 +561,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAppRouteChildren {
+  AuthenticatedAppAssistRoute: typeof AuthenticatedAppAssistRoute
+  AuthenticatedAppChangelogRoute: typeof AuthenticatedAppChangelogRoute
   AuthenticatedAppCustomersRoute: typeof AuthenticatedAppCustomersRoute
   AuthenticatedAppDebtorsRoute: typeof AuthenticatedAppDebtorsRoute
   AuthenticatedAppEmployeesRoute: typeof AuthenticatedAppEmployeesRoute
   AuthenticatedAppInvoicesRoute: typeof AuthenticatedAppInvoicesRoute
   AuthenticatedAppPayablesRoute: typeof AuthenticatedAppPayablesRoute
+  AuthenticatedAppPosRoute: typeof AuthenticatedAppPosRoute
   AuthenticatedAppProductsRoute: typeof AuthenticatedAppProductsRoute
   AuthenticatedAppRemindersRoute: typeof AuthenticatedAppRemindersRoute
   AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
@@ -498,15 +579,19 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppPlatformAdminsRoute: typeof AuthenticatedAppPlatformAdminsRoute
   AuthenticatedAppPlatformCompaniesRoute: typeof AuthenticatedAppPlatformCompaniesRoute
   AuthenticatedAppPlatformErrorsRoute: typeof AuthenticatedAppPlatformErrorsRoute
+  AuthenticatedAppPlatformReleasesRoute: typeof AuthenticatedAppPlatformReleasesRoute
   AuthenticatedAppPlatformTicketsRoute: typeof AuthenticatedAppPlatformTicketsRoute
 }
 
 const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
+  AuthenticatedAppAssistRoute: AuthenticatedAppAssistRoute,
+  AuthenticatedAppChangelogRoute: AuthenticatedAppChangelogRoute,
   AuthenticatedAppCustomersRoute: AuthenticatedAppCustomersRoute,
   AuthenticatedAppDebtorsRoute: AuthenticatedAppDebtorsRoute,
   AuthenticatedAppEmployeesRoute: AuthenticatedAppEmployeesRoute,
   AuthenticatedAppInvoicesRoute: AuthenticatedAppInvoicesRoute,
   AuthenticatedAppPayablesRoute: AuthenticatedAppPayablesRoute,
+  AuthenticatedAppPosRoute: AuthenticatedAppPosRoute,
   AuthenticatedAppProductsRoute: AuthenticatedAppProductsRoute,
   AuthenticatedAppRemindersRoute: AuthenticatedAppRemindersRoute,
   AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
@@ -518,6 +603,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppPlatformCompaniesRoute:
     AuthenticatedAppPlatformCompaniesRoute,
   AuthenticatedAppPlatformErrorsRoute: AuthenticatedAppPlatformErrorsRoute,
+  AuthenticatedAppPlatformReleasesRoute: AuthenticatedAppPlatformReleasesRoute,
   AuthenticatedAppPlatformTicketsRoute: AuthenticatedAppPlatformTicketsRoute,
 }
 
@@ -547,13 +633,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

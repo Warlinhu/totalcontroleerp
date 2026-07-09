@@ -243,3 +243,63 @@ export function AppShell({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+function ReleaseBell({ userId }: { userId: string | undefined }) {
+  const navigate = useNavigate();
+  const { data: unread = [] } = useQuery({
+    queryKey: ["unread-releases", userId],
+    enabled: !!userId,
+    queryFn: async () => {
+      const [rel, reads] = await Promise.all([
+        supabase.from("app_releases").select("id, version, title, summary, category, published_at")
+          .order("published_at", { ascending: false }).limit(20),
+        supabase.from("user_release_reads").select("release_id").eq("user_id", userId!),
+      ]);
+      const readIds = new Set(((reads.data ?? []) as { release_id: string }[]).map((r) => r.release_id));
+      return ((rel.data ?? []) as { id: string; version: string; title: string; summary: string; category: string; published_at: string }[])
+        .filter((r) => !readIds.has(r.id));
+    },
+  });
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="relative" title="Novidades">
+          <Bell className="h-4 w-4" />
+          {unread.length > 0 && (
+            <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-destructive" />
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent align="end" className="w-80 p-0">
+        <div className="p-3 border-b flex items-center justify-between">
+          <span className="text-sm font-semibold">Novidades</span>
+          {unread.length > 0 && (
+            <span className="text-xs text-muted-foreground">{unread.length} não lidas</span>
+          )}
+        </div>
+        <div className="max-h-80 overflow-y-auto">
+          {unread.length === 0 ? (
+            <div className="p-4 text-sm text-muted-foreground">Você está em dia! ✨</div>
+          ) : (
+            unread.slice(0, 5).map((r) => (
+              <div key={r.id} className="border-b p-3 text-sm">
+                <div className="font-medium">{r.title}</div>
+                <div className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{r.summary}</div>
+                <div className="text-[10px] text-muted-foreground mt-1">v{r.version}</div>
+              </div>
+            ))
+          )}
+        </div>
+        <div className="p-2 border-t">
+          <Button
+            variant="ghost" size="sm" className="w-full"
+            onClick={() => navigate({ to: "/app/changelog" })}
+          >
+            Ver todas
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}

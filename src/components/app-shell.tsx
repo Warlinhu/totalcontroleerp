@@ -201,6 +201,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
 
           <div className="flex items-center gap-1">
+            <ReleaseBell userId={user?.id} />
             <Button
               variant="ghost"
               size="icon"

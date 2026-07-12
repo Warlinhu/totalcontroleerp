@@ -91,6 +91,9 @@ function Dashboard() {
     },
   });
 
+  // Ticket médio = valor total das vendas (independente de já estar liquidado)
+  // dividido pelo número de vendas. Vendas em "Nota" não puxam o ticket para baixo.
+
   const paymentsQ = useQuery({
     queryKey: ["dash-payments", currentCompanyId, period],
     enabled: !!currentCompanyId,
@@ -118,7 +121,8 @@ function Dashboard() {
       .filter((p) => p.status === "pending" && p.method === "nota")
       .reduce((a, p) => a + Number(p.amount), 0);
     const salesCount = sales.length;
-    const avgTicket = salesCount > 0 ? revenue / salesCount : 0;
+    const salesTotal = sales.reduce((a, s) => a + Number(s.total), 0);
+    const avgTicket = salesCount > 0 ? salesTotal / salesCount : 0;
     return { revenue, pendingNota, salesCount, avgTicket };
   }, [salesQ.data, paymentsQ.data]);
 

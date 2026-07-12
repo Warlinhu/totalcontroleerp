@@ -19,6 +19,7 @@ const {
   Notification,
   shell,
   nativeImage,
+  session,
 } = require("electron");
 const path = require("path");
 
@@ -111,7 +112,7 @@ function createTray() {
       { type: "separator" },
       {
         label: "Verificar atualizações",
-        click: () => checkForUpdates(true),
+        { label: "Verificar atualizações", click: () => checkForUpdates(true) },
       },
       { type: "separator" },
       {
@@ -136,6 +137,20 @@ function createTray() {
 // não encontra nada; a notificação do PWA dentro da webview continua
 // funcionando como fallback.
 function setupAutoUpdater() {
+  // Só faz sentido em builds empacotadas — em dev não há metadados de release.
+  if (!app.isPackaged) {
+    checkForUpdates = (manual = false) => {
+      if (manual) {
+        new Notification({
+          title: "TotalControle ERP",
+          body: "Verificação de atualização indisponível em modo desenvolvimento.",
+          icon: ICON_PATH,
+        }).show();
+      }
+    };
+    return;
+  }
+
   let autoUpdater;
   try {
     ({ autoUpdater } = require("electron-updater"));
@@ -146,60 +161,92 @@ function setupAutoUpdater() {
 
   autoUpdater.autoDownload = true;
   autoUpdater.autoInstallOnAppQuit = true;
+  autoUpdater.allowDowngrade = false;
+
+  let manualCheckInProgress = false;
+
+  autoUpdater.on("checking-for-update", () => {
+    if (manualCheckInProgress) {
+      new Notification({
+        title: "TotalControle ERP",
+        body: "Procurando atualizações…",
+        icon: ICON_PATH,
+        silent: true,
+      }).show();
+    }
+  });
 
   autoUpdater.on("update-available", (info) => {
-    const n = new Notification({
+    new Notification({
       title: "Atualização disponível",
       body: `Baixando TotalControle ${info?.version ?? "nova versão"}…`,
       icon: ICON_PATH,
-      silent: false,
-    });
-    n.show();
+    }).show();
+  });
+
+  autoUpdater.on("update-not-available", () => {
+    if (manualCheckInProgress) {
+      new Notification({
+        title: "TotalControle ERP",
+        body: "Você já está na versão mais recente.",
+        icon: ICON_PATH,
+      }).show();
+    }
+    manualCheckInProgress = false;
+  });
+
+  autoUpdater.on("download-progress", (p) => {
+    if (tray) {
+      tray.setToolTip(`TotalControle ERP — baixando ${Math.round(p.percent)}%`);
+    }
   });
 
   autoUpdater.on("update-downloaded", (info) => {
+    // Limpa cache HTTP/PWA para que a próxima abertura carregue HTML fresco.
+    try {
+      session.defaultSession.clearCache().catch(() => {});
+    } catch {}
+    if (tray) tray.setToolTip("TotalControle ERP");
     const n = new Notification({
       title: "Atualização pronta para instalar",
       body: `Clique para atualizar o TotalControle ERP para ${info?.version ?? "a nova versão"}.`,
       icon: ICON_PATH,
-      silent: false,
     });
     n.on("click", () => {
       isQuitting = true;
       autoUpdater.quitAndInstall(false, true);
     });
     n.show();
-    // Também sinaliza dentro do app (se estiver aberto) para o usuário
-    // ver o botão "Atualizar agora" do toast web.
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send("app-update-ready", info);
     }
+    manualCheckInProgress = false;
   });
 
   autoUpdater.on("error", (err) => {
     console.warn("[updater] erro:", err?.message || err);
+    if (manualCheckInProgress) {
+      new Notification({
+        title: "Falha ao verificar atualização",
+        body: err?.message || "Tente novamente em alguns minutos.",
+        icon: ICON_PATH,
+      }).show();
+    }
+    manualCheckInProgress = false;
   });
 
   const check = (manual = false) => {
-    autoUpdater
-      .checkForUpdates()
-      .then((r) => {
-        if (manual && !r?.updateInfo) {
-          new Notification({
-            title: "TotalControle ERP",
-            body: "Você já está na versão mais recente.",
-            icon: ICON_PATH,
-          }).show();
-        }
-      })
-      .catch((e) => console.warn("[updater] check fail", e?.message || e));
+    if (manual) manualCheckInProgress = true;
+    autoUpdater.checkForUpdates().catch((e) => {
+      console.warn("[updater] check fail", e?.message || e);
+      manualCheckInProgress = false;
+    });
   };
 
   // primeira checagem 10s após abrir, depois a cada 30 minutos
   setTimeout(() => check(false), 10_000);
   setInterval(() => check(false), 30 * 60 * 1000);
 
-  // exposto no escopo para uso pelo tray
   checkForUpdates = check;
 }
 

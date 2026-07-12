@@ -110,10 +110,7 @@ function createTray() {
     const menu = Menu.buildFromTemplate([
       { label: "Abrir TotalControle", click: () => showWindow() },
       { type: "separator" },
-      {
-        label: "Verificar atualizações",
-        { label: "Verificar atualizações", click: () => checkForUpdates(true) },
-      },
+      { label: "Verificar atualizações", click: () => checkForUpdates(true) },
       { type: "separator" },
       {
         label: "Sair",

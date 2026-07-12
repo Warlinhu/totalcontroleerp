@@ -66,8 +66,14 @@ Instale no celular via USB (`adb install app-debug.apk`) ou envie o arquivo dire
 
 ## 3. Fluxo de novas versões
 
-1. Faça as mudanças no Lovable.
-2. Clique em **Publish** → **Update**.
-3. Pronto. Os apps já instalados (PWA, desktop, Android) exibem o toast de atualização na próxima abertura e recarregam com a nova versão.
+1. Faça as mudanças no Lovable e clique em **Publish** → **Update**.
+2. A webview do desktop e o WebView do Android carregam a nova versão automaticamente na próxima abertura (o service worker do PWA aplica a atualização em segundos).
+3. Se o shell nativo mudou (`electron/main.cjs`, `capacitor.config.ts`, ícones, atualizador), **bumpe a versão em `package.json`** e faça push em `main`. O workflow `Build Desktop Installers` gera os instaladores nativos e publica no GitHub Release automaticamente — o app instalado no PC detecta o release novo e instala sozinho (também acessível via bandeja → "Verificar atualizações").
 
-Você só precisa gerar um novo `.exe`/`.apk` quando trocar de domínio publicado ou mudar o próprio shell (`electron/main.cjs` ou `capacitor.config.ts`).
+### Como o auto-update funciona
+
+- `package.json` → `build.publish` aponta para o repositório GitHub `Warlinhu/totalcontroleerp`.
+- O workflow roda `electron-builder --publish always`, que sobe o instalador **e** os arquivos `latest.yml` / `latest-mac.yml` / `latest-linux.yml`.
+- O app instalado consulta esses YAMLs a cada 30 min (ou quando você aciona "Verificar atualizações" na bandeja) e baixa/instala a versão nova.
+- Se o clique na bandeja diz "Você já está na versão mais recente", significa que o release publicado tem a mesma versão do `package.json` local — bumpe a versão e faça push.
+

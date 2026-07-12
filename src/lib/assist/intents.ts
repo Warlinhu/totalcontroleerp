@@ -58,21 +58,19 @@ export async function runAssist(input: string, companyId: string): Promise<Assis
     };
   }
 
-  // Ticket médio
+  // Ticket médio — divide o valor TOTAL das vendas (incluindo Nota) pela quantidade,
+  // para não subestimar quando há vendas fiadas.
   if (/\bticket\s*(m[eé]dio)?\b/.test(q)) {
     const { from, to, label } = rangeFor(q);
-    const [salesR, paysR] = await Promise.all([
-      supabase.from("sales").select("id").eq("company_id", companyId)
-        .gte("sold_at", from).lte("sold_at", to),
-      supabase.from("sale_payments").select("amount").eq("company_id", companyId)
-        .eq("status", "settled").gte("created_at", from).lte("created_at", to),
-    ]);
-    const count = (salesR.data ?? []).length;
-    const revenue = (paysR.data ?? []).reduce((a, p) => a + Number(p.amount), 0);
-    const avg = count > 0 ? revenue / count : 0;
+    const { data } = await supabase.from("sales").select("total").eq("company_id", companyId)
+      .gte("sold_at", from).lte("sold_at", to);
+    const sales = (data ?? []) as { total: number }[];
+    const count = sales.length;
+    const totalVendas = sales.reduce((a, s) => a + Number(s.total), 0);
+    const avg = count > 0 ? totalVendas / count : 0;
     return {
       title: `Ticket médio (${label})`,
-      markdown: `Foram **${count}** vendas com ticket médio de **${brl(avg)}**.`,
+      markdown: `Foram **${count}** vendas somando **${brl(totalVendas)}**, com ticket médio de **${brl(avg)}**.`,
     };
   }
 

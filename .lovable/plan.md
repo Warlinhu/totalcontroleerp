@@ -1,94 +1,42 @@
-## Plano de implementação — PDV, Dashboard analítico, Assistente e Changelog
+## Objetivo
+Quando os créditos renovarem, executar duas frentes: (1) corrigir os erros pendentes já registrados no sistema e (2) fazer o auto-update do executável no PC funcionar de verdade ao clicar em "Verificar atualizações" na bandeja.
 
-### 1. PDV (Ponto de Venda) — nova rota `/app/pos`
+## 1. Corrigir erros pendentes
+- Rodar o linter do backend e revisar os erros capturados em `app.platform.errors.tsx` / tabela de erros.
+- Verificar console e network do preview para pegar erros de runtime residuais das últimas features (PDV, Dashboard, Changelog, Assistente).
+- Corrigir cada item encontrado (tipagem, RLS, GRANTs, queries quebradas, imports, etc.).
+- Publicar release no changelog resumindo o que foi corrigido (dispara notificação in-app).
 
-Novo módulo estilo carrinho com:
+## 2. Auto-update do app desktop (Windows/PC)
+Hoje o `electron/main.cjs` chama `autoUpdater.checkForUpdates()`, mas o `package.json` **não tem bloco `build.publish` configurado nem workflow que publique os artefatos de update** (`latest.yml` + instalador NSIS). Sem publisher, o `electron-updater` não encontra nada e o clique em "Verificar atualizações" sempre cai em "Você já está na versão mais recente." O PWA embutido também não recarrega porque a webview aponta para a URL publicada e depende do SW — que no Electron muitas vezes fica preso em cache.
 
-- **Busca de produtos** (por nome/SKU) já cadastrados em `products`, adição ao carrinho com controle de quantidade, desconto por item e desconto geral.
-- **Seleção de cliente** (opcional, exceto para "Nota" onde é obrigatório).
-- **Formas de pagamento** suportadas: `dinheiro`, `credito`, `debito`, `pix`, `alimentacao`, `voucher`, `nota`. Permite pagamento **misto** (parte em dinheiro + parte em cartão etc.).
-- **Finalização da venda**: cria registro em `sales` + `sale_items` + `sale_payments`.
-- **Cupom/recibo imprimível** ao finalizar (formato térmico 80mm + A4, `window.print()`).
+Plano de correção:
 
-**Regra da "Nota" (fiado):**
-- Cliente obrigatório.
-- Cria automaticamente registro em `debtors` + `debtor_installments` (parcela única no vencimento escolhido).
-- O valor da parte "Nota" **não conta em faturamento** enquanto não for pago. Conforme o cliente paga (marca parcelas como `paid`), o valor pago passa a compor o faturamento.
-- Partes pagas em outras formas (dinheiro, pix, cartão) contam em faturamento **imediatamente**.
+**a) Publisher de updates (GitHub Releases)**
+- Adicionar em `package.json` → `build.publish`: provider `github`, owner/repo do projeto, releaseType `release`.
+- Ajustar `.github/workflows/build-desktop.yml` para:
+  - Buildar instalador NSIS Windows (`.exe`) + `latest.yml` via `electron-builder --publish always`.
+  - Buildar também macOS (`.dmg` + `latest-mac.yml`) e Linux (`AppImage` + `latest-linux.yml`).
+  - Publicar como GitHub Release com tag = versão do `package.json`.
+- Documentar em `installers/README.md` como bumpar versão e disparar release.
 
-**Baixa de estoque:** não incluída nesta rodada (você não marcou como obrigatório — posso adicionar depois).
+**b) Fluxo em runtime**
+- Trocar `@electron/packager` (que não gera arquivos de update) por `electron-builder` no fluxo de release; manter packager só para builds locais rápidos.
+- Garantir que `autoUpdater` só rode em builds empacotadas (`app.isPackaged`), evitando warnings em dev.
+- No item de bandeja "Verificar atualizações": mostrar toast "Procurando…" imediato, e diferenciar 3 estados: já atualizado / baixando / pronto para instalar. Hoje só mostra "já está na versão mais recente" — o usuário não vê progresso.
+- Ao terminar o download, mostrar notificação com botão "Instalar agora" e, se o usuário clicar, chamar `quitAndInstall`.
 
-### 2. Dashboard analítico revisado — `/app`
+**c) Cache do PWA dentro do Electron**
+- Forçar `session.defaultSession.clearCache()` ao detectar `update-downloaded`, para a próxima abertura pegar HTML fresco.
+- Manter o `NetworkFirst` do SW; sem isso, a webview às vezes serve HTML antigo mesmo após o app novo instalar.
 
-Substituo os 4 "stat cards" atuais por painel com:
+**d) macOS (bônus do relato anterior)**
+- Assinar ad-hoc no workflow (`codesign --force --deep --sign -`) para o .app abrir depois de descompactado sem "app está danificado".
 
-- **Ticket médio** (faturamento realizado ÷ nº de vendas no período).
-- **Faturamento do período** (soma dos pagamentos realizados; "Nota" não pago não entra).
-- **Vendas por forma de pagamento** — gráfico rosquinha (Recharts `PieChart`) com seletor para trocar entre: rosquinha, barras, pizza.
-- **Vendas por categoria de produto** — mesmo padrão de gráfico configurável.
-- **Horário de maior movimento** — gráfico de linha (0h–23h) com nº de vendas por hora, filtro por período (hoje/semana/mês).
-- **Evolução do faturamento** — gráfico de linha por dia.
-- **Filtro global de período** no topo (hoje, 7 dias, 30 dias, mês atual, customizado).
+## 3. Verificação
+- Bumpar versão para `x.y.z+1`, rodar workflow, instalar a versão anterior no PC de teste, abrir, esperar 10s, clicar "Verificar atualizações" na bandeja → deve baixar e oferecer instalar.
+- Publicar entrada no changelog: "Auto-update do desktop corrigido + correções de bugs pendentes".
 
-### 3. Assistente "TotalControle Assist" (sem IA) — rota `/app/assist`
-
-Interface de chat com perguntas rápidas + campo de texto. Sem chamadas a modelos de IA, sem custo:
-
-- Parser de intenções por palavras-chave em português (regex/keywords) que mapeia perguntas a consultas SQL parametrizadas na sua base.
-- Perguntas suportadas de largada: faturamento (dia/semana/mês/ano), ticket médio, top clientes devedores, top produtos vendidos, contas a pagar/receber vencendo, horário de pico, comparação mês vs. mês anterior, saldo de "Nota" em aberto.
-- Perguntas fora do escopo retornam: "Ainda não sei responder isso — tente uma das sugestões abaixo".
-- Botões de sugestão sempre visíveis para facilitar o uso.
-
-### 4. Changelog + notificação de correções — `/app/changelog`
-
-- Nova tabela `app_releases` (versão, título, descrição resumida, categoria: `bugfix`|`feature`|`melhoria`, publicado_em).
-- Nova tabela `user_release_reads` (marca quais releases o usuário já viu).
-- No `AppShell`: badge no ícone de sino mostrando releases não lidos + popover com resumo.
-- Página `/app/changelog` com histórico completo.
-- Como popular: quando eu (ou você) corrigir um bug/lançar melhoria, insiro uma linha em `app_releases` via migração ou via painel admin (adiciono formulário em `/app/platform/releases` para admins da plataforma criarem entradas).
-
-### 5. Pesquisa de recursos de mercado — documento
-
-Entrego `docs/recursos-mercado-erp.md` com sugestões baseadas em ERPs populares (Bling, Omie, Tiny, Conta Azul, SAP Business One, Sankhya, TOTVS Protheus), agrupados por porte da empresa e prioridade sugerida. Não implemento nada — é material de apoio para você priorizar próximas fases.
-
----
-
-## Detalhes técnicos
-
-**Migrações (uma migração agrupada):**
-- `sales` (id, company_id, customer_id nullable, subtotal, discount, total, sold_at, sold_by, notes)
-- `sale_items` (id, sale_id, product_id, description, quantity, unit_price, discount, total)
-- `sale_payments` (id, sale_id, method enum, amount, status enum `settled`|`pending`, debtor_installment_id nullable)
-- `app_releases` + `user_release_reads`
-- Triggers: quando `debtor_installments.status` vira `paid`, atualiza `sale_payments.status` correspondente (para a regra da "Nota").
-- Todas com `GRANT` + `ENABLE RLS` + policies por `has_company_access(company_id, auth.uid())`.
-- Faturamento = soma de `sale_payments` onde `status='settled'` (parcelas pagas + métodos à vista).
-
-**Frontend:**
-- Recharts (já instalado no ecossistema shadcn) para gráficos.
-- Novas rotas: `app.pos.tsx`, `app.changelog.tsx`, `app.assist.tsx`, `app.platform.releases.tsx`.
-- Atualizo `app-shell.tsx` para incluir os novos itens de menu e badge de novidades.
-- Refatoro `app.index.tsx` para o novo dashboard.
-
-**Assistente (sem IA):**
-- Módulo `src/lib/assist/intents.ts` — array de intents com regex + função que monta a query Supabase.
-- Módulo `src/lib/assist/formatters.ts` — formata resposta em markdown/tabelas simples.
-- Renderização com `react-markdown` (adicionar via `bun add`).
-
-**Fora de escopo desta rodada** (deixo registrado):
-- IA de verdade que responde qualquer coisa (requer créditos/API key).
-- Auto-correção automática de código (não é possível — código só muda no editor).
-- Baixa automática de estoque no PDV.
-- Impressão em impressora térmica dedicada (uso `window.print()` com CSS 80mm).
-
----
-
-## Ordem de execução
-1. Migração DB (sales, sale_items, sale_payments, app_releases, user_release_reads, trigger de faturamento).
-2. PDV (`/app/pos`) + integração com Contas a Receber para "Nota".
-3. Dashboard novo com Recharts.
-4. Assistente sem IA.
-5. Changelog + badge de novidades + painel admin de releases.
-6. Documento `docs/recursos-mercado-erp.md`.
-
-Confirma que posso executar?
+## Fora do escopo desta rodada
+- Reescrever o instalador do zero.
+- Trocar de GitHub Releases para outro publisher (S3/Cloudflare) — pode ser feito depois se preferir.

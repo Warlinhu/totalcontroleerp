@@ -1,10 +1,5 @@
 name: Build Desktop Installers
 
-# Cada push em main (ou tag v*) gera instaladores + arquivos de metadados
-# do electron-updater (latest.yml, latest-mac.yml, latest-linux.yml) e
-# publica como GitHub Release. É esses arquivos que o app instalado
-# consome ao clicar em "Verificar atualizações" na bandeja.
-
 on:
   workflow_dispatch:
   push:
@@ -22,12 +17,12 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
       - name: Build installer (NSIS) + publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,28 +31,27 @@ jobs:
   macos:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
       - name: Build dmg/zip + publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Assinatura ad-hoc: usuários não veem "app está danificado" após unzip.
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
         run: npx electron-builder --mac --x64 --publish always
 
   linux:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - run: npm ci
+      - run: npm ci --no-audit --no-fund
       - name: Build AppImage/deb + publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

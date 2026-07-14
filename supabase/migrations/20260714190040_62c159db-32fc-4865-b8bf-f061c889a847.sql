@@ -1,0 +1,30 @@
+
+REVOKE EXECUTE ON FUNCTION public.accept_company_invite(text) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.find_user_by_email(text) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.get_company_role(uuid, uuid) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.grant_platform_admin(uuid) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.has_company_access(uuid, uuid) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.has_company_manage(uuid, uuid) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.is_platform_admin(uuid) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.list_platform_admins() FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.platform_company_overview() FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.platform_delete_company(uuid) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.platform_suspend_company(uuid) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.platform_ticket_stats() FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.platform_unsuspend_company(uuid) FROM anon, public;
+REVOKE EXECUTE ON FUNCTION public.revoke_platform_admin(uuid) FROM anon, public;
+
+GRANT EXECUTE ON FUNCTION public.accept_company_invite(text) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.find_user_by_email(text) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.get_company_role(uuid, uuid) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.grant_platform_admin(uuid) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.has_company_access(uuid, uuid) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.has_company_manage(uuid, uuid) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.is_platform_admin(uuid) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.list_platform_admins() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.platform_company_overview() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.platform_delete_company(uuid) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.platform_suspend_company(uuid) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.platform_ticket_stats() TO authenticated;
+GRANT EXECUTE ON FUNCTION public.platform_unsuspend_company(uuid) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.revoke_platform_admin(uuid) TO authenticated;

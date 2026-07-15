@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.sync_sale_payment_on_installment_paid() FROM anon, PUBLIC;

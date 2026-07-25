@@ -1,0 +1,2 @@
+DROP POLICY IF EXISTS "members update sales" ON public.sales;
+CREATE POLICY "managers update sales" ON public.sales FOR UPDATE TO authenticated USING (public.has_company_manage(company_id, auth.uid())) WITH CHECK (public.has_company_manage(company_id, auth.uid()));

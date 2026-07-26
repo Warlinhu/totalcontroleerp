@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - run: npm ci --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund --legacy-peer-deps
       - name: Build installer (NSIS) + publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - run: npm ci --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund --legacy-peer-deps
       - name: Build dmg/zip + publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -51,7 +51,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - run: npm ci --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund --legacy-peer-deps
       - name: Build AppImage/deb + publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

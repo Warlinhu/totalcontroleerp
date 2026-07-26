@@ -20,7 +20,7 @@ export default defineTool({
   annotations: { readOnlyHint: true, openWorldHint: false },
   handler: async ({ search, limit }, ctx) => {
     if (!ctx.isAuthenticated()) return { content: [{ type: "text", text: "Não autenticado" }], isError: true };
-    let q = sb(ctx).from("products").select("id, name, sku, price, cost, stock, company_id").limit(limit ?? 50);
+    let q = sb(ctx).from("products").select("id, name, sku, price, stock, kind, active, company_id").limit(limit ?? 50);
     if (search) q = q.or(`name.ilike.%${search}%,sku.ilike.%${search}%`);
     const { data, error } = await q;
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };

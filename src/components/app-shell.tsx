@@ -82,6 +82,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const qc = useQueryClient();
   const { mode, setMode, density, setDensity } = useTheme();
   const { user } = useSession();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   const { data: isPlatformAdmin = false } = useQuery({
     queryKey: ["is-platform-admin", user?.id],

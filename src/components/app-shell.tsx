@@ -1,11 +1,12 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   LayoutDashboard, Package, Users, Truck, UserCog, HandCoins, Receipt,
   BellRing, Settings, LogOut, Building2, ChevronDown, ShieldAlert,
   LifeBuoy, MessageSquare, UserPlus, Sun, Moon, Monitor, Rows2, Rows3, Search, FileText,
-  ShoppingCart, Sparkles, Bell, Megaphone,
+  ShoppingCart, Sparkles, Bell, Megaphone, Menu,
 } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
 import {
   Popover, PopoverContent, PopoverTrigger,
 } from "@/components/ui/popover";
@@ -81,6 +82,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const qc = useQueryClient();
   const { mode, setMode, density, setDensity } = useTheme();
   const { user } = useSession();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
 
   const { data: isPlatformAdmin = false } = useQuery({
     queryKey: ["is-platform-admin", user?.id],
@@ -185,6 +189,52 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="flex flex-1 flex-col overflow-hidden">
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-2 border-b bg-background/80 px-4 backdrop-blur">
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Abrir menu">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-72 p-0 bg-sidebar text-sidebar-foreground">
+              <SheetHeader className="border-b border-sidebar-border p-4">
+                <SheetTitle className="text-left text-sm">{current.company.name}</SheetTitle>
+              </SheetHeader>
+              <nav className="flex-1 space-y-4 overflow-y-auto p-3 max-h-[calc(100vh-8rem)]">
+                {visibleSections.map((section) => (
+                  <div key={section.label}>
+                    <div className="px-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      {section.label}
+                    </div>
+                    <div className="space-y-0.5">
+                      {section.items.map((item) => {
+                        const active = pathname === item.to || (item.to !== "/app" && pathname.startsWith(item.to));
+                        return (
+                          <Link
+                            key={item.to}
+                            to={item.to}
+                            onClick={() => setMobileOpen(false)}
+                            className={cn(
+                              "group flex items-center gap-2 rounded-md px-2.5 py-2 text-sm transition-all",
+                              active
+                                ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-soft"
+                                : "text-sidebar-foreground/85 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                            )}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span className="truncate">{item.label}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                <Button variant="ghost" size="sm" className="w-full justify-start" onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" /> Sair
+                </Button>
+              </nav>
+            </SheetContent>
+          </Sheet>
+
           <Link to="/app" className="flex items-center gap-2 lg:hidden">
             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-hero p-1 shadow-soft">
               <BrandLogo className="h-full w-full object-contain" />

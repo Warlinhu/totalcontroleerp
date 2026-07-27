@@ -19,6 +19,7 @@ import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as AuthenticatedAssinaturaIndexRouteImport } from './routes/_authenticated/assinatura.index'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppTeamRouteImport } from './routes/_authenticated/app.team'
 import { Route as AuthenticatedAppSupportRouteImport } from './routes/_authenticated/app.support'
@@ -93,6 +94,12 @@ const Char91DotmcpChar93ListToolsRoute =
     id: '/.mcp/list-tools',
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedAssinaturaIndexRoute =
+  AuthenticatedAssinaturaIndexRouteImport.update({
+    id: '/assinatura/',
+    path: '/assinatura/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
@@ -253,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app/': typeof AuthenticatedAppIndexRoute
+  '/assinatura/': typeof AuthenticatedAssinaturaIndexRoute
   '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
@@ -286,6 +294,7 @@ export interface FileRoutesByTo {
   '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
   '/app': typeof AuthenticatedAppIndexRoute
+  '/assinatura': typeof AuthenticatedAssinaturaIndexRoute
   '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
@@ -322,6 +331,7 @@ export interface FileRoutesById {
   '/_authenticated/app/support': typeof AuthenticatedAppSupportRoute
   '/_authenticated/app/team': typeof AuthenticatedAppTeamRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
+  '/_authenticated/assinatura/': typeof AuthenticatedAssinaturaIndexRoute
   '/_authenticated/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
   '/_authenticated/app/platform/companies': typeof AuthenticatedAppPlatformCompaniesRoute
   '/_authenticated/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
@@ -358,6 +368,7 @@ export interface FileRouteTypes {
     | '/app/support'
     | '/app/team'
     | '/app/'
+    | '/assinatura/'
     | '/app/platform/admins'
     | '/app/platform/companies'
     | '/app/platform/errors'
@@ -391,6 +402,7 @@ export interface FileRouteTypes {
     | '/app/support'
     | '/app/team'
     | '/app'
+    | '/assinatura'
     | '/app/platform/admins'
     | '/app/platform/companies'
     | '/app/platform/errors'
@@ -426,6 +438,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/support'
     | '/_authenticated/app/team'
     | '/_authenticated/app/'
+    | '/_authenticated/assinatura/'
     | '/_authenticated/app/platform/admins'
     | '/_authenticated/app/platform/companies'
     | '/_authenticated/app/platform/errors'
@@ -519,6 +532,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/.mcp/list-tools'
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/assinatura/': {
+      id: '/_authenticated/assinatura/'
+      path: '/assinatura'
+      fullPath: '/assinatura/'
+      preLoaderRoute: typeof AuthenticatedAssinaturaIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/app/': {
       id: '/_authenticated/app/'
@@ -737,11 +757,13 @@ const AuthenticatedAppRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+  AuthenticatedAssinaturaIndexRoute: typeof AuthenticatedAssinaturaIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+  AuthenticatedAssinaturaIndexRoute: AuthenticatedAssinaturaIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

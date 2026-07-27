@@ -21,6 +21,7 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as AuthenticatedAssinaturaIndexRouteImport } from './routes/_authenticated/assinatura.index'
 import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAssinaturaRetornoRouteImport } from './routes/_authenticated/assinatura.retorno'
 import { Route as AuthenticatedAppTeamRouteImport } from './routes/_authenticated/app.team'
 import { Route as AuthenticatedAppSupportRouteImport } from './routes/_authenticated/app.support'
 import { Route as AuthenticatedAppSuppliersRouteImport } from './routes/_authenticated/app.suppliers'
@@ -106,6 +107,12 @@ const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
+const AuthenticatedAssinaturaRetornoRoute =
+  AuthenticatedAssinaturaRetornoRouteImport.update({
+    id: '/assinatura/retorno',
+    path: '/assinatura/retorno',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAppTeamRoute = AuthenticatedAppTeamRouteImport.update({
   id: '/team',
   path: '/team',
@@ -259,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
+  '/assinatura/retorno': typeof AuthenticatedAssinaturaRetornoRoute
   '/app/': typeof AuthenticatedAppIndexRoute
   '/assinatura/': typeof AuthenticatedAssinaturaIndexRoute
   '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
@@ -293,6 +301,7 @@ export interface FileRoutesByTo {
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/app/support': typeof AuthenticatedAppSupportRoute
   '/app/team': typeof AuthenticatedAppTeamRoute
+  '/assinatura/retorno': typeof AuthenticatedAssinaturaRetornoRoute
   '/app': typeof AuthenticatedAppIndexRoute
   '/assinatura': typeof AuthenticatedAssinaturaIndexRoute
   '/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
@@ -330,6 +339,7 @@ export interface FileRoutesById {
   '/_authenticated/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/_authenticated/app/support': typeof AuthenticatedAppSupportRoute
   '/_authenticated/app/team': typeof AuthenticatedAppTeamRoute
+  '/_authenticated/assinatura/retorno': typeof AuthenticatedAssinaturaRetornoRoute
   '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/assinatura/': typeof AuthenticatedAssinaturaIndexRoute
   '/_authenticated/app/platform/admins': typeof AuthenticatedAppPlatformAdminsRoute
@@ -367,6 +377,7 @@ export interface FileRouteTypes {
     | '/app/suppliers'
     | '/app/support'
     | '/app/team'
+    | '/assinatura/retorno'
     | '/app/'
     | '/assinatura/'
     | '/app/platform/admins'
@@ -401,6 +412,7 @@ export interface FileRouteTypes {
     | '/app/suppliers'
     | '/app/support'
     | '/app/team'
+    | '/assinatura/retorno'
     | '/app'
     | '/assinatura'
     | '/app/platform/admins'
@@ -437,6 +449,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/suppliers'
     | '/_authenticated/app/support'
     | '/_authenticated/app/team'
+    | '/_authenticated/assinatura/retorno'
     | '/_authenticated/app/'
     | '/_authenticated/assinatura/'
     | '/_authenticated/app/platform/admins'
@@ -546,6 +559,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/assinatura/retorno': {
+      id: '/_authenticated/assinatura/retorno'
+      path: '/assinatura/retorno'
+      fullPath: '/assinatura/retorno'
+      preLoaderRoute: typeof AuthenticatedAssinaturaRetornoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/app/team': {
       id: '/_authenticated/app/team'
@@ -757,12 +777,14 @@ const AuthenticatedAppRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+  AuthenticatedAssinaturaRetornoRoute: typeof AuthenticatedAssinaturaRetornoRoute
   AuthenticatedAssinaturaIndexRoute: typeof AuthenticatedAssinaturaIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+  AuthenticatedAssinaturaRetornoRoute: AuthenticatedAssinaturaRetornoRoute,
   AuthenticatedAssinaturaIndexRoute: AuthenticatedAssinaturaIndexRoute,
 }
 

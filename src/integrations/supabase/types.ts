@@ -50,6 +50,45 @@ export type Database = {
         }
         Relationships: []
       }
+      billing_plans: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          currency: string
+          first_month_discount_pct: number
+          id: string
+          monthly_price_cents: number
+          name: string
+          updated_at: string
+          yearly_discount_pct: number
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          currency?: string
+          first_month_discount_pct?: number
+          id?: string
+          monthly_price_cents: number
+          name: string
+          updated_at?: string
+          yearly_discount_pct?: number
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          currency?: string
+          first_month_discount_pct?: number
+          id?: string
+          monthly_price_cents?: number
+          name?: string
+          updated_at?: string
+          yearly_discount_pct?: number
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           created_at: string
@@ -528,6 +567,54 @@ export type Database = {
           },
         ]
       }
+      licenses: {
+        Row: {
+          amount_cents: number
+          code: string
+          created_at: string
+          created_by: string
+          currency: string
+          duration_days: number
+          id: string
+          notes: string | null
+          redeemed_at: string | null
+          redeemed_by: string | null
+          status: Database["public"]["Enums"]["license_status"]
+          target_email: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount_cents?: number
+          code: string
+          created_at?: string
+          created_by: string
+          currency?: string
+          duration_days: number
+          id?: string
+          notes?: string | null
+          redeemed_at?: string | null
+          redeemed_by?: string | null
+          status?: Database["public"]["Enums"]["license_status"]
+          target_email?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          code?: string
+          created_at?: string
+          created_by?: string
+          currency?: string
+          duration_days?: number
+          id?: string
+          notes?: string | null
+          redeemed_at?: string | null
+          redeemed_by?: string | null
+          status?: Database["public"]["Enums"]["license_status"]
+          target_email?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       payable_installments: {
         Row: {
           amount: number
@@ -630,6 +717,65 @@ export type Database = {
           },
         ]
       }
+      payments: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          cycle: Database["public"]["Enums"]["subscription_cycle"]
+          external_id: string | null
+          id: string
+          method: string | null
+          paid_at: string | null
+          provider: string
+          raw: Json | null
+          status: Database["public"]["Enums"]["payment_status"]
+          subscription_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          cycle?: Database["public"]["Enums"]["subscription_cycle"]
+          external_id?: string | null
+          id?: string
+          method?: string | null
+          paid_at?: string | null
+          provider?: string
+          raw?: Json | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          subscription_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          cycle?: Database["public"]["Enums"]["subscription_cycle"]
+          external_id?: string | null
+          id?: string
+          method?: string | null
+          paid_at?: string | null
+          provider?: string
+          raw?: Json | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          subscription_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       platform_admins: {
         Row: {
           created_at: string
@@ -642,6 +788,45 @@ export type Database = {
         Update: {
           created_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      platform_expenses: {
+        Row: {
+          amount_cents: number
+          category: string
+          created_at: string
+          created_by: string
+          deductible: boolean
+          description: string
+          id: string
+          incurred_on: string
+          notes: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          category?: string
+          created_at?: string
+          created_by: string
+          deductible?: boolean
+          description: string
+          id?: string
+          incurred_on?: string
+          notes?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          category?: string
+          created_at?: string
+          created_by?: string
+          deductible?: boolean
+          description?: string
+          id?: string
+          incurred_on?: string
+          notes?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -871,6 +1056,48 @@ export type Database = {
           },
         ]
       }
+      subscriptions: {
+        Row: {
+          created_at: string
+          current_period_end: string | null
+          current_period_start: string | null
+          cycle: Database["public"]["Enums"]["subscription_cycle"]
+          first_month_discount_used: boolean
+          id: string
+          last_amount_cents: number | null
+          source: Database["public"]["Enums"]["subscription_source"]
+          status: Database["public"]["Enums"]["subscription_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          cycle?: Database["public"]["Enums"]["subscription_cycle"]
+          first_month_discount_used?: boolean
+          id?: string
+          last_amount_cents?: number | null
+          source?: Database["public"]["Enums"]["subscription_source"]
+          status?: Database["public"]["Enums"]["subscription_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_period_end?: string | null
+          current_period_start?: string | null
+          cycle?: Database["public"]["Enums"]["subscription_cycle"]
+          first_month_discount_used?: boolean
+          id?: string
+          last_amount_cents?: number | null
+          source?: Database["public"]["Enums"]["subscription_source"]
+          status?: Database["public"]["Enums"]["subscription_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       suppliers: {
         Row: {
           address: string | null
@@ -1012,6 +1239,42 @@ export type Database = {
           },
         ]
       }
+      tax_brackets: {
+        Row: {
+          annual_limit_cents: number
+          created_at: string
+          deduction_cents: number
+          id: string
+          label: string
+          rate_pct: number
+          regime: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          annual_limit_cents: number
+          created_at?: string
+          deduction_cents?: number
+          id?: string
+          label: string
+          rate_pct: number
+          regime: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          annual_limit_cents?: number
+          created_at?: string
+          deduction_cents?: number
+          id?: string
+          label?: string
+          rate_pct?: number
+          regime?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_release_reads: {
         Row: {
           read_at: string
@@ -1056,6 +1319,7 @@ export type Database = {
         Returns: Database["public"]["Enums"]["company_role"]
       }
       grant_platform_admin: { Args: { _user_id: string }; Returns: undefined }
+      has_active_subscription: { Args: { _user_id: string }; Returns: boolean }
       has_company_access: {
         Args: { _company_id: string; _user_id: string }
         Returns: boolean
@@ -1112,6 +1376,7 @@ export type Database = {
         Args: { _company_id: string }
         Returns: undefined
       }
+      redeem_license: { Args: { _code: string }; Returns: string }
       revoke_platform_admin: { Args: { _user_id: string }; Returns: undefined }
     }
     Enums: {
@@ -1119,6 +1384,13 @@ export type Database = {
       error_severity: "info" | "warning" | "error" | "critical"
       installment_status: "pending" | "paid" | "overdue" | "canceled"
       invoice_status: "issued" | "cancelled"
+      license_status: "unused" | "redeemed" | "revoked"
+      payment_status:
+        | "pending"
+        | "approved"
+        | "rejected"
+        | "refunded"
+        | "cancelled"
       product_kind: "product" | "service"
       release_category: "bugfix" | "feature" | "melhoria"
       sale_payment_method:
@@ -1130,6 +1402,9 @@ export type Database = {
         | "voucher"
         | "nota"
       sale_payment_status: "settled" | "pending"
+      subscription_cycle: "monthly" | "yearly"
+      subscription_source: "mercadopago" | "manual" | "license"
+      subscription_status: "pending" | "active" | "past_due" | "canceled"
       ticket_priority: "low" | "medium" | "high" | "critical"
       ticket_status:
         | "open"
@@ -1269,6 +1544,14 @@ export const Constants = {
       error_severity: ["info", "warning", "error", "critical"],
       installment_status: ["pending", "paid", "overdue", "canceled"],
       invoice_status: ["issued", "cancelled"],
+      license_status: ["unused", "redeemed", "revoked"],
+      payment_status: [
+        "pending",
+        "approved",
+        "rejected",
+        "refunded",
+        "cancelled",
+      ],
       product_kind: ["product", "service"],
       release_category: ["bugfix", "feature", "melhoria"],
       sale_payment_method: [
@@ -1281,6 +1564,9 @@ export const Constants = {
         "nota",
       ],
       sale_payment_status: ["settled", "pending"],
+      subscription_cycle: ["monthly", "yearly"],
+      subscription_source: ["mercadopago", "manual", "license"],
+      subscription_status: ["pending", "active", "past_due", "canceled"],
       ticket_priority: ["low", "medium", "high", "critical"],
       ticket_status: [
         "open",

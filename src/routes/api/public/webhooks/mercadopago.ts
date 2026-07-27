@@ -63,7 +63,7 @@ async function processPayment(mpPaymentId: string) {
       status,
       method: mp.payment_method_id ?? null,
       paid_at: status === "approved" ? new Date().toISOString() : null,
-      raw: mp as unknown as Record<string, unknown>,
+      raw: JSON.parse(JSON.stringify(mp)),
     })
     .eq("id", row.id);
 

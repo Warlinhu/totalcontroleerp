@@ -77,6 +77,9 @@ function LandingPage() {
             <a href="#planos" className="hidden sm:inline-flex">
               <Button variant="ghost">Planos</Button>
             </a>
+            <a href="#downloads" className="hidden sm:inline-flex">
+              <Button variant="ghost"><Download className="mr-2 h-4 w-4" /> Baixar</Button>
+            </a>
             <ThemeToggle />
             <Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button>
             <Button asChild><Link to="/auth">Começar agora</Link></Button>

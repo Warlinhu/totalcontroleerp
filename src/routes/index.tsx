@@ -251,8 +251,8 @@ function LandingPage() {
         </section>
 
         {/* Downloads */}
-        {isBrowser && (
-          <section id="downloads" className="border-t py-20">
+        <section id="downloads" className="border-t py-20">
+
             <div className="mx-auto max-w-5xl px-4">
               <div className="mx-auto max-w-2xl text-center">
                 <h2 className="text-3xl font-bold tracking-tight">Prefere o app instalado?</h2>

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+
 import {
   Download, Apple, Monitor, Smartphone, Check, ShoppingCart, HandCoins,
   FileText, BarChart3, ShieldCheck, Sparkles, ArrowRight, Star,

@@ -58,19 +58,7 @@ const FAQ = [
 ];
 
 function LandingPage() {
-  const [isBrowser, setIsBrowser] = useState(false);
-  useEffect(() => {
-    const ua = navigator.userAgent || "";
-    const standalone =
-      window.matchMedia?.("(display-mode: standalone)").matches ||
-      // @ts-expect-error iOS Safari
-      window.navigator.standalone === true;
-    const isElectron = /Electron/i.test(ua);
-    const isCapacitor =
-      // @ts-expect-error Capacitor global
-      !!window.Capacitor?.isNativePlatform?.();
-    setIsBrowser(!standalone && !isElectron && !isCapacitor);
-  }, []);
+
 
   const plan = FALLBACK_PLAN;
   const firstMonth = priceForCycle(plan, "monthly", true);

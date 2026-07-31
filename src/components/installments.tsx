@@ -79,6 +79,26 @@ export function InstallmentsDialog({
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const editInst = useMutation({
+    mutationFn: async (args: { row: Installment; due_date: string; amount: number }) => {
+      if (!args.due_date) throw new Error("Informe o vencimento");
+      if (!(args.amount > 0)) throw new Error("Informe um valor válido");
+      const client = supabase.from(installmentTable) as unknown as {
+        update: (p: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<{ error: Error | null }> };
+      };
+      const { error } = await client
+        .update({ due_date: args.due_date, amount: args.amount })
+        .eq("id", args.row.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      setEditingId(null);
+      invalidate();
+      toast.success("Lançamento atualizado");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const removeInst = useMutation({
     mutationFn: async (row: Installment) => {
       const { error } = await supabase.from(installmentTable).delete().eq("id", row.id);

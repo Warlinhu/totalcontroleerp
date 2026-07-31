@@ -42,6 +42,9 @@ export function InstallmentsDialog({
   const qc = useQueryClient();
   const [newAmount, setNewAmount] = useState("");
   const [newDueDate, setNewDueDate] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editAmount, setEditAmount] = useState("");
+  const [editDueDate, setEditDueDate] = useState("");
 
   const q = useQuery({
     queryKey: [installmentTable, parentId],

@@ -30,12 +30,27 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+/** No app nativo (APK) o OAuth abre o navegador externo e não volta para o app,
+ *  então usamos apenas login por e-mail/senha dentro do próprio aplicativo. */
+function detectNativeApp() {
+  if (typeof window === "undefined") return false;
+  const w = window as unknown as { Capacitor?: { isNativePlatform?: () => boolean } };
+  if (w.Capacitor?.isNativePlatform?.()) return true;
+  return /(Median|Capacitor|TotalControleApp)/i.test(navigator.userAgent || "");
+}
+
 function AuthPage() {
   const navigate = useNavigate();
   const search = useSearch({ from: "/auth" });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isNative, setIsNative] = useState(false);
+
+  useEffect(() => {
+    setIsNative(detectNativeApp());
+  }, []);
+
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_evt, sess) => {
@@ -98,15 +113,19 @@ function AuthPage() {
           <CardDescription>Acesse sua conta para continuar</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button onClick={handleGoogle} disabled={loading} variant="outline" className="w-full">
-            Entrar com Google
-          </Button>
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">ou</span>
-            </div>
-          </div>
+          {!isNative && (
+            <>
+              <Button onClick={handleGoogle} disabled={loading} variant="outline" className="w-full">
+                Entrar com Google
+              </Button>
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">ou</span>
+                </div>
+              </div>
+            </>
+          )}
           <Tabs defaultValue="signin">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="signin">Entrar</TabsTrigger>

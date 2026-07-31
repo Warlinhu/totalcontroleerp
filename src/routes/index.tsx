@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+
 import {
   Download, Apple, Monitor, Smartphone, Check, ShoppingCart, HandCoins,
   FileText, BarChart3, ShieldCheck, Sparkles, ArrowRight, Star,
@@ -58,19 +58,7 @@ const FAQ = [
 ];
 
 function LandingPage() {
-  const [isBrowser, setIsBrowser] = useState(false);
-  useEffect(() => {
-    const ua = navigator.userAgent || "";
-    const standalone =
-      window.matchMedia?.("(display-mode: standalone)").matches ||
-      // @ts-expect-error iOS Safari
-      window.navigator.standalone === true;
-    const isElectron = /Electron/i.test(ua);
-    const isCapacitor =
-      // @ts-expect-error Capacitor global
-      !!window.Capacitor?.isNativePlatform?.();
-    setIsBrowser(!standalone && !isElectron && !isCapacitor);
-  }, []);
+
 
   const plan = FALLBACK_PLAN;
   const firstMonth = priceForCycle(plan, "monthly", true);
@@ -88,6 +76,9 @@ function LandingPage() {
           <div className="flex items-center gap-2">
             <a href="#planos" className="hidden sm:inline-flex">
               <Button variant="ghost">Planos</Button>
+            </a>
+            <a href="#downloads" className="hidden sm:inline-flex">
+              <Button variant="ghost"><Download className="mr-2 h-4 w-4" /> Baixar</Button>
             </a>
             <ThemeToggle />
             <Button asChild variant="ghost"><Link to="/auth">Entrar</Link></Button>
@@ -263,8 +254,8 @@ function LandingPage() {
         </section>
 
         {/* Downloads */}
-        {isBrowser && (
-          <section id="downloads" className="border-t py-20">
+        <section id="downloads" className="border-t py-20">
+
             <div className="mx-auto max-w-5xl px-4">
               <div className="mx-auto max-w-2xl text-center">
                 <h2 className="text-3xl font-bold tracking-tight">Prefere o app instalado?</h2>
@@ -298,8 +289,8 @@ function LandingPage() {
                 No macOS, ao abrir pela primeira vez, clique com o botão direito no app e escolha “Abrir” para autorizar.
               </p>
             </div>
-          </section>
-        )}
+        </section>
+
       </main>
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">

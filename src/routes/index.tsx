@@ -286,8 +286,8 @@ function LandingPage() {
                 No macOS, ao abrir pela primeira vez, clique com o botão direito no app e escolha “Abrir” para autorizar.
               </p>
             </div>
-          </section>
-        )}
+        </section>
+
       </main>
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">

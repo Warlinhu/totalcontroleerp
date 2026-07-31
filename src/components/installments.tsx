@@ -171,11 +171,35 @@ export function InstallmentsDialog({
               ) : (
                 rows.map((r) => {
                   const overdue = r.status === "pending" && r.due_date < today;
+                  const isEditing = editingId === r.id;
                   return (
                     <TableRow key={r.id}>
                       <TableCell>{r.sequence}</TableCell>
-                      <TableCell>{formatDate(r.due_date)}</TableCell>
-                      <TableCell>R$ {Number(r.amount).toFixed(2)}</TableCell>
+                      <TableCell>
+                        {isEditing ? (
+                          <Input
+                            type="date"
+                            className="h-8 w-[9.5rem]"
+                            value={editDueDate}
+                            onChange={(e) => setEditDueDate(e.target.value)}
+                          />
+                        ) : (
+                          formatDate(r.due_date)
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {isEditing ? (
+                          <Input
+                            type="number"
+                            step="0.01"
+                            className="h-8 w-28"
+                            value={editAmount}
+                            onChange={(e) => setEditAmount(e.target.value)}
+                          />
+                        ) : (
+                          `R$ ${Number(r.amount).toFixed(2)}`
+                        )}
+                      </TableCell>
                       <TableCell>
                         {r.status === "paid" ? (
                           <Badge className="bg-emerald-600 hover:bg-emerald-600">Paga</Badge>
@@ -187,12 +211,45 @@ export function InstallmentsDialog({
                       </TableCell>
                       {canManage && (
                         <TableCell className="text-right">
-                          <Button size="icon" variant="ghost" onClick={() => togglePaid.mutate(r)} title={r.status === "paid" ? "Marcar como pendente" : "Marcar como paga"}>
-                            {r.status === "paid" ? <RotateCcw className="h-4 w-4" /> : <Check className="h-4 w-4" />}
-                          </Button>
-                          <Button size="icon" variant="ghost" onClick={() => removeInst.mutate(r)}>
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                          {isEditing ? (
+                            <>
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                title="Salvar alterações"
+                                disabled={editInst.isPending}
+                                onClick={() =>
+                                  editInst.mutate({ row: r, due_date: editDueDate, amount: Number(editAmount) })
+                                }
+                              >
+                                <Check className="h-4 w-4" />
+                              </Button>
+                              <Button size="icon" variant="ghost" title="Cancelar" onClick={() => setEditingId(null)}>
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <Button
+                                size="icon"
+                                variant="ghost"
+                                title="Editar lançamento"
+                                onClick={() => {
+                                  setEditingId(r.id);
+                                  setEditDueDate(r.due_date);
+                                  setEditAmount(String(r.amount));
+                                }}
+                              >
+                                <Pencil className="h-4 w-4" />
+                              </Button>
+                              <Button size="icon" variant="ghost" onClick={() => togglePaid.mutate(r)} title={r.status === "paid" ? "Marcar como pendente" : "Marcar como paga"}>
+                                {r.status === "paid" ? <RotateCcw className="h-4 w-4" /> : <Check className="h-4 w-4" />}
+                              </Button>
+                              <Button size="icon" variant="ghost" title="Excluir" onClick={() => removeInst.mutate(r)}>
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </>
+                          )}
                         </TableCell>
                       )}
                     </TableRow>

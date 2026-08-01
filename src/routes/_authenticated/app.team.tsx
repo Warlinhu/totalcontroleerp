@@ -43,7 +43,7 @@ function TeamPage() {
 
   const invitesQ = useQuery({
     queryKey: ["invites", currentCompanyId],
-    enabled: !!currentCompanyId,
+    enabled: !!currentCompanyId && isManager,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("company_invites")
@@ -194,6 +194,7 @@ function TeamPage() {
         </CardContent>
       </Card>
 
+      {isManager && (
       <Card>
         <CardHeader><CardTitle>Convites pendentes</CardTitle></CardHeader>
         <CardContent>
@@ -237,6 +238,7 @@ function TeamPage() {
           </Table>
         </CardContent>
       </Card>
+      )}
     </div>
   );
 }

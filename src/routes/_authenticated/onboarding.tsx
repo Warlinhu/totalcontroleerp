@@ -1,13 +1,16 @@
 import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
+import { Loader2, Search } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
+import { classifyDocument, fetchCnpjInfo, maskDocument, onlyDigits } from "@/lib/br-document";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
 
 const searchSchema = z.object({ invite: z.string().optional() });
 
@@ -26,6 +29,23 @@ function OnboardingPage() {
   const [companyName, setCompanyName] = useState("");
   const [document, setDocument] = useState("");
   const [busy, setBusy] = useState(false);
+  const [lookingUp, setLookingUp] = useState(false);
+
+  const docKind = useMemo(() => classifyDocument(document), [document]);
+
+  const lookupCnpj = async () => {
+    setLookingUp(true);
+    try {
+      const info = await fetchCnpjInfo(document);
+      setCompanyName(info.nome_fantasia || info.razao_social || companyName);
+      toast.success("Dados encontrados na Receita Federal");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Falha na consulta");
+    } finally {
+      setLookingUp(false);
+    }
+  };
+
 
   // If already has a company and no explicit invite pending, go to app.
   useEffect(() => {
@@ -40,7 +60,7 @@ function OnboardingPage() {
     setBusy(true);
     const { data, error } = await supabase
       .from("companies")
-      .insert({ name: companyName, document: document || null, created_by: user.id })
+      .insert({ name: companyName.trim(), document: document ? onlyDigits(document) : null, created_by: user.id })
       .select("id")
       .single();
     setBusy(false);
@@ -115,16 +135,39 @@ function OnboardingPage() {
             <form onSubmit={handleCreate} className="space-y-3">
               <div className="space-y-1.5">
                 <Label htmlFor="cname">Nome da empresa</Label>
-                <Input id="cname" required value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+                <Input id="cname" required maxLength={120} value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="cdoc">CNPJ / documento (opcional)</Label>
-                <Input id="cdoc" value={document} onChange={(e) => setDocument(e.target.value)} />
+                <Label htmlFor="cdoc">CNPJ / CPF (opcional)</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="cdoc"
+                    inputMode="numeric"
+                    placeholder="00.000.000/0000-00"
+                    value={document}
+                    onChange={(e) => setDocument(maskDocument(e.target.value))}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={docKind !== "cnpj" || lookingUp}
+                    onClick={lookupCnpj}
+                    title="Consultar CNPJ na Receita Federal"
+                  >
+                    {lookingUp ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+                  </Button>
+                </div>
+                {docKind === "invalid" ? (
+                  <p className="text-xs text-destructive">CNPJ ou CPF inválido — confira os dígitos.</p>
+                ) : docKind !== "empty" ? (
+                  <p className="text-xs text-muted-foreground">{docKind === "cnpj" ? "CNPJ válido" : "CPF válido"}</p>
+                ) : null}
               </div>
-              <Button type="submit" disabled={busy || !companyName} className="w-full">
+              <Button type="submit" disabled={busy || companyName.trim().length < 2 || docKind === "invalid"} className="w-full">
                 Criar empresa
               </Button>
             </form>
+
           </CardContent>
         </Card>
       </div>

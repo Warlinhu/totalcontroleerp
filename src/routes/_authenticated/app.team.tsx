@@ -43,7 +43,7 @@ function TeamPage() {
 
   const invitesQ = useQuery({
     queryKey: ["invites", currentCompanyId],
-    enabled: !!currentCompanyId,
+    enabled: !!currentCompanyId && isManager,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("company_invites")

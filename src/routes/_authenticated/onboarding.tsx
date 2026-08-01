@@ -60,7 +60,7 @@ function OnboardingPage() {
     setBusy(true);
     const { data, error } = await supabase
       .from("companies")
-      .insert({ name: companyName, document: document || null, created_by: user.id })
+      .insert({ name: companyName.trim(), document: document ? onlyDigits(document) : null, created_by: user.id })
       .select("id")
       .single();
     setBusy(false);

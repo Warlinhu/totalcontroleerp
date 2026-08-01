@@ -29,6 +29,23 @@ function OnboardingPage() {
   const [companyName, setCompanyName] = useState("");
   const [document, setDocument] = useState("");
   const [busy, setBusy] = useState(false);
+  const [lookingUp, setLookingUp] = useState(false);
+
+  const docKind = useMemo(() => classifyDocument(document), [document]);
+
+  const lookupCnpj = async () => {
+    setLookingUp(true);
+    try {
+      const info = await fetchCnpjInfo(document);
+      setCompanyName(info.nome_fantasia || info.razao_social || companyName);
+      toast.success("Dados encontrados na Receita Federal");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Falha na consulta");
+    } finally {
+      setLookingUp(false);
+    }
+  };
+
 
   // If already has a company and no explicit invite pending, go to app.
   useEffect(() => {

@@ -133,7 +133,7 @@ function PlatformFinancePage() {
   const profit = revenue - totalExpenses;
 
   const tax = useMemo(() => {
-    const rows = (brackets.data ?? []).filter((b) => b.regime === "simples_iii");
+    const rows = (brackets.data ?? []).filter((b) => b.regime.toLowerCase() === "simples_iii");
     if (rows.length === 0 || revenue === 0) return null;
     const band = rows.find((b) => revenue <= b.annual_limit_cents) ?? rows[rows.length - 1];
     const nominal = (revenue * Number(band.rate_pct)) / 100 - band.deduction_cents;

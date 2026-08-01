@@ -238,6 +238,7 @@ function TeamPage() {
           </Table>
         </CardContent>
       </Card>
+      )}
     </div>
   );
 }

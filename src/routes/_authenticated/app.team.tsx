@@ -194,6 +194,7 @@ function TeamPage() {
         </CardContent>
       </Card>
 
+      {isManager && (
       <Card>
         <CardHeader><CardTitle>Convites pendentes</CardTitle></CardHeader>
         <CardContent>

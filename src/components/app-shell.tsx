@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Package, Users, Truck, UserCog, HandCoins, Receipt,
   BellRing, Settings, LogOut, Building2, ChevronDown, ShieldAlert,
   LifeBuoy, MessageSquare, UserPlus, Sun, Moon, Monitor, Rows2, Rows3, Search, FileText,
-  ShoppingCart, Sparkles, Bell, Megaphone, Menu, Wallet, KeyRound,
+  ShoppingCart, Sparkles, Bell, Megaphone, Menu, Wallet, KeyRound, CreditCard,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
 import {

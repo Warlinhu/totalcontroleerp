@@ -41,6 +41,7 @@ import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.
 import { Route as ApiPublicWebhooksMercadopagoRouteImport } from './routes/api/public/webhooks/mercadopago'
 import { Route as AuthenticatedAppPlatformTicketsRouteImport } from './routes/_authenticated/app.platform.tickets'
 import { Route as AuthenticatedAppPlatformReleasesRouteImport } from './routes/_authenticated/app.platform.releases'
+import { Route as AuthenticatedAppPlatformPaymentsRouteImport } from './routes/_authenticated/app.platform.payments'
 import { Route as AuthenticatedAppPlatformLicensesRouteImport } from './routes/_authenticated/app.platform.licenses'
 import { Route as AuthenticatedAppPlatformFinanceRouteImport } from './routes/_authenticated/app.platform.finance'
 import { Route as AuthenticatedAppPlatformErrorsRouteImport } from './routes/_authenticated/app.platform.errors'
@@ -223,6 +224,12 @@ const AuthenticatedAppPlatformReleasesRoute =
     path: '/platform/releases',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppPlatformPaymentsRoute =
+  AuthenticatedAppPlatformPaymentsRouteImport.update({
+    id: '/platform/payments',
+    path: '/platform/payments',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
 const AuthenticatedAppPlatformLicensesRoute =
   AuthenticatedAppPlatformLicensesRouteImport.update({
     id: '/platform/licenses',
@@ -288,6 +295,7 @@ export interface FileRoutesByFullPath {
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
   '/app/platform/finance': typeof AuthenticatedAppPlatformFinanceRoute
   '/app/platform/licenses': typeof AuthenticatedAppPlatformLicensesRoute
+  '/app/platform/payments': typeof AuthenticatedAppPlatformPaymentsRoute
   '/app/platform/releases': typeof AuthenticatedAppPlatformReleasesRoute
   '/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
   '/api/public/webhooks/mercadopago': typeof ApiPublicWebhooksMercadopagoRoute
@@ -325,6 +333,7 @@ export interface FileRoutesByTo {
   '/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
   '/app/platform/finance': typeof AuthenticatedAppPlatformFinanceRoute
   '/app/platform/licenses': typeof AuthenticatedAppPlatformLicensesRoute
+  '/app/platform/payments': typeof AuthenticatedAppPlatformPaymentsRoute
   '/app/platform/releases': typeof AuthenticatedAppPlatformReleasesRoute
   '/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
   '/api/public/webhooks/mercadopago': typeof ApiPublicWebhooksMercadopagoRoute
@@ -365,6 +374,7 @@ export interface FileRoutesById {
   '/_authenticated/app/platform/errors': typeof AuthenticatedAppPlatformErrorsRoute
   '/_authenticated/app/platform/finance': typeof AuthenticatedAppPlatformFinanceRoute
   '/_authenticated/app/platform/licenses': typeof AuthenticatedAppPlatformLicensesRoute
+  '/_authenticated/app/platform/payments': typeof AuthenticatedAppPlatformPaymentsRoute
   '/_authenticated/app/platform/releases': typeof AuthenticatedAppPlatformReleasesRoute
   '/_authenticated/app/platform/tickets': typeof AuthenticatedAppPlatformTicketsRoute
   '/api/public/webhooks/mercadopago': typeof ApiPublicWebhooksMercadopagoRoute
@@ -405,6 +415,7 @@ export interface FileRouteTypes {
     | '/app/platform/errors'
     | '/app/platform/finance'
     | '/app/platform/licenses'
+    | '/app/platform/payments'
     | '/app/platform/releases'
     | '/app/platform/tickets'
     | '/api/public/webhooks/mercadopago'
@@ -442,6 +453,7 @@ export interface FileRouteTypes {
     | '/app/platform/errors'
     | '/app/platform/finance'
     | '/app/platform/licenses'
+    | '/app/platform/payments'
     | '/app/platform/releases'
     | '/app/platform/tickets'
     | '/api/public/webhooks/mercadopago'
@@ -481,6 +493,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/platform/errors'
     | '/_authenticated/app/platform/finance'
     | '/_authenticated/app/platform/licenses'
+    | '/_authenticated/app/platform/payments'
     | '/_authenticated/app/platform/releases'
     | '/_authenticated/app/platform/tickets'
     | '/api/public/webhooks/mercadopago'
@@ -726,6 +739,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppPlatformReleasesRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/platform/payments': {
+      id: '/_authenticated/app/platform/payments'
+      path: '/platform/payments'
+      fullPath: '/app/platform/payments'
+      preLoaderRoute: typeof AuthenticatedAppPlatformPaymentsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/platform/licenses': {
       id: '/_authenticated/app/platform/licenses'
       path: '/platform/licenses'
@@ -785,6 +805,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppPlatformErrorsRoute: typeof AuthenticatedAppPlatformErrorsRoute
   AuthenticatedAppPlatformFinanceRoute: typeof AuthenticatedAppPlatformFinanceRoute
   AuthenticatedAppPlatformLicensesRoute: typeof AuthenticatedAppPlatformLicensesRoute
+  AuthenticatedAppPlatformPaymentsRoute: typeof AuthenticatedAppPlatformPaymentsRoute
   AuthenticatedAppPlatformReleasesRoute: typeof AuthenticatedAppPlatformReleasesRoute
   AuthenticatedAppPlatformTicketsRoute: typeof AuthenticatedAppPlatformTicketsRoute
 }
@@ -811,6 +832,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppPlatformErrorsRoute: AuthenticatedAppPlatformErrorsRoute,
   AuthenticatedAppPlatformFinanceRoute: AuthenticatedAppPlatformFinanceRoute,
   AuthenticatedAppPlatformLicensesRoute: AuthenticatedAppPlatformLicensesRoute,
+  AuthenticatedAppPlatformPaymentsRoute: AuthenticatedAppPlatformPaymentsRoute,
   AuthenticatedAppPlatformReleasesRoute: AuthenticatedAppPlatformReleasesRoute,
   AuthenticatedAppPlatformTicketsRoute: AuthenticatedAppPlatformTicketsRoute,
 }

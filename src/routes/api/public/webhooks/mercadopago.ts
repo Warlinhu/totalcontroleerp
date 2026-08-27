@@ -11,11 +11,13 @@ type MpPayment = {
 };
 
 async function processPayment(mpPaymentId: string) {
-  const token = process.env.MERCADOPAGO_ACCESS_TOKEN;
-  if (!token) {
-    console.error("mercadopago webhook: missing MERCADOPAGO_ACCESS_TOKEN");
+  const { getMercadoPagoCredentials } = await import("@/lib/payment-settings.server");
+  const creds = await getMercadoPagoCredentials();
+  if (!creds) {
+    console.error("mercadopago webhook: credenciais não configuradas");
     return new Response("not configured", { status: 500 });
   }
+  const token = creds.token;
 
   // Never trust the webhook body — re-query the provider.
   const res = await fetch(`https://api.mercadopago.com/v1/payments/${mpPaymentId}`, {

@@ -14,8 +14,14 @@ export const createCheckout = createServerFn({ method: "POST" })
     return { cycle: data.cycle };
   })
   .handler(async ({ data, context }) => {
-    const token = process.env.MERCADOPAGO_ACCESS_TOKEN;
-    if (!token) throw new Error("Pagamento indisponível: credencial não configurada.");
+    const { getMercadoPagoCredentials } = await import("@/lib/payment-settings.server");
+    const creds = await getMercadoPagoCredentials();
+    if (!creds) {
+      throw new Error(
+        "Pagamento indisponível: cadastre o Access Token em Plataforma → Pagamentos no painel do desenvolvedor.",
+      );
+    }
+    const token = creds.token;
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const userId = context.userId;

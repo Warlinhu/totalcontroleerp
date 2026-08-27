@@ -68,6 +68,7 @@ const SECTIONS: NavSection[] = [
     items: [
       { to: "/app/platform/companies", label: "Empresas", icon: Building2 },
       { to: "/app/platform/finance", label: "Financeiro & impostos", icon: Wallet },
+      { to: "/app/platform/payments", label: "Pagamentos", icon: CreditCard },
       { to: "/app/platform/licenses", label: "Licenças", icon: KeyRound },
       { to: "/app/platform/tickets", label: "Chamados clientes", icon: MessageSquare },
       { to: "/app/platform/errors", label: "Erros", icon: ShieldAlert },

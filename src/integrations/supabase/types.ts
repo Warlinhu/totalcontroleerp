@@ -717,6 +717,48 @@ export type Database = {
           },
         ]
       }
+      payment_settings: {
+        Row: {
+          access_token: string | null
+          created_at: string
+          enabled: boolean
+          id: string
+          mode: string
+          payout_email: string | null
+          provider: string
+          public_key: string | null
+          singleton: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          mode?: string
+          payout_email?: string | null
+          provider?: string
+          public_key?: string | null
+          singleton?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          mode?: string
+          payout_email?: string | null
+          provider?: string
+          public_key?: string | null
+          singleton?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       payments: {
         Row: {
           amount_cents: number

@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Package, Users, Truck, UserCog, HandCoins, Receipt,
   BellRing, Settings, LogOut, Building2, ChevronDown, ShieldAlert,
   LifeBuoy, MessageSquare, UserPlus, Sun, Moon, Monitor, Rows2, Rows3, Search, FileText,
-  ShoppingCart, Sparkles, Bell, Megaphone, Menu, Wallet, KeyRound,
+  ShoppingCart, Sparkles, Bell, Megaphone, Menu, Wallet, KeyRound, CreditCard,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
 import {
@@ -68,6 +68,7 @@ const SECTIONS: NavSection[] = [
     items: [
       { to: "/app/platform/companies", label: "Empresas", icon: Building2 },
       { to: "/app/platform/finance", label: "Financeiro & impostos", icon: Wallet },
+      { to: "/app/platform/payments", label: "Pagamentos", icon: CreditCard },
       { to: "/app/platform/licenses", label: "Licenças", icon: KeyRound },
       { to: "/app/platform/tickets", label: "Chamados clientes", icon: MessageSquare },
       { to: "/app/platform/errors", label: "Erros", icon: ShieldAlert },

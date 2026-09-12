@@ -15,7 +15,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import {
-  Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
+  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -625,6 +625,7 @@ function ReceiptDialog({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Cupom da Venda</DialogTitle>
+          <DialogDescription>Resumo dos itens e pagamentos desta venda.</DialogDescription>
         </DialogHeader>
         <div id="receipt-print" className="text-sm font-mono space-y-1">
           <div className="text-center font-semibold">{current?.company.name}</div>

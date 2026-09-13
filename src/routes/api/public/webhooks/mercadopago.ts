@@ -1,112 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-type MpPayment = {
-  id: number;
-  status: string;
-  status_detail?: string;
-  external_reference?: string | null;
-  payment_method_id?: string | null;
-  transaction_amount?: number;
-  metadata?: { cycle?: string; user_id?: string };
-};
-
-async function processPayment(mpPaymentId: string) {
-  const { getMercadoPagoCredentials } = await import("@/lib/payment-settings.server");
-  const creds = await getMercadoPagoCredentials();
-  if (!creds) {
-    console.error("mercadopago webhook: credenciais não configuradas");
-    return new Response("not configured", { status: 500 });
-  }
-  const token = creds.token;
-
-  // Never trust the webhook body — re-query the provider.
-  const res = await fetch(`https://api.mercadopago.com/v1/payments/${mpPaymentId}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) {
-    const body = await res.text();
-    console.error(`mercadopago lookup failed [${res.status}]: ${body}`);
-    return new Response("lookup failed", { status: 202 });
-  }
-  const mp = (await res.json()) as MpPayment;
-
-  const localPaymentId = mp.external_reference;
-  if (!localPaymentId) return new Response("no reference", { status: 200 });
-
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-
-  const { data: row } = await supabaseAdmin
-    .from("payments")
-    .select("id, user_id, cycle, amount_cents, status")
-    .eq("id", localPaymentId)
-    .maybeSingle();
-  if (!row) return new Response("unknown payment", { status: 200 });
-
-  const statusMap: Record<string, "pending" | "approved" | "rejected" | "refunded" | "cancelled"> = {
-    approved: "approved",
-    authorized: "approved",
-    pending: "pending",
-    in_process: "pending",
-    in_mediation: "pending",
-    rejected: "rejected",
-    cancelled: "cancelled",
-    refunded: "refunded",
-    charged_back: "refunded",
-  };
-  const status = statusMap[mp.status] ?? "pending";
-
-  // Idempotent: only act once when transitioning into approved.
-  const alreadyApproved = row.status === "approved";
-
-  await supabaseAdmin
-    .from("payments")
-    .update({
-      external_id: String(mp.id),
-      status,
-      method: mp.payment_method_id ?? null,
-      paid_at: status === "approved" ? new Date().toISOString() : null,
-      raw: JSON.parse(JSON.stringify(mp)),
-    })
-    .eq("id", row.id);
-
-  if (status !== "approved" || alreadyApproved) {
-    return new Response("ok", { status: 200 });
-  }
-
-  const days = row.cycle === "yearly" ? 365 : 30;
-  const { data: sub } = await supabaseAdmin
-    .from("subscriptions")
-    .select("id, current_period_end")
-    .eq("user_id", row.user_id)
-    .maybeSingle();
-
-  const now = Date.now();
-  const base = sub?.current_period_end ? Math.max(new Date(sub.current_period_end).getTime(), now) : now;
-  const periodEnd = new Date(base + days * 86400000).toISOString();
-
-  await supabaseAdmin.from("subscriptions").upsert(
-    {
-      user_id: row.user_id,
-      status: "active",
-      cycle: row.cycle,
-      source: "mercadopago",
-      current_period_start: new Date().toISOString(),
-      current_period_end: periodEnd,
-      first_month_discount_used: true,
-      last_amount_cents: row.amount_cents,
-    },
-    { onConflict: "user_id" },
-  );
-
-  await supabaseAdmin
-    .from("payments")
-    .update({ subscription_id: sub?.id ?? null })
-    .eq("id", row.id)
-    .is("subscription_id", null);
-
-  return new Response("ok", { status: 200 });
-}
-
 export const Route = createFileRoute("/api/public/webhooks/mercadopago")({
   server: {
     handlers: {
@@ -119,22 +12,59 @@ export const Route = createFileRoute("/api/public/webhooks/mercadopago")({
           const raw = await request.text();
           if (raw) {
             try {
-              const body = JSON.parse(raw) as { type?: string; action?: string; data?: { id?: string } };
+              const body = JSON.parse(raw) as {
+                type?: string;
+                action?: string;
+                data?: { id?: string };
+              };
               if (body?.data?.id) paymentId = String(body.data.id);
-              if (body?.type && !type) {
-                if (body.type !== "payment") return new Response("ignored", { status: 200 });
+              if (body?.type && !type && body.type !== "payment") {
+                return new Response("ignored", { status: 200 });
               }
             } catch {
-              /* provider sometimes posts form bodies; query params already handled */
+              /* o provedor às vezes envia form-encoded; os query params já cobrem */
             }
           }
 
           if (type && type !== "payment") return new Response("ignored", { status: 200 });
           if (!paymentId) return new Response("no id", { status: 200 });
 
-          return await processPayment(paymentId);
+          const { verifyWebhookSignature, processMpPayment } = await import(
+            "@/lib/mercadopago.server"
+          );
+
+          const valid = verifyWebhookSignature({
+            signatureHeader: request.headers.get("x-signature"),
+            requestId: request.headers.get("x-request-id"),
+            dataId: paymentId,
+          });
+          if (!valid) {
+            const { logServerError } = await import("@/lib/error-logger.server");
+            await logServerError({
+              source: "billing.webhook",
+              severity: "warning",
+              message: "Aviso do Mercado Pago rejeitado: assinatura inválida",
+              route: "/api/public/webhooks/mercadopago",
+              context: { paymentId },
+            });
+            return new Response("invalid signature", { status: 401 });
+          }
+
+          const result = await processMpPayment(paymentId);
+          if (!result.ok) {
+            return new Response(result.reason, { status: result.retryable ? 202 : 200 });
+          }
+          return new Response("ok", { status: 200 });
         } catch (err) {
-          console.error("mercadopago webhook error", err);
+          const { logServerError, describeError } = await import("@/lib/error-logger.server");
+          const { message, stack } = describeError(err);
+          await logServerError({
+            source: "billing.webhook",
+            severity: "critical",
+            message: `Falha ao processar aviso de pagamento: ${message}`,
+            stack,
+            route: "/api/public/webhooks/mercadopago",
+          });
           return new Response("error", { status: 500 });
         }
       },

@@ -44,6 +44,8 @@ function PlatformErrorsPage() {
   const [statusFilter, setStatusFilter] = useState<"all" | "open" | "resolved">("open");
   const [severityFilter, setSeverityFilter] = useState<string>("all");
   const [selected, setSelected] = useState<ErrorLog | null>(null);
+  const [search, setSearch] = useState("");
+  const [period, setPeriod] = useState<"24h" | "7d" | "30d" | "all">("7d");
 
   const admin = useQuery({
     queryKey: ["is-platform-admin", user?.id],

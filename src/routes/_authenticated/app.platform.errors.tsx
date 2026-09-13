@@ -58,17 +58,39 @@ function PlatformErrorsPage() {
   });
 
   const logs = useQuery({
-    queryKey: ["error-logs", statusFilter, severityFilter],
+    queryKey: ["error-logs", statusFilter, severityFilter, period],
     enabled: admin.data === true,
     queryFn: async () => {
-      let q = supabase.from("error_logs").select("*").order("created_at", { ascending: false }).limit(200);
+      let q = supabase.from("error_logs").select("*").order("created_at", { ascending: false }).limit(500);
       if (statusFilter === "open") q = q.is("resolved_at", null);
       if (statusFilter === "resolved") q = q.not("resolved_at", "is", null);
       if (severityFilter !== "all") q = q.eq("severity", severityFilter as ErrorLog["severity"]);
+      const days = period === "24h" ? 1 : period === "7d" ? 7 : period === "30d" ? 30 : null;
+      if (days) q = q.gte("created_at", new Date(Date.now() - days * 86400000).toISOString());
       const { data, error } = await q;
       if (error) throw error;
       return (data ?? []) as unknown as ErrorLog[];
     },
+  });
+
+  const resolveAll = useMutation({
+    mutationFn: async (ids: string[]) => {
+      const client = supabase.from("error_logs") as unknown as {
+        update: (p: Record<string, unknown>) => {
+          in: (c: string, v: string[]) => Promise<{ error: Error | null }>;
+        };
+      };
+      const { error } = await client
+        .update({ resolved_at: new Date().toISOString(), resolved_by: user!.id })
+        .in("id", ids);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["error-logs"] });
+      qc.invalidateQueries({ queryKey: ["open-error-count"] });
+      toast.success("Erros marcados como resolvidos");
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const resolve = useMutation({

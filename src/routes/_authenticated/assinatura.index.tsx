@@ -202,6 +202,19 @@ function SubscriptionPage() {
             </Button>
           </CardContent>
         </Card>
+
+        {!active && (
+          <div className="mt-6 text-center">
+            <Button variant="ghost" size="sm" onClick={checkPayment} disabled={checking}>
+              {checking ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCw className="mr-2 h-4 w-4" />
+              )}
+              Já paguei — verificar pagamento agora
+            </Button>
+          </div>
+        )}
       </main>
     </div>
   );

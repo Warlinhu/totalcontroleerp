@@ -25,6 +25,8 @@ function ReturnPage() {
   const { user } = useSession();
   const navigate = useNavigate();
   const [tries, setTries] = useState(0);
+  const [checking, setChecking] = useState(false);
+  const reconcile = useServerFn(reconcileMyPayments);
 
   const sub = useQuery({
     queryKey: ["my-subscription-return", user?.id, tries],

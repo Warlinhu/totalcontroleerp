@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { CreditCard, ShieldAlert, Save, Eye, EyeOff, ExternalLink, CheckCircle2, Copy } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { CreditCard, ShieldAlert, Save, Eye, EyeOff, ExternalLink, CheckCircle2, Copy, RefreshCw } from "lucide-react";
+import { billingDiagnostics } from "@/lib/billing.functions";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/use-session";
@@ -276,6 +278,107 @@ function PlatformPaymentsPage() {
           </Button>
         </CardContent>
       </Card>
+
+      <DiagnosticsCard />
     </div>
+  );
+}
+
+function DiagnosticsCard() {
+  const run = useServerFn(billingDiagnostics);
+  const diag = useQuery({
+    queryKey: ["billing-diagnostics"],
+    queryFn: () => run({}),
+    retry: false,
+  });
+
+  const d = diag.data;
+
+  return (
+    <Card>
+      <CardHeader className="flex flex-row items-start justify-between gap-3">
+        <div>
+          <CardTitle className="text-base">Diagnóstico da cobrança</CardTitle>
+          <CardDescription>
+            Testa a credencial no provedor e mostra os últimos pagamentos e falhas registradas.
+          </CardDescription>
+        </div>
+        <Button variant="outline" size="sm" onClick={() => diag.refetch()} disabled={diag.isFetching}>
+          <RefreshCw className={`mr-2 h-4 w-4 ${diag.isFetching ? "animate-spin" : ""}`} /> Testar
+        </Button>
+      </CardHeader>
+      <CardContent className="space-y-4 text-sm">
+        {diag.isLoading && <p className="text-muted-foreground">Verificando...</p>}
+        {diag.isError && (
+          <p className="text-destructive">
+            {diag.error instanceof Error ? diag.error.message : "Falha no diagnóstico."}
+          </p>
+        )}
+        {d && (
+          <>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant={d.credential.valid ? "default" : "destructive"}>
+                {d.credential.valid ? "Credencial válida" : "Credencial inválida"}
+              </Badge>
+              <Badge variant="outline">{d.credential.environment}</Badge>
+              {d.credential.sandbox && <Badge variant="secondary">Modo de teste</Badge>}
+              <Badge variant={d.webhookSecretConfigured ? "default" : "secondary"}>
+                {d.webhookSecretConfigured ? "Webhook assinado" : "Webhook sem assinatura"}
+              </Badge>
+            </div>
+            <p className="text-muted-foreground">{d.credential.detail}</p>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="rounded-lg border p-3">
+                <p className="text-xs text-muted-foreground">Assinaturas ativas</p>
+                <p className="text-2xl font-bold">{d.activeSubs}</p>
+              </div>
+              <div className="rounded-lg border p-3">
+                <p className="text-xs text-muted-foreground">Pendentes há +30 min</p>
+                <p className={`text-2xl font-bold ${d.stuckCount > 0 ? "text-destructive" : ""}`}>
+                  {d.stuckCount}
+                </p>
+              </div>
+              <div className="rounded-lg border p-3">
+                <p className="text-xs text-muted-foreground">Falhas de cobrança abertas</p>
+                <p className={`text-2xl font-bold ${d.billingErrors.length > 0 ? "text-destructive" : ""}`}>
+                  {d.billingErrors.length}
+                </p>
+              </div>
+            </div>
+
+            {d.recent.length > 0 && (
+              <div>
+                <p className="mb-2 font-medium">Últimos pagamentos</p>
+                <ul className="space-y-1 text-xs">
+                  {d.recent.map((p) => (
+                    <li key={p.id} className="flex flex-wrap justify-between gap-2 rounded border px-2 py-1">
+                      <span className="font-mono">{new Date(p.created_at).toLocaleString("pt-BR")}</span>
+                      <span>{p.cycle === "yearly" ? "Anual" : "Mensal"}</span>
+                      <span>R$ {(p.amount_cents / 100).toFixed(2)}</span>
+                      <Badge variant={p.status === "approved" ? "default" : "secondary"}>{p.status}</Badge>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {d.billingErrors.length > 0 && (
+              <div>
+                <p className="mb-2 font-medium text-destructive">Falhas recentes</p>
+                <ul className="space-y-1 text-xs">
+                  {d.billingErrors.map((e) => (
+                    <li key={e.id} className="rounded border px-2 py-1">
+                      <span className="font-mono">{new Date(e.created_at).toLocaleString("pt-BR")}</span> —{" "}
+                      {e.message}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
+        )}
+      </CardContent>
+    </Card>
   );
 }

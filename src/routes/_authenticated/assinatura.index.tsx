@@ -2,11 +2,11 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Check, Sparkles, KeyRound, ArrowLeft, Loader2 } from "lucide-react";
+import { Check, Sparkles, KeyRound, ArrowLeft, Loader2, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/use-session";
-import { createCheckout } from "@/lib/billing.functions";
+import { createCheckout, reconcileMyPayments } from "@/lib/billing.functions";
 import { FALLBACK_PLAN, formatBRL, priceForCycle, type BillingPlan, type Cycle } from "@/lib/billing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +40,27 @@ function SubscriptionPage() {
   const [busy, setBusy] = useState<Cycle | null>(null);
   const [code, setCode] = useState("");
   const [redeeming, setRedeeming] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const reconcile = useServerFn(reconcileMyPayments);
+
+  const checkPayment = async () => {
+    setChecking(true);
+    try {
+      const res = await reconcile({});
+      if (res.active) {
+        toast.success("Pagamento confirmado! Acesso liberado.");
+        navigate({ to: "/app" });
+      } else {
+        toast.info("Nenhum pagamento aprovado encontrado", {
+          description: "Se você acabou de pagar por PIX ou boleto, aguarde alguns minutos.",
+        });
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Não foi possível verificar agora.");
+    } finally {
+      setChecking(false);
+    }
+  };
 
   const planQ = useQuery({
     queryKey: ["billing-plan"],
@@ -202,6 +223,19 @@ function SubscriptionPage() {
             </Button>
           </CardContent>
         </Card>
+
+        {!active && (
+          <div className="mt-6 text-center">
+            <Button variant="ghost" size="sm" onClick={checkPayment} disabled={checking}>
+              {checking ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <RefreshCw className="mr-2 h-4 w-4" />
+              )}
+              Já paguei — verificar pagamento agora
+            </Button>
+          </div>
+        )}
       </main>
     </div>
   );

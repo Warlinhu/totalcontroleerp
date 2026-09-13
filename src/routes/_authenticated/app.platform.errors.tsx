@@ -44,6 +44,8 @@ function PlatformErrorsPage() {
   const [statusFilter, setStatusFilter] = useState<"all" | "open" | "resolved">("open");
   const [severityFilter, setSeverityFilter] = useState<string>("all");
   const [selected, setSelected] = useState<ErrorLog | null>(null);
+  const [search, setSearch] = useState("");
+  const [period, setPeriod] = useState<"24h" | "7d" | "30d" | "all">("7d");
 
   const admin = useQuery({
     queryKey: ["is-platform-admin", user?.id],
@@ -56,17 +58,39 @@ function PlatformErrorsPage() {
   });
 
   const logs = useQuery({
-    queryKey: ["error-logs", statusFilter, severityFilter],
+    queryKey: ["error-logs", statusFilter, severityFilter, period],
     enabled: admin.data === true,
     queryFn: async () => {
-      let q = supabase.from("error_logs").select("*").order("created_at", { ascending: false }).limit(200);
+      let q = supabase.from("error_logs").select("*").order("created_at", { ascending: false }).limit(500);
       if (statusFilter === "open") q = q.is("resolved_at", null);
       if (statusFilter === "resolved") q = q.not("resolved_at", "is", null);
       if (severityFilter !== "all") q = q.eq("severity", severityFilter as ErrorLog["severity"]);
+      const days = period === "24h" ? 1 : period === "7d" ? 7 : period === "30d" ? 30 : null;
+      if (days) q = q.gte("created_at", new Date(Date.now() - days * 86400000).toISOString());
       const { data, error } = await q;
       if (error) throw error;
       return (data ?? []) as unknown as ErrorLog[];
     },
+  });
+
+  const resolveAll = useMutation({
+    mutationFn: async (ids: string[]) => {
+      const client = supabase.from("error_logs") as unknown as {
+        update: (p: Record<string, unknown>) => {
+          in: (c: string, v: string[]) => Promise<{ error: Error | null }>;
+        };
+      };
+      const { error } = await client
+        .update({ resolved_at: new Date().toISOString(), resolved_by: user!.id })
+        .in("id", ids);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["error-logs"] });
+      qc.invalidateQueries({ queryKey: ["open-error-count"] });
+      toast.success("Erros marcados como resolvidos");
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const resolve = useMutation({
@@ -99,9 +123,18 @@ function PlatformErrorsPage() {
     );
   }
 
-  const rows = logs.data ?? [];
+  const all = logs.data ?? [];
+  const term = search.trim().toLowerCase();
+  const rows = term
+    ? all.filter((r) =>
+        `${r.message} ${r.source} ${r.route ?? ""}`.toLowerCase().includes(term),
+      )
+    : all;
+  const occurrences = new Map<string, number>();
+  for (const r of all) occurrences.set(r.fingerprint, (occurrences.get(r.fingerprint) ?? 0) + 1);
   const openCount = rows.filter((r) => !r.resolved_at).length;
   const criticalCount = rows.filter((r) => r.severity === "critical" && !r.resolved_at).length;
+  const openIds = rows.filter((r) => !r.resolved_at).map((r) => r.id);
 
   return (
     <div className="space-y-6">

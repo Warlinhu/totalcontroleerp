@@ -1,7 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { CheckCircle2, Clock, XCircle } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { toast } from "sonner";
+import { CheckCircle2, Clock, XCircle, RefreshCw, Loader2 } from "lucide-react";
+import { reconcileMyPayments } from "@/lib/billing.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/use-session";
 import { Button } from "@/components/ui/button";
@@ -22,6 +25,8 @@ function ReturnPage() {
   const { user } = useSession();
   const navigate = useNavigate();
   const [tries, setTries] = useState(0);
+  const [checking, setChecking] = useState(false);
+  const reconcile = useServerFn(reconcileMyPayments);
 
   const sub = useQuery({
     queryKey: ["my-subscription-return", user?.id, tries],
@@ -54,6 +59,34 @@ function ReturnPage() {
     return () => clearTimeout(t);
   }, [active, navigate]);
 
+  // Rede de segurança: consulta o provedor caso o aviso automático não chegue.
+  useEffect(() => {
+    if (active || tries === 0 || tries % 3 !== 0 || tries > 21) return;
+    void reconcile({})
+      .then(() => sub.refetch())
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tries, active]);
+
+  const checkNow = async () => {
+    setChecking(true);
+    try {
+      const res = await reconcile({});
+      await sub.refetch();
+      if (res.active) {
+        toast.success("Pagamento confirmado!");
+      } else {
+        toast.info("Ainda não há confirmação do provedor", {
+          description: "PIX e boleto podem levar alguns minutos.",
+        });
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Não foi possível verificar agora.");
+    } finally {
+      setChecking(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="border-b">
@@ -84,8 +117,18 @@ function ReturnPage() {
                   : "Isso costuma levar poucos segundos. Não feche esta página."}
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex justify-center gap-2">
+          <CardContent className="flex flex-wrap justify-center gap-2">
             <Button asChild variant="outline"><Link to="/assinatura">Voltar aos planos</Link></Button>
+            {!active && (
+              <Button onClick={checkNow} disabled={checking}>
+                {checking ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                )}
+                Verificar pagamento agora
+              </Button>
+            )}
             {active && <Button asChild><Link to="/app">Ir para o sistema</Link></Button>}
           </CardContent>
         </Card>

@@ -117,8 +117,18 @@ function ReturnPage() {
                   : "Isso costuma levar poucos segundos. Não feche esta página."}
             </CardDescription>
           </CardHeader>
-          <CardContent className="flex justify-center gap-2">
+          <CardContent className="flex flex-wrap justify-center gap-2">
             <Button asChild variant="outline"><Link to="/assinatura">Voltar aos planos</Link></Button>
+            {!active && (
+              <Button onClick={checkNow} disabled={checking}>
+                {checking ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                )}
+                Verificar pagamento agora
+              </Button>
+            )}
             {active && <Button asChild><Link to="/app">Ir para o sistema</Link></Button>}
           </CardContent>
         </Card>

@@ -40,6 +40,27 @@ function SubscriptionPage() {
   const [busy, setBusy] = useState<Cycle | null>(null);
   const [code, setCode] = useState("");
   const [redeeming, setRedeeming] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const reconcile = useServerFn(reconcileMyPayments);
+
+  const checkPayment = async () => {
+    setChecking(true);
+    try {
+      const res = await reconcile({});
+      if (res.active) {
+        toast.success("Pagamento confirmado! Acesso liberado.");
+        navigate({ to: "/app" });
+      } else {
+        toast.info("Nenhum pagamento aprovado encontrado", {
+          description: "Se você acabou de pagar por PIX ou boleto, aguarde alguns minutos.",
+        });
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Não foi possível verificar agora.");
+    } finally {
+      setChecking(false);
+    }
+  };
 
   const planQ = useQuery({
     queryKey: ["billing-plan"],

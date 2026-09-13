@@ -54,6 +54,34 @@ function ReturnPage() {
     return () => clearTimeout(t);
   }, [active, navigate]);
 
+  // Rede de segurança: consulta o provedor caso o aviso automático não chegue.
+  useEffect(() => {
+    if (active || tries === 0 || tries % 3 !== 0 || tries > 21) return;
+    void reconcile({})
+      .then(() => sub.refetch())
+      .catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tries, active]);
+
+  const checkNow = async () => {
+    setChecking(true);
+    try {
+      const res = await reconcile({});
+      await sub.refetch();
+      if (res.active) {
+        toast.success("Pagamento confirmado!");
+      } else {
+        toast.info("Ainda não há confirmação do provedor", {
+          description: "PIX e boleto podem levar alguns minutos.",
+        });
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Não foi possível verificar agora.");
+    } finally {
+      setChecking(false);
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="border-b">

@@ -6,7 +6,7 @@ import { Check, Sparkles, KeyRound, ArrowLeft, Loader2, RefreshCw } from "lucide
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/use-session";
-import { createCheckout } from "@/lib/billing.functions";
+import { createCheckout, reconcileMyPayments } from "@/lib/billing.functions";
 import { FALLBACK_PLAN, formatBRL, priceForCycle, type BillingPlan, type Cycle } from "@/lib/billing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

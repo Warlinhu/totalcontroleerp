@@ -123,9 +123,18 @@ function PlatformErrorsPage() {
     );
   }
 
-  const rows = logs.data ?? [];
+  const all = logs.data ?? [];
+  const term = search.trim().toLowerCase();
+  const rows = term
+    ? all.filter((r) =>
+        `${r.message} ${r.source} ${r.route ?? ""}`.toLowerCase().includes(term),
+      )
+    : all;
+  const occurrences = new Map<string, number>();
+  for (const r of all) occurrences.set(r.fingerprint, (occurrences.get(r.fingerprint) ?? 0) + 1);
   const openCount = rows.filter((r) => !r.resolved_at).length;
   const criticalCount = rows.filter((r) => r.severity === "critical" && !r.resolved_at).length;
+  const openIds = rows.filter((r) => !r.resolved_at).map((r) => r.id);
 
   return (
     <div className="space-y-6">

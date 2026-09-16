@@ -244,6 +244,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                           >
                             <item.icon className="h-4 w-4" />
                             <span className="truncate">{item.label}</span>
+                            {item.to === "/app/platform/errors" && openErrors > 0 && (
+                              <span className="ml-auto rounded-full bg-destructive px-1.5 py-0.5 text-[10px] font-semibold text-destructive-foreground">
+                                {openErrors > 99 ? "99+" : openErrors}
+                              </span>
+                            )}
                           </Link>
                         );
                       })}

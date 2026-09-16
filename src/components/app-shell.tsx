@@ -102,6 +102,19 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const visibleSections = SECTIONS.filter((s) => s.label !== "Plataforma" || isPlatformAdmin);
 
+  const { data: openErrors = 0 } = useQuery({
+    queryKey: ["open-error-count"],
+    enabled: isPlatformAdmin,
+    refetchInterval: 60_000,
+    queryFn: async () => {
+      const { count } = await supabase
+        .from("error_logs")
+        .select("id", { count: "exact", head: true })
+        .is("resolved_at", null);
+      return count ?? 0;
+    },
+  });
+
 
   const handleSignOut = async () => {
     await qc.cancelQueries();

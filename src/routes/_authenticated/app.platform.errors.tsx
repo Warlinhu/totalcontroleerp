@@ -180,6 +180,35 @@ function PlatformErrorsPage() {
             </SelectContent>
           </Select>
         </div>
+        <div>
+          <label className="text-xs text-muted-foreground">Período</label>
+          <Select value={period} onValueChange={(v) => setPeriod(v as typeof period)}>
+            <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="24h">Últimas 24h</SelectItem>
+              <SelectItem value="7d">Últimos 7 dias</SelectItem>
+              <SelectItem value="30d">Últimos 30 dias</SelectItem>
+              <SelectItem value="all">Todo o período</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="min-w-[220px] flex-1">
+          <label className="text-xs text-muted-foreground">Buscar</label>
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Mensagem, origem ou rota..."
+          />
+        </div>
+        <div className="flex items-end">
+          <Button
+            variant="secondary"
+            disabled={openIds.length === 0 || resolveAll.isPending}
+            onClick={() => resolveAll.mutate(openIds)}
+          >
+            <Check className="mr-2 h-4 w-4" /> Resolver {openIds.length} exibidos
+          </Button>
+        </div>
       </div>
 
       <Card className="overflow-hidden">

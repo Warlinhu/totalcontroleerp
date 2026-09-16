@@ -234,7 +234,14 @@ function PlatformErrorsPage() {
                 <TableCell className="whitespace-nowrap">{new Date(r.created_at).toLocaleString("pt-BR")}</TableCell>
                 <TableCell><SeverityBadge severity={r.severity} /></TableCell>
                 <TableCell className="font-mono text-xs">{r.source}</TableCell>
-                <TableCell className="max-w-md truncate">{r.message}</TableCell>
+                <TableCell className="max-w-md truncate">
+                  {r.message}
+                  {(occurrences.get(r.fingerprint) ?? 1) > 1 && (
+                    <Badge variant="outline" className="ml-2">
+                      {occurrences.get(r.fingerprint)}x
+                    </Badge>
+                  )}
+                </TableCell>
                 <TableCell className="font-mono text-xs">{r.route ?? "—"}</TableCell>
                 <TableCell>{r.resolved_at ? <Badge variant="outline">Resolvido</Badge> : <Badge variant="secondary">Aberto</Badge>}</TableCell>
                 <TableCell className="text-right">

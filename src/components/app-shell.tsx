@@ -102,6 +102,19 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const visibleSections = SECTIONS.filter((s) => s.label !== "Plataforma" || isPlatformAdmin);
 
+  const { data: openErrors = 0 } = useQuery({
+    queryKey: ["open-error-count"],
+    enabled: isPlatformAdmin,
+    refetchInterval: 60_000,
+    queryFn: async () => {
+      const { count } = await supabase
+        .from("error_logs")
+        .select("id", { count: "exact", head: true })
+        .is("resolved_at", null);
+      return count ?? 0;
+    },
+  });
+
 
   const handleSignOut = async () => {
     await qc.cancelQueries();
@@ -175,6 +188,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                     >
                       <item.icon className={cn("h-4 w-4", active ? "" : "text-muted-foreground group-hover:text-sidebar-accent-foreground")} />
                       <span className="truncate">{item.label}</span>
+                      {item.to === "/app/platform/errors" && openErrors > 0 && (
+                        <span className="ml-auto rounded-full bg-destructive px-1.5 py-0.5 text-[10px] font-semibold text-destructive-foreground">
+                          {openErrors > 99 ? "99+" : openErrors}
+                        </span>
+                      )}
                     </Link>
                   );
                 })}
@@ -226,6 +244,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                           >
                             <item.icon className="h-4 w-4" />
                             <span className="truncate">{item.label}</span>
+                            {item.to === "/app/platform/errors" && openErrors > 0 && (
+                              <span className="ml-auto rounded-full bg-destructive px-1.5 py-0.5 text-[10px] font-semibold text-destructive-foreground">
+                                {openErrors > 99 ? "99+" : openErrors}
+                              </span>
+                            )}
                           </Link>
                         );
                       })}

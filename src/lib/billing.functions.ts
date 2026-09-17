@@ -241,3 +241,112 @@ export const billingDiagnostics = createServerFn({ method: "POST" })
       webhookSecretConfigured: !!process.env["MERCADOPAGO_WEBHOOK_SECRET"],
     };
   });
+
+/**
+ * Checkout de um link de pagamento com valor personalizado (assinatura por
+ * período ou licença definitiva), criado em Plataforma → Licenças.
+ */
+export const createLinkCheckout = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { code: string }) => {
+    const code = String(data?.code ?? "").trim();
+    if (!code) throw new Error("Link inválido");
+    return { code };
+  })
+  .handler(async ({ data, context }) => {
+    const { getMercadoPagoCredentials } = await import("@/lib/payment-settings.server");
+    const creds = await getMercadoPagoCredentials();
+    if (!creds) {
+      throw new Error(
+        "Pagamento indisponível: cadastre o Access Token em Plataforma → Pagamentos no painel do desenvolvedor.",
+      );
+    }
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const userId = context.userId;
+
+    const { data: link } = await supabaseAdmin
+      .from("payment_links")
+      .select("id, code, name, description, kind, amount_cents, currency, duration_days, active")
+      .eq("code", data.code)
+      .eq("active", true)
+      .maybeSingle();
+    if (!link) throw new Error("Esta oferta não está mais disponível.");
+
+    const { data: sub } = await supabaseAdmin
+      .from("subscriptions")
+      .select("id")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    const cycle = link.kind === "lifetime" || (link.duration_days ?? 30) >= 180 ? "yearly" : "monthly";
+
+    const { data: payment, error: payErr } = await supabaseAdmin
+      .from("payments")
+      .insert({
+        user_id: userId,
+        subscription_id: sub?.id ?? null,
+        payment_link_id: link.id,
+        cycle,
+        amount_cents: link.amount_cents,
+        currency: link.currency,
+        status: "pending",
+        provider: "mercadopago",
+      })
+      .select("id")
+      .single();
+    if (payErr || !payment) throw new Error("Não foi possível iniciar o pagamento.");
+
+    const origin = new URL(getRequest().url).origin;
+
+    const res = await fetch("https://api.mercadopago.com/checkout/preferences", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${creds.token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        items: [
+          {
+            id: link.code,
+            title: `TotalControle ERP — ${link.name}`,
+            description: link.description ?? undefined,
+            quantity: 1,
+            currency_id: link.currency,
+            unit_price: Number((link.amount_cents / 100).toFixed(2)),
+          },
+        ],
+        external_reference: payment.id,
+        metadata: { payment_id: payment.id, user_id: userId, payment_link: link.code },
+        back_urls: {
+          success: `${origin}/assinatura/retorno`,
+          pending: `${origin}/assinatura/retorno`,
+          failure: `${origin}/assinatura/retorno`,
+        },
+        auto_return: "approved",
+        notification_url: `${origin}/api/public/webhooks/mercadopago`,
+      }),
+    });
+
+    if (!res.ok) {
+      const body = await res.text();
+      const { logServerError } = await import("@/lib/error-logger.server");
+      await logServerError({
+        source: "billing.checkout.link",
+        severity: "critical",
+        message: `Mercado Pago recusou a criação do checkout do link [${res.status}]`,
+        route: "/assinatura",
+        userId,
+        context: { code: link.code, amountCents: link.amount_cents, body: body.slice(0, 500) },
+      });
+      throw new Error("O provedor de pagamento recusou a solicitação. Tente novamente.");
+    }
+
+    const pref = (await res.json()) as { id: string; init_point?: string; sandbox_init_point?: string };
+    const sandbox = creds.mode === "sandbox";
+    const url = sandbox
+      ? (pref.sandbox_init_point ?? pref.init_point)
+      : (pref.init_point ?? pref.sandbox_init_point);
+    if (!url) throw new Error("O provedor não retornou o link de pagamento.");
+
+    await supabaseAdmin.from("payments").update({ external_id: `pref:${pref.id}` }).eq("id", payment.id);
+
+    return { url, amountCents: link.amount_cents, sandbox, paymentId: payment.id };
+  });

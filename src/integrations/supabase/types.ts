@@ -717,6 +717,57 @@ export type Database = {
           },
         ]
       }
+      payment_links: {
+        Row: {
+          active: boolean
+          amount_cents: number
+          code: string
+          created_at: string
+          created_by: string | null
+          currency: string
+          description: string | null
+          duration_days: number | null
+          highlight: boolean
+          id: string
+          kind: string
+          name: string
+          show_on_home: boolean
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          amount_cents: number
+          code: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          description?: string | null
+          duration_days?: number | null
+          highlight?: boolean
+          id?: string
+          kind?: string
+          name: string
+          show_on_home?: boolean
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          amount_cents?: number
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          description?: string | null
+          duration_days?: number | null
+          highlight?: boolean
+          id?: string
+          kind?: string
+          name?: string
+          show_on_home?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       payment_settings: {
         Row: {
           access_token: string | null
@@ -769,6 +820,7 @@ export type Database = {
           id: string
           method: string | null
           paid_at: string | null
+          payment_link_id: string | null
           provider: string
           raw: Json | null
           status: Database["public"]["Enums"]["payment_status"]
@@ -785,6 +837,7 @@ export type Database = {
           id?: string
           method?: string | null
           paid_at?: string | null
+          payment_link_id?: string | null
           provider?: string
           raw?: Json | null
           status?: Database["public"]["Enums"]["payment_status"]
@@ -801,6 +854,7 @@ export type Database = {
           id?: string
           method?: string | null
           paid_at?: string | null
+          payment_link_id?: string | null
           provider?: string
           raw?: Json | null
           status?: Database["public"]["Enums"]["payment_status"]
@@ -809,6 +863,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "payments_payment_link_id_fkey"
+            columns: ["payment_link_id"]
+            isOneToOne: false
+            referencedRelation: "payment_links"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "payments_subscription_id_fkey"
             columns: ["subscription_id"]

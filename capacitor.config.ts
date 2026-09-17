@@ -14,6 +14,9 @@ const config: CapacitorConfig = {
   server: {
     url: "https://totalcontroleerp.lovable.app",
     cleartext: false,
+    // Página local exibida quando o celular está sem internet — o app abre
+    // normalmente e volta sozinho ao sistema quando a conexão retorna.
+    errorPath: "offline.html",
   },
   android: {
     backgroundColor: "#0b1220",

@@ -109,7 +109,7 @@ export async function processMpPayment(mpPaymentId: string): Promise<ProcessResu
 
   const { data: row } = await supabaseAdmin
     .from("payments")
-    .select("id, user_id, cycle, amount_cents, status")
+    .select("id, user_id, cycle, amount_cents, status, payment_link_id")
     .eq("id", localPaymentId)
     .maybeSingle();
   if (!row) return { ok: true, outcome: "ignored" };
@@ -132,7 +132,16 @@ export async function processMpPayment(mpPaymentId: string): Promise<ProcessResu
     return { ok: true, outcome: "updated", status };
   }
 
-  const days = row.cycle === "yearly" ? 365 : 30;
+  // Links de pagamento personalizados definem a duração (ou acesso definitivo).
+  let days = row.cycle === "yearly" ? 365 : 30;
+  if (row.payment_link_id) {
+    const { data: link } = await supabaseAdmin
+      .from("payment_links")
+      .select("kind, duration_days")
+      .eq("id", row.payment_link_id)
+      .maybeSingle();
+    if (link) days = link.kind === "lifetime" ? 36500 : (link.duration_days ?? days);
+  }
   const { data: sub } = await supabaseAdmin
     .from("subscriptions")
     .select("id, current_period_end")

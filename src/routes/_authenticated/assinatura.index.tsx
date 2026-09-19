@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BrandLogo } from "@/components/brand-logo";
+import { PaymentOffers } from "@/components/payment-link-offers";
 
 export const Route = createFileRoute("/_authenticated/assinatura/")({
   head: () => ({
@@ -20,6 +21,9 @@ export const Route = createFileRoute("/_authenticated/assinatura/")({
       { title: "Assinatura — TotalControle ERP" },
       { name: "description", content: "Ative sua assinatura do TotalControle ERP e libere o sistema completo." },
     ],
+  }),
+  validateSearch: (search: Record<string, unknown>) => ({
+    oferta: typeof search["oferta"] === "string" ? (search["oferta"] as string) : undefined,
   }),
   component: SubscriptionPage,
 });
@@ -91,6 +95,7 @@ function SubscriptionPage() {
     },
   });
 
+  const { oferta: offerCode } = Route.useSearch();
   const plan = planQ.data ?? FALLBACK_PLAN;
   const firstPurchase = !subQ.data?.first_month_discount_used;
   const monthly = priceForCycle(plan, "monthly", firstPurchase);

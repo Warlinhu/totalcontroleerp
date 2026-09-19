@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { FALLBACK_PLAN, formatBRL, priceForCycle } from "@/lib/billing";
+import { usePublicOffers, offerAccessLabel } from "@/components/payment-link-offers";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -60,6 +61,8 @@ const FAQ = [
 function LandingPage() {
 
 
+  const offersQ = usePublicOffers(true);
+  const offers = offersQ.data ?? [];
   const plan = FALLBACK_PLAN;
   const firstMonth = priceForCycle(plan, "monthly", true);
   const normalMonth = plan.monthly_price_cents;
@@ -215,6 +218,30 @@ function LandingPage() {
                 </Button>
               </div>
             </div>
+
+            {offers.length > 0 && (
+              <div className="mt-12">
+                <h3 className="text-center text-xl font-semibold">Ofertas especiais</h3>
+                <div className="mt-6 grid gap-6 md:grid-cols-2">
+                  {offers.map((o) => (
+                    <div key={o.id} className="rounded-2xl border bg-card p-8">
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-lg font-semibold">{o.name}</h4>
+                        {o.kind === "lifetime" && <Badge>Definitivo</Badge>}
+                      </div>
+                      <div className="mt-3 text-4xl font-bold">{formatBRL(o.amount_cents)}</div>
+                      <p className="mt-1 text-sm text-muted-foreground">{offerAccessLabel(o)}</p>
+                      {o.description && (
+                        <p className="mt-2 text-sm text-muted-foreground">{o.description}</p>
+                      )}
+                      <Button asChild className="mt-8 w-full" size="lg">
+                        <Link to="/assinatura" search={{ oferta: o.code }}>Quero esta oferta</Link>
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <p className="mt-6 text-center text-xs text-muted-foreground">
               Pagamento seguro via Mercado Pago — PIX, boleto ou cartão. Acesso liberado

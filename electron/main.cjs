@@ -75,7 +75,35 @@ function createWindow(startHidden = false) {
     },
   });
 
-  mainWindow.loadURL(APP_URL);
+  const OFFLINE_PAGE = path.join(__dirname, "offline.html");
+  let showingOffline = false;
+
+  const loadApp = () => {
+    showingOffline = false;
+    mainWindow.loadURL(APP_URL);
+  };
+
+  const loadOffline = () => {
+    if (showingOffline) return;
+    showingOffline = true;
+    mainWindow.loadFile(OFFLINE_PAGE).catch(() => {});
+    // Tenta voltar ao sistema periodicamente enquanto estiver offline.
+    const retry = setInterval(() => {
+      if (!mainWindow || mainWindow.isDestroyed()) return clearInterval(retry);
+      if (!showingOffline) return clearInterval(retry);
+      clearInterval(retry);
+      loadApp();
+    }, 10_000);
+  };
+
+  // Sem internet o app continua abrindo: mostra a tela local e reconecta sozinho.
+  mainWindow.webContents.on("did-fail-load", (_e, code, _desc, url, isMainFrame) => {
+    if (!isMainFrame) return;
+    if (code === -3 || url.startsWith("file://")) return;
+    loadOffline();
+  });
+
+  loadApp();
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (!url.startsWith(APP_URL)) {

@@ -53,6 +53,7 @@ jobs:
             <body>Carregando TotalControle ERP…</body>
           </html>
           HTML
+          cp public/offline.html dist/offline.html
 
       - name: Add Android platform
         shell: bash

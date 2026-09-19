@@ -191,6 +191,10 @@ function LicensesPage() {
         <Stat label="Receita por licenças" value={formatBRL(revenue)} />
       </div>
 
+      <div>
+        <PaymentLinksAdmin userId={user!.id} />
+      </div>
+
       <Card className="overflow-hidden">
         <Table>
           <TableHeader>

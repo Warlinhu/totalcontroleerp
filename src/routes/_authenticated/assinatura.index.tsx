@@ -22,9 +22,8 @@ export const Route = createFileRoute("/_authenticated/assinatura/")({
       { name: "description", content: "Ative sua assinatura do TotalControle ERP e libere o sistema completo." },
     ],
   }),
-  validateSearch: (search: Record<string, unknown>) => ({
-    oferta: typeof search["oferta"] === "string" ? (search["oferta"] as string) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { oferta?: string } =>
+    typeof search["oferta"] === "string" ? { oferta: search["oferta"] as string } : {},
   component: SubscriptionPage,
 });
 

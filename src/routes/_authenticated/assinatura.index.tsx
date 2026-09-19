@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BrandLogo } from "@/components/brand-logo";
+import { PaymentOffers } from "@/components/payment-link-offers";
 
 export const Route = createFileRoute("/_authenticated/assinatura/")({
   head: () => ({
@@ -21,6 +22,8 @@ export const Route = createFileRoute("/_authenticated/assinatura/")({
       { name: "description", content: "Ative sua assinatura do TotalControle ERP e libere o sistema completo." },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>): { oferta?: string } =>
+    typeof search["oferta"] === "string" ? { oferta: search["oferta"] as string } : {},
   component: SubscriptionPage,
 });
 
@@ -91,6 +94,7 @@ function SubscriptionPage() {
     },
   });
 
+  const { oferta: offerCode } = Route.useSearch();
   const plan = planQ.data ?? FALLBACK_PLAN;
   const firstPurchase = !subQ.data?.first_month_discount_used;
   const monthly = priceForCycle(plan, "monthly", firstPurchase);
@@ -203,6 +207,11 @@ function SubscriptionPage() {
         <p className="mt-6 text-center text-xs text-muted-foreground">
           Pagamento seguro via Mercado Pago — PIX, boleto ou cartão de crédito.
         </p>
+
+        <div className="mt-12">
+          <h2 className="mb-4 text-center text-xl font-semibold">Ofertas especiais</h2>
+          <PaymentOffers filterCode={offerCode} />
+        </div>
 
         <Card className="mx-auto mt-12 max-w-md">
           <CardHeader>

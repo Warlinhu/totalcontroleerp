@@ -204,6 +204,11 @@ function SubscriptionPage() {
           Pagamento seguro via Mercado Pago — PIX, boleto ou cartão de crédito.
         </p>
 
+        <div className="mt-12">
+          <h2 className="mb-4 text-center text-xl font-semibold">Ofertas especiais</h2>
+          <PaymentOffers filterCode={offerCode} />
+        </div>
+
         <Card className="mx-auto mt-12 max-w-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">

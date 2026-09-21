@@ -204,6 +204,7 @@ export type Database = {
       customers: {
         Row: {
           address: string | null
+          client_uuid: string | null
           company_id: string
           created_at: string
           document: string | null
@@ -216,6 +217,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          client_uuid?: string | null
           company_id: string
           created_at?: string
           document?: string | null
@@ -228,6 +230,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          client_uuid?: string | null
           company_id?: string
           created_at?: string
           document?: string | null
@@ -717,6 +720,38 @@ export type Database = {
           },
         ]
       }
+      payment_link_events: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          payment_link_id: string
+          ref: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind?: string
+          payment_link_id: string
+          ref?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          payment_link_id?: string
+          ref?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_link_events_payment_link_id_fkey"
+            columns: ["payment_link_id"]
+            isOneToOne: false
+            referencedRelation: "payment_links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payment_links: {
         Row: {
           active: boolean
@@ -1104,6 +1139,7 @@ export type Database = {
       }
       sales: {
         Row: {
+          client_uuid: string | null
           company_id: string
           created_at: string
           customer_id: string | null
@@ -1117,6 +1153,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          client_uuid?: string | null
           company_id: string
           created_at?: string
           customer_id?: string | null
@@ -1130,6 +1167,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          client_uuid?: string | null
           company_id?: string
           created_at?: string
           customer_id?: string | null
@@ -1438,6 +1476,20 @@ export type Database = {
           created_at: string
           email: string
           user_id: string
+        }[]
+      }
+      payment_link_stats: {
+        Args: never
+        Returns: {
+          active: boolean
+          amount_cents: number
+          approved: number
+          clicks: number
+          code: string
+          id: string
+          kind: string
+          name: string
+          revenue_cents: number
         }[]
       }
       platform_company_overview: {

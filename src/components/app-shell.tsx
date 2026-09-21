@@ -22,6 +22,7 @@ import {
   DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CommandPalette } from "@/components/command-palette";
+import { OfflineIndicator } from "@/components/offline-indicator";
 import { cn } from "@/lib/utils";
 
 type NavItem = { to: string; label: string; icon: React.ComponentType<{ className?: string }> };
@@ -278,6 +279,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
 
           <div className="flex items-center gap-1">
+            <OfflineIndicator className="mr-1" />
             <ReleaseBell userId={user?.id} />
             <Button
               variant="ghost"

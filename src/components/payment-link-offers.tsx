@@ -64,8 +64,6 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
 
   const buy = async (code: string) => {
     setBusy(code);
-    const offer = rows.find((o) => o.code === code);
-    if (offer) void trackOfferClick(offer.id, "checkout");
     try {
       const res = await checkout({ data: { code } });
       window.location.href = res.url;

@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { FALLBACK_PLAN, formatBRL, priceForCycle } from "@/lib/billing";
-import { usePublicOffers, offerAccessLabel, trackOfferClick } from "@/components/payment-link-offers";
+import { usePublicOffers, offerAccessLabel } from "@/components/payment-link-offers";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -235,13 +235,7 @@ function LandingPage() {
                         <p className="mt-2 text-sm text-muted-foreground">{o.description}</p>
                       )}
                       <Button asChild className="mt-8 w-full" size="lg">
-                        <Link
-                          to="/assinatura"
-                          search={{ oferta: o.code }}
-                          onClick={() => void trackOfferClick(o.id, "home")}
-                        >
-                          Quero esta oferta
-                        </Link>
+                        <Link to="/assinatura" search={{ oferta: o.code }}>Quero esta oferta</Link>
                       </Button>
                     </div>
                   ))}

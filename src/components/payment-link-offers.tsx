@@ -40,6 +40,19 @@ export function offerAccessLabel(o: PublicOffer) {
   return o.kind === "lifetime" ? "Pagamento único — acesso definitivo" : `Acesso por ${o.duration_days} dias`;
 }
 
+/** Registra um clique no link de pagamento (usado nas métricas da aba Licenças). */
+export async function trackOfferClick(paymentLinkId: string, ref?: string) {
+  try {
+    await supabase.from("payment_link_events").insert({
+      payment_link_id: paymentLinkId,
+      kind: "click",
+      ref: ref ?? (typeof window !== "undefined" ? window.location.pathname : null),
+    });
+  } catch {
+    /* métrica não pode quebrar a jornada de compra */
+  }
+}
+
 /** Cartões de oferta com botão de pagamento (usuário autenticado). */
 export function PaymentOffers({ filterCode }: { filterCode?: string | undefined }) {
   const offers = usePublicOffers(false);
@@ -51,6 +64,8 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
 
   const buy = async (code: string) => {
     setBusy(code);
+    const offer = rows.find((o) => o.code === code);
+    if (offer) void trackOfferClick(offer.id, "checkout");
     try {
       const res = await checkout({ data: { code } });
       window.location.href = res.url;

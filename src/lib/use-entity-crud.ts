@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
+import { enqueue, isNetworkError, isOffline, newClientUuid } from "@/lib/offline-queue";
 
 type TableName = "products" | "customers" | "suppliers" | "employees" | "debtors" | "payables" | "invoices";
 
@@ -33,17 +34,55 @@ export function useEntityCrud<T extends { id: string }>(table: TableName, orderB
         update: (p: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<{ error: Error | null }> };
         insert: (p: Record<string, unknown>) => Promise<{ error: Error | null }>;
       };
-      if (editing) {
-        const { error } = await client.update(payload).eq("id", editing.id);
-        if (error) throw error;
-      } else {
-        const { error } = await client.insert({ ...payload, company_id: currentCompanyId });
-        if (error) throw error;
+      const offlineFallback = () => {
+        if (editing) {
+          enqueue({
+            kind: "update",
+            table,
+            rowId: editing.id,
+            label: `Edição em ${table}`,
+            payload,
+          });
+        } else {
+          enqueue({
+            kind: "insert",
+            table,
+            label: `Novo registro em ${table}`,
+            payload: {
+              ...payload,
+              company_id: currentCompanyId,
+              ...(table === "customers" ? { client_uuid: newClientUuid() } : {}),
+            },
+          });
+        }
+        return "queued" as const;
+      };
+
+      if (isOffline()) return offlineFallback();
+
+      try {
+        if (editing) {
+          const { error } = await client.update(payload).eq("id", editing.id);
+          if (error) throw error;
+        } else {
+          const { error } = await client.insert({ ...payload, company_id: currentCompanyId });
+          if (error) throw error;
+        }
+        return "sent" as const;
+      } catch (err) {
+        if (isNetworkError(err)) return offlineFallback();
+        throw err;
       }
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
       qc.invalidateQueries({ queryKey: [table, currentCompanyId] });
-      toast.success(editing ? "Registro atualizado" : "Registro criado");
+      if (result === "queued") {
+        toast.success("Salvo no aparelho", {
+          description: "Sem internet agora — enviaremos assim que a conexão voltar.",
+        });
+      } else {
+        toast.success(editing ? "Registro atualizado" : "Registro criado");
+      }
       setFormOpen(false);
       setEditing(null);
     },

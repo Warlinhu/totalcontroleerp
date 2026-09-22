@@ -20,6 +20,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import {
+  enqueue,
+  isNetworkError,
+  isOffline,
+  newClientUuid,
+  submitSale,
+  type SalePayload,
+} from "@/lib/offline-queue";
 
 export const Route = createFileRoute("/_authenticated/app/pos")({
   head: () => ({ meta: [{ title: "PDV — TotalControle ERP" }] }),

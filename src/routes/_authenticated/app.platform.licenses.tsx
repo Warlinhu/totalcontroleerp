@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { PaymentLinksAdmin } from "@/components/payment-links-admin";
+import { PaymentLinksStats } from "@/components/payment-links-stats";
 
 export const Route = createFileRoute("/_authenticated/app/platform/licenses")({
   head: () => ({
@@ -192,8 +193,9 @@ function LicensesPage() {
         <Stat label="Receita por licenças" value={formatBRL(revenue)} />
       </div>
 
-      <div>
+      <div className="space-y-6">
         <PaymentLinksAdmin userId={user!.id} />
+        <PaymentLinksStats />
       </div>
 
       <Card className="overflow-hidden">

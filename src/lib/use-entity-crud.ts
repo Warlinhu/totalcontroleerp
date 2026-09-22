@@ -111,7 +111,9 @@ export function useEntityCrud<T extends { id: string }>(table: TableName, orderB
     openCreate: () => { setEditing(null); setFormOpen(true); },
     openEdit: (row: T) => { setEditing(row); setFormOpen(true); },
     setFormOpen: (o: boolean) => { setFormOpen(o); if (!o) setEditing(null); },
-    save: (payload: Record<string, unknown>) => save.mutateAsync(payload),
+    save: async (payload: Record<string, unknown>) => {
+      await save.mutateAsync(payload);
+    },
     remove: (row: T) => remove.mutateAsync(row),
   };
 }

@@ -33,6 +33,7 @@
     "files": [
       "electron/**/*",
       "public/icon-512.png",
+      "build/icon.ico",
       "package.json"
     ],
     "directories": {
@@ -47,7 +48,7 @@
           ]
         }
       ],
-      "icon": "public/icon-512.png",
+      "icon": "build/icon.ico",
       "artifactName": "TotalControleERP-Setup.${ext}"
     },
     "nsis": {

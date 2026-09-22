@@ -116,7 +116,10 @@ export function newClientUuid(): string {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-export function enqueue(item: Omit<OutboxItem, "id" | "createdAt" | "tries">): OutboxItem {
+type DistributiveOmit<T, K extends keyof never> = T extends unknown ? Omit<T, K> : never;
+export type NewOutboxItem = DistributiveOmit<OutboxItem, "id" | "createdAt" | "tries">;
+
+export function enqueue(item: NewOutboxItem): OutboxItem {
   const full = {
     ...item,
     id: newClientUuid(),

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Loader2, Sparkles } from "lucide-react";
@@ -40,6 +40,19 @@ export function offerAccessLabel(o: PublicOffer) {
   return o.kind === "lifetime" ? "Pagamento único — acesso definitivo" : `Acesso por ${o.duration_days} dias`;
 }
 
+/** Registra um clique no link de pagamento (usado nas métricas da aba Licenças). */
+export async function trackOfferClick(paymentLinkId: string, ref?: string) {
+  try {
+    await supabase.from("payment_link_events").insert({
+      payment_link_id: paymentLinkId,
+      kind: "click",
+      ref: ref ?? (typeof window !== "undefined" ? window.location.pathname : null),
+    });
+  } catch {
+    /* métrica não pode quebrar a jornada de compra */
+  }
+}
+
 /** Cartões de oferta com botão de pagamento (usuário autenticado). */
 export function PaymentOffers({ filterCode }: { filterCode?: string | undefined }) {
   const offers = usePublicOffers(false);
@@ -47,6 +60,13 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
   const [busy, setBusy] = useState<string | null>(null);
 
   const rows = (offers.data ?? []).filter((o) => !filterCode || o.code === filterCode);
+
+  // Conta o clique quando alguém abre o link da oferta (/assinatura?oferta=codigo).
+  const trackedId = filterCode ? (offers.data ?? []).find((o) => o.code === filterCode)?.id : undefined;
+  useEffect(() => {
+    if (trackedId) void trackOfferClick(trackedId, "link");
+  }, [trackedId]);
+
   if (rows.length === 0) return null;
 
   const buy = async (code: string) => {

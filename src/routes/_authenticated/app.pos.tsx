@@ -20,6 +20,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import {
+  enqueue,
+  isNetworkError,
+  isOffline,
+  newClientUuid,
+  submitSale,
+  type SalePayload,
+} from "@/lib/offline-queue";
 
 export const Route = createFileRoute("/_authenticated/app/pos")({
   head: () => ({ meta: [{ title: "PDV — TotalControle ERP" }] }),
@@ -221,113 +229,68 @@ function PosPage() {
     }
 
     setSaving(true);
+    const customer = customersQ.data?.find((c) => c.id === customerId) ?? null;
+    const payload: SalePayload = {
+      company_id: currentCompanyId,
+      customer_id: customerId || null,
+      customer_name: customer?.name ?? null,
+      customer_document: (customer as { document?: string | null } | null)?.document ?? null,
+      subtotal,
+      discount,
+      total,
+      sold_by: user?.id ?? null,
+      notes: notes.trim() || null,
+      client_uuid: newClientUuid(),
+      sold_at: new Date().toISOString(),
+      items: cart.map((i) => ({
+        product_id: i.product_id,
+        description: i.description,
+        quantity: i.quantity,
+        unit_price: i.unit_price,
+        discount: i.discount,
+      })),
+      payments: payments.map((p) => ({
+        key: p.key,
+        method: p.method,
+        amount: p.amount,
+        due_date: p.due_date ?? null,
+      })),
+    };
+
+    const saveLocally = () => {
+      enqueue({
+        kind: "sale",
+        label: `Venda ${brl(total)}`,
+        payload,
+      });
+      toast.success("Venda salva no aparelho", {
+        description: "Sem internet agora — será enviada automaticamente quando a conexão voltar.",
+      });
+      setLastReceipt({
+        sale: { id: payload.client_uuid, sold_at: payload.sold_at, total },
+        items: cart,
+        payments,
+        customer,
+      });
+      reset();
+    };
+
     try {
-      // Insert sale
-      const saleInsert = await supabase
-        .from("sales")
-        .insert({
-          company_id: currentCompanyId,
-          customer_id: customerId || null,
-          subtotal,
-          discount,
-          total,
-          sold_by: user?.id ?? null,
-          notes: notes.trim() || null,
-        })
-        .select("id, sold_at, total")
-        .single();
-      if (saleInsert.error) throw saleInsert.error;
-      const sale = saleInsert.data as { id: string; sold_at: string; total: number };
-
-      // Insert items
-      const { error: itemsErr } = await supabase.from("sale_items").insert(
-        cart.map((i) => ({
-          sale_id: sale.id,
-          company_id: currentCompanyId,
-          product_id: i.product_id,
-          description: i.description,
-          quantity: i.quantity,
-          unit_price: i.unit_price,
-          discount: i.discount,
-          total: i.quantity * i.unit_price - i.discount,
-        })),
-      );
-      if (itemsErr) throw itemsErr;
-
-      // For nota payments: create debtor + installment, then link
-      const notaPayments = payments.filter((p) => p.method === "nota");
-      const otherPayments = payments.filter((p) => p.method !== "nota");
-
-      let debtorInstallmentIds: Record<string, string> = {};
-      if (notaPayments.length > 0 && customerId) {
-        const customer = customersQ.data?.find((c) => c.id === customerId);
-        const totalNota = notaPayments.reduce((a, p) => a + p.amount, 0);
-        const debtorIns = await supabase
-          .from("debtors")
-          .insert({
-            company_id: currentCompanyId,
-            customer_id: customerId,
-            name: customer?.name ?? "Cliente",
-            document: customer?.document ?? null,
-            description: `Venda #${sale.id.slice(0, 8)}`,
-            total_amount: totalNota,
-          })
-          .select("id")
-          .single();
-        if (debtorIns.error) throw debtorIns.error;
-        const debtorId = (debtorIns.data as { id: string }).id;
-
-        const instRes = await supabase
-          .from("debtor_installments")
-          .insert(
-            notaPayments.map((p, idx) => ({
-              debtor_id: debtorId,
-              company_id: currentCompanyId,
-              sequence: idx + 1,
-              due_date:
-                p.due_date ??
-                new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10),
-              amount: p.amount,
-              status: "pending" as const,
-            })),
-          )
-          .select("id");
-        if (instRes.error) throw instRes.error;
-        const ids = (instRes.data as { id: string }[]).map((r) => r.id);
-        debtorInstallmentIds = Object.fromEntries(
-          notaPayments.map((p, idx) => [p.key, ids[idx]]),
-        );
+      if (isOffline()) {
+        saveLocally();
+        return;
       }
-
-      // Insert payments
-      const paymentRows = [
-        ...otherPayments.map((p) => ({
-          sale_id: sale.id,
-          company_id: currentCompanyId,
-          method: p.method,
-          amount: p.amount,
-          status: "settled" as const,
-          settled_at: new Date().toISOString(),
-        })),
-        ...notaPayments.map((p) => ({
-          sale_id: sale.id,
-          company_id: currentCompanyId,
-          method: "nota" as const,
-          amount: p.amount,
-          status: "pending" as const,
-          debtor_installment_id: debtorInstallmentIds[p.key],
-        })),
-      ];
-      const { error: payErr } = await supabase.from("sale_payments").insert(paymentRows);
-      if (payErr) throw payErr;
-
+      const sale = await submitSale(payload);
       toast.success("Venda registrada!");
-      const customer = customersQ.data?.find((c) => c.id === customerId) ?? null;
       setLastReceipt({ sale, items: cart, payments, customer });
       reset();
       qc.invalidateQueries();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Falha ao registrar venda");
+      if (isNetworkError(e)) {
+        saveLocally();
+      } else {
+        toast.error(e instanceof Error ? e.message : "Falha ao registrar venda");
+      }
     } finally {
       setSaving(false);
     }

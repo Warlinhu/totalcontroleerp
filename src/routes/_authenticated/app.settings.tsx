@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Loader2, Search, CheckCircle2, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
+import { enqueue, isNetworkError, isOffline } from "@/lib/offline-queue";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -82,20 +83,32 @@ function SettingsPage() {
       return;
     }
     setBusy(true);
-    const { error } = await supabase
-      .from("companies")
-      .update({
-        name: name.trim(),
-        document: document ? onlyDigits(document) : null,
-        email: email.trim() || null,
-        phone: phone ? onlyDigits(phone) : null,
-      })
-      .eq("id", current.company_id);
-    setBusy(false);
-    if (error) toast.error(error.message);
-    else {
+    const payload = {
+      name: name.trim(),
+      document: document ? onlyDigits(document) : null,
+      email: email.trim() || null,
+      phone: phone ? onlyDigits(phone) : null,
+    };
+    const queueLocally = () => {
+      enqueue({ kind: "update", table: "companies", rowId: current.company_id, label: "Configurações da empresa", payload });
+      toast.success("Salvo no aparelho", {
+        description: "Sem internet agora — enviaremos assim que a conexão voltar.",
+      });
+    };
+    try {
+      if (isOffline()) {
+        queueLocally();
+        return;
+      }
+      const { error } = await supabase.from("companies").update(payload).eq("id", current.company_id);
+      if (error) throw error;
       toast.success("Empresa atualizada");
       await refresh();
+    } catch (err) {
+      if (isNetworkError(err)) queueLocally();
+      else toast.error(err instanceof Error ? err.message : "Falha ao salvar");
+    } finally {
+      setBusy(false);
     }
   };
 

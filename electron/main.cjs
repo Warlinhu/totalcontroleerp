@@ -25,7 +25,10 @@ const path = require("path");
 
 const APP_URL =
   process.env.APP_URL || "https://totalcontroleerp.lovable.app";
-const ICON_PATH = path.join(__dirname, "..", "public", "icon-512.png");
+const ICON_PATH =
+  process.platform === "win32"
+    ? path.join(__dirname, "..", "build", "icon.ico")
+    : path.join(__dirname, "..", "public", "icon-512.png");
 
 let mainWindow = null;
 let tray = null;

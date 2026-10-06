@@ -6,5 +6,5 @@
 Verification: page titles and icon formats validated; Android branding tested with generated resource fixture; preview reports build OK. Native installation and browser end-to-end tests remain unverified because browser binaries are unavailable here. Publication and a newly generated installer are required to update existing installations.
 
 ## Generic desktop icon correction
-- [ ] Move native icons out of the globally ignored build folder and update packaging/runtime paths.
-- [ ] Verify official icon inclusion and bump native version for updates.
+- [x] Move native icons out of the globally ignored build folder and update packaging/runtime paths.
+- [x] Verify official icon inclusion and bump native version for updates.

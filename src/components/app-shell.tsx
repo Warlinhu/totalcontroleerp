@@ -338,7 +338,24 @@ function ReleaseBell({ userId }: { userId: string | undefined }) {
       return ((rel.data ?? []) as { id: string; version: string; title: string; summary: string; category: string; published_at: string }[])
         .filter((r) => !readIds.has(r.id));
     },
+    refetchInterval: 5 * 60_000,
+    refetchOnWindowFocus: true,
   });
+
+  useEffect(() => {
+    if (!userId || unread.length === 0) return;
+    const latest = unread[0];
+    const key = `tc-release-toast-${userId}`;
+    if (localStorage.getItem(key) === latest.id) return;
+    localStorage.setItem(key, latest.id);
+    import("sonner").then(({ toast }) =>
+      toast(`Novidade v${latest.version}: ${latest.title}`, {
+        description: latest.summary,
+        duration: 10000,
+        action: { label: "Ver", onClick: () => navigate({ to: "/app/changelog" }) },
+      }),
+    );
+  }, [unread, userId, navigate]);
 
   return (
     <Popover>

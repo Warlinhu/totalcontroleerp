@@ -18,9 +18,8 @@ import { PaymentOffers } from "@/components/payment-link-offers";
 export const Route = createFileRoute("/_authenticated/assinatura/")({
   head: () => ({
     meta: [
-      { title: "Assinatura — TotalControle ERP" },
-      { name: "description", content: "Ative sua assinatura do TotalControle ERP e libere o sistema completo." },
-    ],
+      { title: "Assinatura — Total Controle - Gestão Empresarial" },
+      { name: "description", content: "Ative sua assinatura do Total Controle - Gestão Empresarial e libere o sistema completo." }, { property: "og:title", content: "Assinatura — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Ative sua assinatura do Total Controle - Gestão Empresarial e libere o sistema completo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ],
   }),
   validateSearch: (search: Record<string, unknown>): { oferta?: string } =>
     typeof search["oferta"] === "string" ? { oferta: search["oferta"] as string } : {},

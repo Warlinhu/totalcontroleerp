@@ -20,7 +20,7 @@ import {
 } from "@/lib/br-document";
 
 export const Route = createFileRoute("/_authenticated/app/settings")({
-  head: () => ({ meta: [{ title: "Configurações — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Configurações — Total Controle - Gestão Empresarial" }, { name: "description", content: "Configurações — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Configurações — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Configurações — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: SettingsPage,
 });
 

@@ -25,11 +25,10 @@ export const Route = createFileRoute("/_authenticated/app/platform/payments")({
       { property: "og:title", content: "Pagamentos — Painel do desenvolvedor" },
       {
         property: "og:description",
-        content: "Vincule a conta de recebimento ao sistema de assinaturas do TotalControle ERP.",
+        content: "Vincule a conta de recebimento ao sistema de assinaturas do Total Controle - Gestão Empresarial.",
       },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
+      { name: "twitter:card", content: "summary" }, { name: "description", content: "Pagamentos — Painel do desenvolvedor." }, ],
   }),
   component: PlatformPaymentsPage,
 });

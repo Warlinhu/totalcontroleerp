@@ -12,7 +12,7 @@ type Customer = {
 };
 
 export const Route = createFileRoute("/_authenticated/app/customers")({
-  head: () => ({ meta: [{ title: "Clientes — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Clientes — Total Controle - Gestão Empresarial" }, { name: "description", content: "Clientes — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Clientes — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Clientes — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: CustomersPage,
 });
 

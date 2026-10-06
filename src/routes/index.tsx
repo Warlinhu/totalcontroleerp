@@ -14,9 +14,9 @@ import { usePublicOffers, offerAccessLabel } from "@/components/payment-link-off
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "TotalControle ERP — Gestão completa por R$ 50/mês" },
+      { title: "Total Controle - Gestão Empresarial" },
       { name: "description", content: "PDV, financeiro, notas fiscais e relatórios num só sistema. Primeiro mês com 10% off e plano anual com 10% de desconto. Web, desktop e Android." },
-      { property: "og:title", content: "TotalControle ERP — Gestão completa por R$ 50/mês" },
+      { property: "og:title", content: "Total Controle - Gestão Empresarial" },
       { property: "og:description", content: "PDV, contas a receber e pagar, notas fiscais e dashboard. Comece hoje com desconto." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,9 +28,9 @@ export const Route = createFileRoute("/")({
 const GH_RELEASE = "https://github.com/Warlinhu/totalcontroleerp/releases/latest/download";
 
 const DOWNLOADS = [
-  { id: "windows", label: "Windows", ext: ".zip", size: "App x64", icon: Monitor, href: `${GH_RELEASE}/TotalControleERP-windows-x64.zip`, hint: "Baixe, extraia o .zip e abra TotalControleERP.exe." },
-  { id: "macos", label: "macOS", ext: ".zip", size: "Intel x64", icon: Apple, href: `${GH_RELEASE}/TotalControleERP-macos-x64.zip`, hint: "Baixe, extraia o .zip e mova o app para Aplicativos." },
-  { id: "linux", label: "Linux", ext: ".tar.gz", size: "App x64", icon: Monitor, href: `${GH_RELEASE}/TotalControleERP-linux-x64.tar.gz`, hint: "Baixe, extraia o arquivo e execute TotalControleERP." },
+  { id: "windows", label: "Windows", ext: ".exe", size: "Windows x64", icon: Monitor, href: `${GH_RELEASE}/TotalControleERP-Setup.exe`, hint: "Baixe e execute o instalador para atualizar o aplicativo." },
+  { id: "macos", label: "macOS", ext: ".zip", size: "Intel x64", icon: Apple, href: `${GH_RELEASE}/TotalControleERP-mac.zip`, hint: "Baixe, extraia o .zip e mova o app para Aplicativos." },
+  { id: "linux", label: "Linux", ext: ".AppImage", size: "Linux x64", icon: Monitor, href: `${GH_RELEASE}/TotalControleERP-linux.AppImage`, hint: "Baixe, permita a execução e abra o aplicativo." },
   { id: "android", label: "Android", ext: ".apk", size: "Debug build", icon: Smartphone, href: `${GH_RELEASE}/TotalControleERP.apk`, hint: "Baixe o APK no celular e permita instalar de fontes externas." },
 ];
 
@@ -129,7 +129,7 @@ function LandingPage() {
         <section className="border-t bg-muted/30 py-16">
           <div className="mx-auto max-w-3xl px-4 text-center">
             <h2 className="text-3xl font-bold tracking-tight">
-              Se você se reconhece aqui, o TotalControle foi feito pra você
+              Se você se reconhece aqui, o Total Controle - Gestão Empresarial foi feito pra você
             </h2>
             <ul className="mx-auto mt-8 grid max-w-xl gap-3 text-left">
               {PAINS.map((p) => (
@@ -321,7 +321,7 @@ function LandingPage() {
       </main>
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} TotalControle ERP
+        © {new Date().getFullYear()} Total Controle - Gestão Empresarial
       </footer>
     </div>
   );

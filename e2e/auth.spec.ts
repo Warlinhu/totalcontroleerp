@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Autenticação", () => {
   test("landing mostra a chamada e leva ao login", async ({ page }) => {
     await page.goto("/");
-    await expect(page).toHaveTitle(/TotalControle/i);
+    await expect(page).toHaveTitle(/Total Controle - Gestão Empresarial/i);
     await page.getByRole("link", { name: /entrar|começar|acessar/i }).first().click();
     await expect(page).toHaveURL(/\/auth/);
   });

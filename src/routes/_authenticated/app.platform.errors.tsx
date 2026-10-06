@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/_authenticated/app/platform/errors")({
-  head: () => ({ meta: [{ title: "Painel de erros — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Painel de erros — Total Controle - Gestão Empresarial" }, { name: "description", content: "Painel de erros — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Painel de erros — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Painel de erros — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: PlatformErrorsPage,
 });
 

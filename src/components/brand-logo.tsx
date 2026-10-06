@@ -8,7 +8,7 @@ type Props = {
   alt?: string;
 };
 
-export function BrandLogo({ className, alt = "TotalControle ERP" }: Props) {
+export function BrandLogo({ className, alt = "Total Controle - Gestão Empresarial" }: Props) {
   return (
     <img
       src={logoAsset.url}

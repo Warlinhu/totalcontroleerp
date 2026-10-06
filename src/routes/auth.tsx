@@ -23,9 +23,8 @@ export const Route = createFileRoute("/auth")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Entrar — TotalControle ERP" },
-      { name: "description", content: "Acesse sua conta no TotalControle ERP." },
-    ],
+      { title: "Entrar — Total Controle - Gestão Empresarial" },
+      { name: "description", content: "Acesse sua conta no Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Entrar — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Acesse sua conta no Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ],
   }),
   component: AuthPage,
 });
@@ -109,7 +108,7 @@ function AuthPage() {
           <div className="mx-auto mb-2 flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-hero p-3 shadow-elegant">
             <BrandLogo className="h-full w-full object-contain" />
           </div>
-          <CardTitle className="text-2xl">TotalControle ERP</CardTitle>
+          <CardTitle className="text-2xl">Total Controle - Gestão Empresarial</CardTitle>
           <CardDescription>Acesse sua conta para continuar</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

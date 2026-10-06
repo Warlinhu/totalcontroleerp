@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/app/platform/companies")({
-  head: () => ({ meta: [{ title: "Empresas cadastradas — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Empresas cadastradas — Total Controle - Gestão Empresarial" }, { name: "description", content: "Empresas cadastradas — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Empresas cadastradas — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Empresas cadastradas — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: PlatformCompaniesPage,
 });
 

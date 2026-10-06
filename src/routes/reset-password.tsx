@@ -11,9 +11,8 @@ import { BrandLogo } from "@/components/brand-logo";
 export const Route = createFileRoute("/reset-password")({
   head: () => ({
     meta: [
-      { title: "Nova senha — TotalControle ERP" },
-      { name: "description", content: "Defina uma nova senha para sua conta." },
-    ],
+      { title: "Nova senha — Total Controle - Gestão Empresarial" },
+      { name: "description", content: "Defina uma nova senha para sua conta." }, { property: "og:title", content: "Nova senha — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Defina uma nova senha para sua conta." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ],
   }),
   component: ResetPasswordPage,
 });

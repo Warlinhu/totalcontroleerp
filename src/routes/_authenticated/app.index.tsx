@@ -16,7 +16,7 @@ import {
 import { ShoppingCart, TrendingUp, Users, Package } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/app/")({
-  head: () => ({ meta: [{ title: "Dashboard — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Dashboard — Total Controle - Gestão Empresarial" }, { name: "description", content: "Dashboard — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Dashboard — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Dashboard — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: Dashboard,
 });
 

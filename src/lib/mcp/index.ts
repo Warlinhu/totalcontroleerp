@@ -8,10 +8,10 @@ const projectRef = import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "project-ref-unse
 
 export default defineMcp({
   name: "totalcontrole-erp-mcp",
-  title: "TotalControle ERP",
+  title: "Total Controle - Gestão Empresarial",
   version: "0.1.0",
   instructions:
-    "Ferramentas para consultar dados do TotalControle ERP (clientes, produtos, devedores e vendas). Todas as chamadas respeitam as regras de acesso por empresa do usuário conectado.",
+    "Ferramentas para consultar dados do Total Controle - Gestão Empresarial (clientes, produtos, devedores e vendas). Todas as chamadas respeitam as regras de acesso por empresa do usuário conectado.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",

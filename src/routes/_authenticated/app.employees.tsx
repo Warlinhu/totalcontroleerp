@@ -15,7 +15,7 @@ type Employee = {
 };
 
 export const Route = createFileRoute("/_authenticated/app/employees")({
-  head: () => ({ meta: [{ title: "Funcionários — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Funcionários — Total Controle - Gestão Empresarial" }, { name: "description", content: "Funcionários — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Funcionários — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Funcionários — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: EmployeesPage,
 });
 

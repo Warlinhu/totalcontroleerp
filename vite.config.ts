@@ -21,8 +21,8 @@ export default defineConfig({
         filename: "sw.js",
         devOptions: { enabled: false },
         manifest: {
-          name: "TotalControle ERP",
-          short_name: "TotalControle",
+          name: "Total Controle - Gestão Empresarial",
+          short_name: "Total Controle - Gestão Empresarial",
           description: "Sistema de gestão empresarial multi-tenant.",
           theme_color: "#1e40af",
           background_color: "#0b1220",

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 
 export const Route = createFileRoute("/_authenticated/app/platform/admins")({
-  head: () => ({ meta: [{ title: "Administradores da plataforma — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Administradores da plataforma — Total Controle - Gestão Empresarial" }, { name: "description", content: "Administradores da plataforma — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Administradores da plataforma — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Administradores da plataforma — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: PlatformAdminsPage,
 });
 

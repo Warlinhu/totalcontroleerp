@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 export const Route = createFileRoute("/_authenticated/app/changelog")({
-  head: () => ({ meta: [{ title: "Novidades — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Novidades — Total Controle - Gestão Empresarial" }, { name: "description", content: "Novidades — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Novidades — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Novidades — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: ChangelogPage,
 });
 
@@ -58,7 +58,7 @@ function ChangelogPage() {
       <div>
         <h1 className="text-2xl font-semibold">Novidades e correções</h1>
         <p className="text-sm text-muted-foreground">
-          Histórico de atualizações do TotalControle ERP.
+          Histórico de atualizações do Total Controle - Gestão Empresarial.
         </p>
       </div>
 

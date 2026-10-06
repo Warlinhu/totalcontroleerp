@@ -86,7 +86,7 @@ function Consent() {
           </div>
           <CardTitle>Conectar {clientName} à sua conta</CardTitle>
           <CardDescription>
-            Isso permite que {clientName} use o TotalControle ERP em seu nome, respeitando suas empresas e permissões.
+            Isso permite que {clientName} use o Total Controle - Gestão Empresarial em seu nome, respeitando suas empresas e permissões.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

@@ -36,7 +36,7 @@ const NFE_PORTAL_URL = "https://www.nfe.fazenda.gov.br/portal/principal.aspx";
 const today = () => new Date().toISOString().slice(0, 10);
 
 export const Route = createFileRoute("/_authenticated/app/invoices")({
-  head: () => ({ meta: [{ title: "Notas Fiscais — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Notas Fiscais — Total Controle - Gestão Empresarial" }, { name: "description", content: "Notas Fiscais — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Notas Fiscais — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Notas Fiscais — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: InvoicesPage,
 });
 

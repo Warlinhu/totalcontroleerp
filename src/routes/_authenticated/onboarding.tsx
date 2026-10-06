@@ -16,7 +16,7 @@ const searchSchema = z.object({ invite: z.string().optional() });
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
   validateSearch: searchSchema,
-  head: () => ({ meta: [{ title: "Bem-vindo — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Bem-vindo — Total Controle - Gestão Empresarial" }, { name: "description", content: "Bem-vindo — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Bem-vindo — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Bem-vindo — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: OnboardingPage,
 });
 

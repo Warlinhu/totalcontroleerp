@@ -20,9 +20,8 @@ import {
 export const Route = createFileRoute("/_authenticated/app/platform/finance")({
   head: () => ({
     meta: [
-      { title: "Financeiro da plataforma — TotalControle ERP" },
-      { name: "description", content: "Receita das assinaturas, despesas dedutíveis e sugestão de apuração de impostos." },
-    ],
+      { title: "Financeiro da plataforma — Total Controle - Gestão Empresarial" },
+      { name: "description", content: "Receita das assinaturas, despesas dedutíveis e sugestão de apuração de impostos." }, { property: "og:title", content: "Financeiro da plataforma — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Receita das assinaturas, despesas dedutíveis e sugestão de apuração de impostos." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ],
   }),
   component: PlatformFinancePage,
 });

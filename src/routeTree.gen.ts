@@ -9,58 +9,52 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as McpRouteImport } from './routes/mcp'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
-import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
-import { Route as AuthenticatedAssinaturaIndexRouteImport } from './routes/_authenticated/assinatura.index'
-import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
-import { Route as AuthenticatedAssinaturaRetornoRouteImport } from './routes/_authenticated/assinatura.retorno'
-import { Route as AuthenticatedAppTeamRouteImport } from './routes/_authenticated/app.team'
-import { Route as AuthenticatedAppSupportRouteImport } from './routes/_authenticated/app.support'
-import { Route as AuthenticatedAppSuppliersRouteImport } from './routes/_authenticated/app.suppliers'
-import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
-import { Route as AuthenticatedAppRemindersRouteImport } from './routes/_authenticated/app.reminders'
-import { Route as AuthenticatedAppProductsRouteImport } from './routes/_authenticated/app.products'
-import { Route as AuthenticatedAppPosRouteImport } from './routes/_authenticated/app.pos'
-import { Route as AuthenticatedAppPayablesRouteImport } from './routes/_authenticated/app.payables'
-import { Route as AuthenticatedAppInvoicesRouteImport } from './routes/_authenticated/app.invoices'
-import { Route as AuthenticatedAppEmployeesRouteImport } from './routes/_authenticated/app.employees'
-import { Route as AuthenticatedAppDebtorsRouteImport } from './routes/_authenticated/app.debtors'
-import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers'
-import { Route as AuthenticatedAppChangelogRouteImport } from './routes/_authenticated/app.changelog'
-import { Route as AuthenticatedAppAssistRouteImport } from './routes/_authenticated/app.assist'
-import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
-import { Route as ApiPublicWebhooksMercadopagoRouteImport } from './routes/api/public/webhooks/mercadopago'
-import { Route as AuthenticatedAppPlatformTicketsRouteImport } from './routes/_authenticated/app.platform.tickets'
-import { Route as AuthenticatedAppPlatformReleasesRouteImport } from './routes/_authenticated/app.platform.releases'
-import { Route as AuthenticatedAppPlatformPaymentsRouteImport } from './routes/_authenticated/app.platform.payments'
-import { Route as AuthenticatedAppPlatformLicensesRouteImport } from './routes/_authenticated/app.platform.licenses'
-import { Route as AuthenticatedAppPlatformFinanceRouteImport } from './routes/_authenticated/app.platform.finance'
-import { Route as AuthenticatedAppPlatformErrorsRouteImport } from './routes/_authenticated/app.platform.errors'
-import { Route as AuthenticatedAppPlatformCompaniesRouteImport } from './routes/_authenticated/app.platform.companies'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
+import { Route as AuthenticatedAppAssistRouteImport } from './routes/_authenticated/app.assist'
+import { Route as AuthenticatedAppChangelogRouteImport } from './routes/_authenticated/app.changelog'
+import { Route as AuthenticatedAppCustomersRouteImport } from './routes/_authenticated/app.customers'
+import { Route as AuthenticatedAppDebtorsRouteImport } from './routes/_authenticated/app.debtors'
+import { Route as AuthenticatedAppEmployeesRouteImport } from './routes/_authenticated/app.employees'
+import { Route as AuthenticatedAppInvoicesRouteImport } from './routes/_authenticated/app.invoices'
+import { Route as AuthenticatedAppPayablesRouteImport } from './routes/_authenticated/app.payables'
+import { Route as AuthenticatedAppPosRouteImport } from './routes/_authenticated/app.pos'
+import { Route as AuthenticatedAppProductsRouteImport } from './routes/_authenticated/app.products'
+import { Route as AuthenticatedAppRemindersRouteImport } from './routes/_authenticated/app.reminders'
+import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
+import { Route as AuthenticatedAppSuppliersRouteImport } from './routes/_authenticated/app.suppliers'
+import { Route as AuthenticatedAppSupportRouteImport } from './routes/_authenticated/app.support'
+import { Route as AuthenticatedAppTeamRouteImport } from './routes/_authenticated/app.team'
+import { Route as AuthenticatedAssinaturaIndexRouteImport } from './routes/_authenticated/assinatura.index'
+import { Route as AuthenticatedAssinaturaRetornoRouteImport } from './routes/_authenticated/assinatura.retorno'
 import { Route as AuthenticatedAppPlatformAdminsRouteImport } from './routes/_authenticated/app.platform.admins'
+import { Route as AuthenticatedAppPlatformCompaniesRouteImport } from './routes/_authenticated/app.platform.companies'
+import { Route as AuthenticatedAppPlatformErrorsRouteImport } from './routes/_authenticated/app.platform.errors'
+import { Route as AuthenticatedAppPlatformFinanceRouteImport } from './routes/_authenticated/app.platform.finance'
+import { Route as AuthenticatedAppPlatformLicensesRouteImport } from './routes/_authenticated/app.platform.licenses'
+import { Route as AuthenticatedAppPlatformPaymentsRouteImport } from './routes/_authenticated/app.platform.payments'
+import { Route as AuthenticatedAppPlatformReleasesRouteImport } from './routes/_authenticated/app.platform.releases'
+import { Route as AuthenticatedAppPlatformTicketsRouteImport } from './routes/_authenticated/app.platform.tickets'
+import { Route as ApiPublicWebhooksMercadopagoRouteImport } from './routes/api/public/webhooks/mercadopago'
 
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -68,97 +62,85 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const Char91DotmcpChar93ListToolsRoute =
   Char91DotmcpChar93ListToolsRouteImport.update({
     id: '/.mcp/list-tools',
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedAssinaturaIndexRoute =
-  AuthenticatedAssinaturaIndexRouteImport.update({
-    id: '/assinatura/',
-    path: '/assinatura/',
-    getParentRoute: () => AuthenticatedRouteRoute,
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const AuthenticatedAssinaturaRetornoRoute =
-  AuthenticatedAssinaturaRetornoRouteImport.update({
-    id: '/assinatura/retorno',
-    path: '/assinatura/retorno',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedAppTeamRoute = AuthenticatedAppTeamRouteImport.update({
-  id: '/team',
-  path: '/team',
+const AuthenticatedAppAssistRoute = AuthenticatedAppAssistRouteImport.update({
+  id: '/assist',
+  path: '/assist',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const AuthenticatedAppSupportRoute = AuthenticatedAppSupportRouteImport.update({
-  id: '/support',
-  path: '/support',
+const AuthenticatedAppChangelogRoute =
+  AuthenticatedAppChangelogRouteImport.update({
+    id: '/changelog',
+    path: '/changelog',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppCustomersRoute =
+  AuthenticatedAppCustomersRouteImport.update({
+    id: '/customers',
+    path: '/customers',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppDebtorsRoute = AuthenticatedAppDebtorsRouteImport.update({
+  id: '/debtors',
+  path: '/debtors',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const AuthenticatedAppSuppliersRoute =
-  AuthenticatedAppSuppliersRouteImport.update({
-    id: '/suppliers',
-    path: '/suppliers',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppSettingsRoute =
-  AuthenticatedAppSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppRemindersRoute =
-  AuthenticatedAppRemindersRouteImport.update({
-    id: '/reminders',
-    path: '/reminders',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppProductsRoute =
-  AuthenticatedAppProductsRouteImport.update({
-    id: '/products',
-    path: '/products',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppPosRoute = AuthenticatedAppPosRouteImport.update({
-  id: '/pos',
-  path: '/pos',
-  getParentRoute: () => AuthenticatedAppRoute,
-} as any)
-const AuthenticatedAppPayablesRoute =
-  AuthenticatedAppPayablesRouteImport.update({
-    id: '/payables',
-    path: '/payables',
+const AuthenticatedAppEmployeesRoute =
+  AuthenticatedAppEmployeesRouteImport.update({
+    id: '/employees',
+    path: '/employees',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppInvoicesRoute =
@@ -167,85 +149,67 @@ const AuthenticatedAppInvoicesRoute =
     path: '/invoices',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
-const AuthenticatedAppEmployeesRoute =
-  AuthenticatedAppEmployeesRouteImport.update({
-    id: '/employees',
-    path: '/employees',
+const AuthenticatedAppPayablesRoute =
+  AuthenticatedAppPayablesRouteImport.update({
+    id: '/payables',
+    path: '/payables',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
-const AuthenticatedAppDebtorsRoute = AuthenticatedAppDebtorsRouteImport.update({
-  id: '/debtors',
-  path: '/debtors',
+const AuthenticatedAppPosRoute = AuthenticatedAppPosRouteImport.update({
+  id: '/pos',
+  path: '/pos',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const AuthenticatedAppCustomersRoute =
-  AuthenticatedAppCustomersRouteImport.update({
-    id: '/customers',
-    path: '/customers',
+const AuthenticatedAppProductsRoute =
+  AuthenticatedAppProductsRouteImport.update({
+    id: '/products',
+    path: '/products',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
-const AuthenticatedAppChangelogRoute =
-  AuthenticatedAppChangelogRouteImport.update({
-    id: '/changelog',
-    path: '/changelog',
+const AuthenticatedAppRemindersRoute =
+  AuthenticatedAppRemindersRouteImport.update({
+    id: '/reminders',
+    path: '/reminders',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
-const AuthenticatedAppAssistRoute = AuthenticatedAppAssistRouteImport.update({
-  id: '/assist',
-  path: '/assist',
+const AuthenticatedAppSettingsRoute =
+  AuthenticatedAppSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSuppliersRoute =
+  AuthenticatedAppSuppliersRouteImport.update({
+    id: '/suppliers',
+    path: '/suppliers',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppSupportRoute = AuthenticatedAppSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
   getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const Char91DotmcpChar93InvokeToolToolRoute =
-  Char91DotmcpChar93InvokeToolToolRouteImport.update({
-    id: '/.mcp/invoke-tool/$tool',
-    path: '/.mcp/invoke-tool/$tool',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedAppTeamRoute = AuthenticatedAppTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AuthenticatedAppRoute,
 } as any)
-const ApiPublicWebhooksMercadopagoRoute =
-  ApiPublicWebhooksMercadopagoRouteImport.update({
-    id: '/api/public/webhooks/mercadopago',
-    path: '/api/public/webhooks/mercadopago',
-    getParentRoute: () => rootRouteImport,
+const AuthenticatedAssinaturaIndexRoute =
+  AuthenticatedAssinaturaIndexRouteImport.update({
+    id: '/assinatura/',
+    path: '/assinatura/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedAppPlatformTicketsRoute =
-  AuthenticatedAppPlatformTicketsRouteImport.update({
-    id: '/platform/tickets',
-    path: '/platform/tickets',
-    getParentRoute: () => AuthenticatedAppRoute,
+const AuthenticatedAssinaturaRetornoRoute =
+  AuthenticatedAssinaturaRetornoRouteImport.update({
+    id: '/assinatura/retorno',
+    path: '/assinatura/retorno',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedAppPlatformReleasesRoute =
-  AuthenticatedAppPlatformReleasesRouteImport.update({
-    id: '/platform/releases',
-    path: '/platform/releases',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppPlatformPaymentsRoute =
-  AuthenticatedAppPlatformPaymentsRouteImport.update({
-    id: '/platform/payments',
-    path: '/platform/payments',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppPlatformLicensesRoute =
-  AuthenticatedAppPlatformLicensesRouteImport.update({
-    id: '/platform/licenses',
-    path: '/platform/licenses',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppPlatformFinanceRoute =
-  AuthenticatedAppPlatformFinanceRouteImport.update({
-    id: '/platform/finance',
-    path: '/platform/finance',
-    getParentRoute: () => AuthenticatedAppRoute,
-  } as any)
-const AuthenticatedAppPlatformErrorsRoute =
-  AuthenticatedAppPlatformErrorsRouteImport.update({
-    id: '/platform/errors',
-    path: '/platform/errors',
+const AuthenticatedAppPlatformAdminsRoute =
+  AuthenticatedAppPlatformAdminsRouteImport.update({
+    id: '/platform/admins',
+    path: '/platform/admins',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
 const AuthenticatedAppPlatformCompaniesRoute =
@@ -254,11 +218,47 @@ const AuthenticatedAppPlatformCompaniesRoute =
     path: '/platform/companies',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
-const AuthenticatedAppPlatformAdminsRoute =
-  AuthenticatedAppPlatformAdminsRouteImport.update({
-    id: '/platform/admins',
-    path: '/platform/admins',
+const AuthenticatedAppPlatformErrorsRoute =
+  AuthenticatedAppPlatformErrorsRouteImport.update({
+    id: '/platform/errors',
+    path: '/platform/errors',
     getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlatformFinanceRoute =
+  AuthenticatedAppPlatformFinanceRouteImport.update({
+    id: '/platform/finance',
+    path: '/platform/finance',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlatformLicensesRoute =
+  AuthenticatedAppPlatformLicensesRouteImport.update({
+    id: '/platform/licenses',
+    path: '/platform/licenses',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlatformPaymentsRoute =
+  AuthenticatedAppPlatformPaymentsRouteImport.update({
+    id: '/platform/payments',
+    path: '/platform/payments',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlatformReleasesRoute =
+  AuthenticatedAppPlatformReleasesRouteImport.update({
+    id: '/platform/releases',
+    path: '/platform/releases',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const AuthenticatedAppPlatformTicketsRoute =
+  AuthenticatedAppPlatformTicketsRouteImport.update({
+    id: '/platform/tickets',
+    path: '/platform/tickets',
+    getParentRoute: () => AuthenticatedAppRoute,
+  } as any)
+const ApiPublicWebhooksMercadopagoRoute =
+  ApiPublicWebhooksMercadopagoRouteImport.update({
+    id: '/api/public/webhooks/mercadopago',
+    path: '/api/public/webhooks/mercadopago',
+    getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -515,32 +515,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -550,32 +529,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/onboarding': {
-      id: '/_authenticated/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/app': {
-      id: '/_authenticated/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AuthenticatedAppRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/list-tools': {
@@ -585,116 +564,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/assinatura/': {
-      id: '/_authenticated/assinatura/'
-      path: '/assinatura'
-      fullPath: '/assinatura/'
-      preLoaderRoute: typeof AuthenticatedAssinaturaIndexRouteImport
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/app': {
+      id: '/_authenticated/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AuthenticatedAppRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/app/': {
       id: '/_authenticated/app/'
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/assinatura/retorno': {
-      id: '/_authenticated/assinatura/retorno'
-      path: '/assinatura/retorno'
-      fullPath: '/assinatura/retorno'
-      preLoaderRoute: typeof AuthenticatedAssinaturaRetornoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/app/team': {
-      id: '/_authenticated/app/team'
-      path: '/team'
-      fullPath: '/app/team'
-      preLoaderRoute: typeof AuthenticatedAppTeamRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/support': {
-      id: '/_authenticated/app/support'
-      path: '/support'
-      fullPath: '/app/support'
-      preLoaderRoute: typeof AuthenticatedAppSupportRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/suppliers': {
-      id: '/_authenticated/app/suppliers'
-      path: '/suppliers'
-      fullPath: '/app/suppliers'
-      preLoaderRoute: typeof AuthenticatedAppSuppliersRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/settings': {
-      id: '/_authenticated/app/settings'
-      path: '/settings'
-      fullPath: '/app/settings'
-      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/reminders': {
-      id: '/_authenticated/app/reminders'
-      path: '/reminders'
-      fullPath: '/app/reminders'
-      preLoaderRoute: typeof AuthenticatedAppRemindersRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/products': {
-      id: '/_authenticated/app/products'
-      path: '/products'
-      fullPath: '/app/products'
-      preLoaderRoute: typeof AuthenticatedAppProductsRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/pos': {
-      id: '/_authenticated/app/pos'
-      path: '/pos'
-      fullPath: '/app/pos'
-      preLoaderRoute: typeof AuthenticatedAppPosRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/payables': {
-      id: '/_authenticated/app/payables'
-      path: '/payables'
-      fullPath: '/app/payables'
-      preLoaderRoute: typeof AuthenticatedAppPayablesRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/invoices': {
-      id: '/_authenticated/app/invoices'
-      path: '/invoices'
-      fullPath: '/app/invoices'
-      preLoaderRoute: typeof AuthenticatedAppInvoicesRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/employees': {
-      id: '/_authenticated/app/employees'
-      path: '/employees'
-      fullPath: '/app/employees'
-      preLoaderRoute: typeof AuthenticatedAppEmployeesRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/debtors': {
-      id: '/_authenticated/app/debtors'
-      path: '/debtors'
-      fullPath: '/app/debtors'
-      preLoaderRoute: typeof AuthenticatedAppDebtorsRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/customers': {
-      id: '/_authenticated/app/customers'
-      path: '/customers'
-      fullPath: '/app/customers'
-      preLoaderRoute: typeof AuthenticatedAppCustomersRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
-    }
-    '/_authenticated/app/changelog': {
-      id: '/_authenticated/app/changelog'
-      path: '/changelog'
-      fullPath: '/app/changelog'
-      preLoaderRoute: typeof AuthenticatedAppChangelogRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/assist': {
@@ -704,67 +613,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppAssistRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
-    '/.mcp/invoke-tool/$tool': {
-      id: '/.mcp/invoke-tool/$tool'
-      path: '/.mcp/invoke-tool/$tool'
-      fullPath: '/.mcp/invoke-tool/$tool'
-      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/.lovable/oauth/consent': {
-      id: '/.lovable/oauth/consent'
-      path: '/.lovable/oauth/consent'
-      fullPath: '/.lovable/oauth/consent'
-      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/webhooks/mercadopago': {
-      id: '/api/public/webhooks/mercadopago'
-      path: '/api/public/webhooks/mercadopago'
-      fullPath: '/api/public/webhooks/mercadopago'
-      preLoaderRoute: typeof ApiPublicWebhooksMercadopagoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/app/platform/tickets': {
-      id: '/_authenticated/app/platform/tickets'
-      path: '/platform/tickets'
-      fullPath: '/app/platform/tickets'
-      preLoaderRoute: typeof AuthenticatedAppPlatformTicketsRouteImport
+    '/_authenticated/app/changelog': {
+      id: '/_authenticated/app/changelog'
+      path: '/changelog'
+      fullPath: '/app/changelog'
+      preLoaderRoute: typeof AuthenticatedAppChangelogRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/app/platform/releases': {
-      id: '/_authenticated/app/platform/releases'
-      path: '/platform/releases'
-      fullPath: '/app/platform/releases'
-      preLoaderRoute: typeof AuthenticatedAppPlatformReleasesRouteImport
+    '/_authenticated/app/customers': {
+      id: '/_authenticated/app/customers'
+      path: '/customers'
+      fullPath: '/app/customers'
+      preLoaderRoute: typeof AuthenticatedAppCustomersRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/app/platform/payments': {
-      id: '/_authenticated/app/platform/payments'
-      path: '/platform/payments'
-      fullPath: '/app/platform/payments'
-      preLoaderRoute: typeof AuthenticatedAppPlatformPaymentsRouteImport
+    '/_authenticated/app/debtors': {
+      id: '/_authenticated/app/debtors'
+      path: '/debtors'
+      fullPath: '/app/debtors'
+      preLoaderRoute: typeof AuthenticatedAppDebtorsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/app/platform/licenses': {
-      id: '/_authenticated/app/platform/licenses'
-      path: '/platform/licenses'
-      fullPath: '/app/platform/licenses'
-      preLoaderRoute: typeof AuthenticatedAppPlatformLicensesRouteImport
+    '/_authenticated/app/employees': {
+      id: '/_authenticated/app/employees'
+      path: '/employees'
+      fullPath: '/app/employees'
+      preLoaderRoute: typeof AuthenticatedAppEmployeesRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/app/platform/finance': {
-      id: '/_authenticated/app/platform/finance'
-      path: '/platform/finance'
-      fullPath: '/app/platform/finance'
-      preLoaderRoute: typeof AuthenticatedAppPlatformFinanceRouteImport
+    '/_authenticated/app/invoices': {
+      id: '/_authenticated/app/invoices'
+      path: '/invoices'
+      fullPath: '/app/invoices'
+      preLoaderRoute: typeof AuthenticatedAppInvoicesRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/app/platform/errors': {
-      id: '/_authenticated/app/platform/errors'
-      path: '/platform/errors'
-      fullPath: '/app/platform/errors'
-      preLoaderRoute: typeof AuthenticatedAppPlatformErrorsRouteImport
+    '/_authenticated/app/payables': {
+      id: '/_authenticated/app/payables'
+      path: '/payables'
+      fullPath: '/app/payables'
+      preLoaderRoute: typeof AuthenticatedAppPayablesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/pos': {
+      id: '/_authenticated/app/pos'
+      path: '/pos'
+      fullPath: '/app/pos'
+      preLoaderRoute: typeof AuthenticatedAppPosRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/products': {
+      id: '/_authenticated/app/products'
+      path: '/products'
+      fullPath: '/app/products'
+      preLoaderRoute: typeof AuthenticatedAppProductsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/reminders': {
+      id: '/_authenticated/app/reminders'
+      path: '/reminders'
+      fullPath: '/app/reminders'
+      preLoaderRoute: typeof AuthenticatedAppRemindersRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/settings': {
+      id: '/_authenticated/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/suppliers': {
+      id: '/_authenticated/app/suppliers'
+      path: '/suppliers'
+      fullPath: '/app/suppliers'
+      preLoaderRoute: typeof AuthenticatedAppSuppliersRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/support': {
+      id: '/_authenticated/app/support'
+      path: '/support'
+      fullPath: '/app/support'
+      preLoaderRoute: typeof AuthenticatedAppSupportRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/team': {
+      id: '/_authenticated/app/team'
+      path: '/team'
+      fullPath: '/app/team'
+      preLoaderRoute: typeof AuthenticatedAppTeamRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/assinatura/': {
+      id: '/_authenticated/assinatura/'
+      path: '/assinatura'
+      fullPath: '/assinatura/'
+      preLoaderRoute: typeof AuthenticatedAssinaturaIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/assinatura/retorno': {
+      id: '/_authenticated/assinatura/retorno'
+      path: '/assinatura/retorno'
+      fullPath: '/assinatura/retorno'
+      preLoaderRoute: typeof AuthenticatedAssinaturaRetornoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/app/platform/admins': {
+      id: '/_authenticated/app/platform/admins'
+      path: '/platform/admins'
+      fullPath: '/app/platform/admins'
+      preLoaderRoute: typeof AuthenticatedAppPlatformAdminsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
     '/_authenticated/app/platform/companies': {
@@ -774,12 +732,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppPlatformCompaniesRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
-    '/_authenticated/app/platform/admins': {
-      id: '/_authenticated/app/platform/admins'
-      path: '/platform/admins'
-      fullPath: '/app/platform/admins'
-      preLoaderRoute: typeof AuthenticatedAppPlatformAdminsRouteImport
+    '/_authenticated/app/platform/errors': {
+      id: '/_authenticated/app/platform/errors'
+      path: '/platform/errors'
+      fullPath: '/app/platform/errors'
+      preLoaderRoute: typeof AuthenticatedAppPlatformErrorsRouteImport
       parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/platform/finance': {
+      id: '/_authenticated/app/platform/finance'
+      path: '/platform/finance'
+      fullPath: '/app/platform/finance'
+      preLoaderRoute: typeof AuthenticatedAppPlatformFinanceRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/platform/licenses': {
+      id: '/_authenticated/app/platform/licenses'
+      path: '/platform/licenses'
+      fullPath: '/app/platform/licenses'
+      preLoaderRoute: typeof AuthenticatedAppPlatformLicensesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/platform/payments': {
+      id: '/_authenticated/app/platform/payments'
+      path: '/platform/payments'
+      fullPath: '/app/platform/payments'
+      preLoaderRoute: typeof AuthenticatedAppPlatformPaymentsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/platform/releases': {
+      id: '/_authenticated/app/platform/releases'
+      path: '/platform/releases'
+      fullPath: '/app/platform/releases'
+      preLoaderRoute: typeof AuthenticatedAppPlatformReleasesRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/_authenticated/app/platform/tickets': {
+      id: '/_authenticated/app/platform/tickets'
+      path: '/platform/tickets'
+      fullPath: '/app/platform/tickets'
+      preLoaderRoute: typeof AuthenticatedAppPlatformTicketsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
+    '/api/public/webhooks/mercadopago': {
+      id: '/api/public/webhooks/mercadopago'
+      path: '/api/public/webhooks/mercadopago'
+      fullPath: '/api/public/webhooks/mercadopago'
+      preLoaderRoute: typeof ApiPublicWebhooksMercadopagoRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }

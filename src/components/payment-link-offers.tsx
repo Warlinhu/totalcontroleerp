@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, ShieldCheck, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { formatBRL } from "@/lib/billing";
@@ -83,20 +83,35 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
   };
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-5 sm:grid-cols-2">
       {rows.map((o) => (
-        <div key={o.id} className="rounded-2xl border bg-card p-6">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <h3 className="font-semibold">{o.name}</h3>
-            {o.kind === "lifetime" && <Badge>Definitivo</Badge>}
+        <div
+          key={o.id}
+          className={`relative overflow-hidden rounded-2xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md ${
+            o.highlight ? "border-primary/50 ring-1 ring-primary/30" : ""
+          }`}
+        >
+          {o.highlight && (
+            <div className="absolute right-0 top-0 rounded-bl-xl bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary-foreground">
+              Oferta especial
+            </div>
+          )}
+          <div className="flex items-center gap-2 pr-24">
+            <Sparkles className="h-4 w-4 shrink-0 text-primary" />
+            <h3 className="truncate font-semibold">{o.name}</h3>
+            {o.kind === "lifetime" && <Badge variant="secondary">Definitivo</Badge>}
           </div>
-          <div className="mt-3 text-3xl font-bold">{formatBRL(o.amount_cents)}</div>
-          <p className="mt-1 text-sm text-muted-foreground">{offerAccessLabel(o)}</p>
-          {o.description && <p className="mt-2 text-sm text-muted-foreground">{o.description}</p>}
-          <Button className="mt-6 w-full" disabled={busy === o.code} onClick={() => buy(o.code)}>
+          <div className="mt-4 flex items-baseline gap-2">
+            <span className="text-4xl font-extrabold tracking-tight">{formatBRL(o.amount_cents)}</span>
+          </div>
+          <p className="mt-1 text-sm font-medium text-primary">{offerAccessLabel(o)}</p>
+          {o.description && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{o.description}</p>}
+          <Button className="mt-6 w-full" size="lg" disabled={busy === o.code} onClick={() => buy(o.code)}>
             {busy === o.code ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Abrindo...</> : "Pagar agora"}
           </Button>
+          <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
+            <ShieldCheck className="h-3.5 w-3.5" /> Pagamento seguro via Mercado Pago
+          </p>
         </div>
       ))}
     </div>

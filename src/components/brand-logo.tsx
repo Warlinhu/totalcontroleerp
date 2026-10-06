@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/totalcontrole-logo.png.asset.json";
+import logoAsset from "@/assets/totalcontrole-logo-nova.png.asset.json";
 import { cn } from "@/lib/utils";
 
 type Props = {

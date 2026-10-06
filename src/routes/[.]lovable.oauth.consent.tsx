@@ -23,6 +23,14 @@ function oauth(): SupabaseOAuth {
 }
 
 export const Route = createFileRoute("/.lovable/oauth/consent")({
+  head: () => ({ meta: [
+    { title: "Autorizar conexão — Total Controle - Gestão Empresarial" },
+    { name: "description", content: "Autorize uma conexão à sua conta no Total Controle - Gestão Empresarial." },
+    { property: "og:title", content: "Autorizar conexão — Total Controle - Gestão Empresarial" },
+    { property: "og:description", content: "Autorize uma conexão à sua conta no Total Controle - Gestão Empresarial." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }),
   ssr: false,
   validateSearch: (s: Record<string, unknown>) => ({
     authorization_id: typeof s.authorization_id === "string" ? s.authorization_id : "",

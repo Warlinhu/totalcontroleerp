@@ -128,7 +128,7 @@ function OnboardingPage() {
             <CardDescription>
               {search.invite
                 ? "Ou crie uma nova empresa ao invés de aceitar o convite."
-                : "Vamos configurar sua primeira empresa no TotalControle."}
+                : "Vamos configurar sua primeira empresa no Total Controle - Gestão Empresarial."}
             </CardDescription>
           </CardHeader>
           <CardContent>

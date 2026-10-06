@@ -168,7 +168,7 @@ function SubscriptionPage() {
           <div className="mb-10 text-center">
             <Badge className="mb-4">Acesso bloqueado</Badge>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ative sua assinatura para usar o TotalControle
+              Ative sua assinatura para usar o Total Controle - Gestão Empresarial
             </h1>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
               Um único pagamento libera todas as suas empresas, em todos os dispositivos.

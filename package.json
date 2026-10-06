@@ -1,6 +1,6 @@
 {
   "name": "tanstack_start_ts",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Aplicativo Total Controle - Gestão Empresarial para web, desktop e Android.",
   "author": "Total Controle - Gestão Empresarial <contato@totalcontroleerp.app>",
   "homepage": "https://totalcontroleerp.lovable.app",
@@ -20,9 +20,9 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "electron:dev": "electron .",
-    "electron:pack:win": "electron-packager . TotalControleERP --platform=win32 --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase --icon=build/icon.ico",
+    "electron:pack:win": "electron-packager . TotalControleERP --platform=win32 --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase --icon=electron/icons/icon.ico",
     "electron:pack:linux": "electron-packager . TotalControleERP --platform=linux --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase --icon=public/icon-512.png",
-    "electron:pack:mac": "electron-packager . TotalControleERP --platform=darwin --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase --icon=build/icon.icns",
+    "electron:pack:mac": "electron-packager . TotalControleERP --platform=darwin --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase --icon=electron/icons/icon.icns",
     "cap:sync": "cap sync android",
     "cap:apk": "cd android && ./gradlew assembleDebug"
   },
@@ -33,9 +33,9 @@
     "files": [
       "electron/**/*",
       "public/icon-512.png",
-      "build/icon.ico",
+      "electron/icons/icon.ico",
       "package.json",
-      "build/icon.icns"
+      "electron/icons/icon.icns"
     ],
     "directories": {
       "output": "installers/release"
@@ -49,7 +49,7 @@
           ]
         }
       ],
-      "icon": "build/icon.ico",
+      "icon": "electron/icons/icon.ico",
       "artifactName": "TotalControleERP-Setup.${ext}"
     },
     "nsis": {
@@ -68,7 +68,7 @@
         "dmg",
         "zip"
       ],
-      "icon": "build/icon.icns",
+      "icon": "electron/icons/icon.icns",
       "category": "public.app-category.business",
       "artifactName": "TotalControleERP-mac.${ext}"
     },

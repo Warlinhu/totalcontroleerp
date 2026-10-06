@@ -10,6 +10,6 @@
 <!-- LOVABLE:END -->
 
 ## Native branding
-- Derive browser and native icons from the same current brand asset; keep generated ICO/ICNS and Android launcher resources in source control so CI does not require image tooling.
+- Derive browser and native icons from the same current brand asset; keep generated ICO/ICNS under electron/icons (never the globally ignored build directory) and Android launcher resources in source control so CI does not require image tooling.
 - Preserve native app IDs, repository URLs and release filenames when changing display branding to retain update compatibility.
 - Apply Android launcher resources after Capacitor sync and prevent remote page titles from overriding the Electron window title.

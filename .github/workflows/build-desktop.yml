@@ -23,6 +23,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci --no-audit --no-fund --legacy-peer-deps
+      - name: Verify official desktop icons
+        run: node scripts/verify-desktop-brand.cjs
       - name: Build installer (NSIS) + publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,6 +39,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci --no-audit --no-fund --legacy-peer-deps
+      - name: Verify official desktop icons
+        run: node scripts/verify-desktop-brand.cjs
       - name: Build dmg/zip + publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -52,6 +56,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
       - run: npm ci --no-audit --no-fund --legacy-peer-deps
+      - name: Verify official desktop icons
+        run: node scripts/verify-desktop-brand.cjs
       - name: Build AppImage/deb + publish
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

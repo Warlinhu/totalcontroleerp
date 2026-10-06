@@ -29,7 +29,7 @@ const APP_URL =
   process.env.APP_URL || "https://totalcontroleerp.lovable.app";
 const ICON_PATH =
   process.platform === "win32"
-    ? path.join(__dirname, "..", "build", "icon.ico")
+    ? path.join(__dirname, "icons", "icon.ico")
     : path.join(__dirname, "..", "public", "icon-512.png");
 
 let mainWindow = null;
@@ -144,7 +144,7 @@ function showWindow() {
 function createTray() {
   try {
     const icon = nativeImage.createFromPath(ICON_PATH);
-    tray = new Tray(icon.isEmpty() ? nativeImage.createEmpty() : icon);
+    tray = new Tray(icon.isEmpty() ? nativeImage.createFromPath(path.join(__dirname, "..", "public", "icon-512.png")) : icon);
     tray.setToolTip("Total Controle - Gestão Empresarial");
     const menu = Menu.buildFromTemplate([
       { label: "Abrir Total Controle - Gestão Empresarial", click: () => showWindow() },

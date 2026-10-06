@@ -30,7 +30,7 @@ import {
 } from "@/lib/offline-queue";
 
 export const Route = createFileRoute("/_authenticated/app/pos")({
-  head: () => ({ meta: [{ title: "PDV — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "PDV — Total Controle - Gestão Empresarial" }, { name: "description", content: "PDV — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "PDV — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "PDV — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: PosPage,
 });
 

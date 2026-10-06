@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/_authenticated/app/assist")({
-  head: () => ({ meta: [{ title: "Assistente — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Assistente — Total Controle - Gestão Empresarial" }, { name: "description", content: "Assistente — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Assistente — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Assistente — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: AssistPage,
 });
 

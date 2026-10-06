@@ -12,7 +12,7 @@ type Supplier = {
 };
 
 export const Route = createFileRoute("/_authenticated/app/suppliers")({
-  head: () => ({ meta: [{ title: "Fornecedores — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Fornecedores — Total Controle - Gestão Empresarial" }, { name: "description", content: "Fornecedores — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Fornecedores — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Fornecedores — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: SuppliersPage,
 });
 

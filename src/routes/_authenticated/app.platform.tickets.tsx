@@ -20,7 +20,7 @@ import {
 } from "./app.support";
 
 export const Route = createFileRoute("/_authenticated/app/platform/tickets")({
-  head: () => ({ meta: [{ title: "Chamados da plataforma — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Chamados da plataforma — Total Controle - Gestão Empresarial" }, { name: "description", content: "Chamados da plataforma — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Chamados da plataforma — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Chamados da plataforma — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: PlatformTicketsPage,
 });
 

@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/app/platform/releases")({
-  head: () => ({ meta: [{ title: "Publicar releases — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Publicar releases — Total Controle - Gestão Empresarial" }, { name: "description", content: "Publicar releases — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Publicar releases — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Publicar releases — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: ReleasesAdmin,
 });
 

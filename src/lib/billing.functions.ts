@@ -62,10 +62,10 @@ export const createCheckout = createServerFn({ method: "POST" })
     const origin = new URL(getRequest().url).origin;
     const title =
       data.cycle === "yearly"
-        ? "TotalControle ERP — Plano anual (12 meses)"
+        ? "Total Controle - Gestão Empresarial — Plano anual (12 meses)"
         : firstPurchase
-          ? "TotalControle ERP — 1º mês promocional"
-          : "TotalControle ERP — Mensalidade";
+          ? "Total Controle - Gestão Empresarial — 1º mês promocional"
+          : "Total Controle - Gestão Empresarial — Mensalidade";
 
     const res = await fetch("https://api.mercadopago.com/checkout/preferences", {
       method: "POST",
@@ -306,7 +306,7 @@ export const createLinkCheckout = createServerFn({ method: "POST" })
         items: [
           {
             id: link.code,
-            title: `TotalControle ERP — ${link.name}`,
+            title: `Total Controle - Gestão Empresarial — ${link.name}`,
             description: link.description ?? undefined,
             quantity: 1,
             currency_id: link.currency,

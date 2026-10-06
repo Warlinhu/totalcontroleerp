@@ -18,9 +18,8 @@ import { PaymentOffers } from "@/components/payment-link-offers";
 export const Route = createFileRoute("/_authenticated/assinatura/")({
   head: () => ({
     meta: [
-      { title: "Assinatura — TotalControle ERP" },
-      { name: "description", content: "Ative sua assinatura do TotalControle ERP e libere o sistema completo." },
-    ],
+      { title: "Assinatura — Total Controle - Gestão Empresarial" },
+      { name: "description", content: "Ative sua assinatura do Total Controle - Gestão Empresarial e libere o sistema completo." }, { property: "og:title", content: "Assinatura — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Ative sua assinatura do Total Controle - Gestão Empresarial e libere o sistema completo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ],
   }),
   validateSearch: (search: Record<string, unknown>): { oferta?: string } =>
     typeof search["oferta"] === "string" ? { oferta: search["oferta"] as string } : {},
@@ -169,7 +168,7 @@ function SubscriptionPage() {
           <div className="mb-10 text-center">
             <Badge className="mb-4">Acesso bloqueado</Badge>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ative sua assinatura para usar o TotalControle
+              Ative sua assinatura para usar o Total Controle - Gestão Empresarial
             </h1>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
               Um único pagamento libera todas as suas empresas, em todos os dispositivos.

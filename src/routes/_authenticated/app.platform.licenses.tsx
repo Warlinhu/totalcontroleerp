@@ -19,9 +19,8 @@ import { PaymentLinksStats } from "@/components/payment-links-stats";
 export const Route = createFileRoute("/_authenticated/app/platform/licenses")({
   head: () => ({
     meta: [
-      { title: "Licenças — TotalControle ERP" },
-      { name: "description", content: "Gere e gerencie licenças de acesso manuais do TotalControle ERP." },
-    ],
+      { title: "Licenças — Total Controle - Gestão Empresarial" },
+      { name: "description", content: "Gere e gerencie licenças de acesso manuais do Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Licenças — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Gere e gerencie licenças de acesso manuais do Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ],
   }),
   component: LicensesPage,
 });

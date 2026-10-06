@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/_authenticated/app/support")({
-  head: () => ({ meta: [{ title: "Chamados — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Chamados — Total Controle - Gestão Empresarial" }, { name: "description", content: "Chamados — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Chamados — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Chamados — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: SupportPage,
 });
 

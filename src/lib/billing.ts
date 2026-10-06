@@ -9,7 +9,7 @@ export type BillingPlan = {
 
 export const FALLBACK_PLAN: BillingPlan = {
   code: "standard",
-  name: "TotalControle ERP",
+  name: "Total Controle - Gestão Empresarial",
   currency: "BRL",
   monthly_price_cents: 5000,
   first_month_discount_pct: 10,

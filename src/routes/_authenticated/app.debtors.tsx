@@ -21,7 +21,7 @@ type Debtor = {
 type InstallmentSummary = { debtor_id: string; total: number; paid: number; nextDue: string | null; overdue: number };
 
 export const Route = createFileRoute("/_authenticated/app/debtors")({
-  head: () => ({ meta: [{ title: "Devedores — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Devedores — Total Controle - Gestão Empresarial" }, { name: "description", content: "Devedores — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Devedores — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Devedores — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: DebtorsPage,
 });
 

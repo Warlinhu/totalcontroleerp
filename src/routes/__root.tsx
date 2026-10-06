@@ -89,24 +89,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "TotalControle ERP — Gestão empresarial simples" },
+      { title: "Total Controle - Gestão Empresarial" },
       { name: "description", content: "Sistema de gestão para pequenas e médias empresas: cadastros, financeiro, lembretes e monitoramento. Multi-empresa e seguro." },
       { name: "theme-color", content: "#2563EB" },
-      { property: "og:title", content: "TotalControle ERP — Gestão empresarial simples" },
+      { property: "og:title", content: "Total Controle - Gestão Empresarial" },
       { property: "og:description", content: "Sistema de gestão para pequenas e médias empresas: cadastros, financeiro, lembretes e monitoramento. Multi-empresa e seguro." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-title", content: "TotalControle" },
-      { name: "twitter:title", content: "TotalControle ERP — Gestão empresarial simples" },
+      { name: "apple-mobile-web-app-title", content: "Total Controle - Gestão Empresarial" },
+      { name: "twitter:title", content: "Total Controle - Gestão Empresarial" },
       { name: "twitter:description", content: "Sistema de gestão para pequenas e médias empresas: cadastros, financeiro, lembretes e monitoramento. Multi-empresa e seguro." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/U93JuO44RXTaHpkjORT4nBKKSro1/social-images/social-1783311947658-ChatGPT_Image_6_de_jul._de_2026,_01_25_35.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/U93JuO44RXTaHpkjORT4nBKKSro1/social-images/social-1783311947658-ChatGPT_Image_6_de_jul._de_2026,_01_25_35.webp" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "256x256" },
+      { rel: "icon", href: "/favicon.png", type: "image/png", sizes: "64x64" },
       { rel: "icon", href: "/icon-192.png", type: "image/png", sizes: "192x192" },
       { rel: "icon", href: "/icon-512.png", type: "image/png", sizes: "512x512" },
       { rel: "manifest", href: "/manifest.webmanifest" },
@@ -121,7 +118,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>

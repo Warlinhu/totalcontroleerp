@@ -1,8 +1,8 @@
 {
   "name": "tanstack_start_ts",
-  "version": "1.1.0",
-  "description": "Aplicativo TotalControle ERP para web, desktop e Android.",
-  "author": "TotalControle ERP <contato@totalcontroleerp.app>",
+  "version": "1.1.1",
+  "description": "Aplicativo Total Controle - Gestão Empresarial para web, desktop e Android.",
+  "author": "Total Controle - Gestão Empresarial <contato@totalcontroleerp.app>",
   "homepage": "https://totalcontroleerp.lovable.app",
   "private": true,
   "sideEffects": false,
@@ -20,21 +20,22 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "electron:dev": "electron .",
-    "electron:pack:win": "electron-packager . TotalControleERP --platform=win32 --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase",
-    "electron:pack:linux": "electron-packager . TotalControleERP --platform=linux --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase",
-    "electron:pack:mac": "electron-packager . TotalControleERP --platform=darwin --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase",
+    "electron:pack:win": "electron-packager . TotalControleERP --platform=win32 --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase --icon=build/icon.ico",
+    "electron:pack:linux": "electron-packager . TotalControleERP --platform=linux --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase --icon=public/icon-512.png",
+    "electron:pack:mac": "electron-packager . TotalControleERP --platform=darwin --arch=x64 --out=installers/release --overwrite --ignore=^/src --ignore=^/installers --ignore=^/supabase --icon=build/icon.icns",
     "cap:sync": "cap sync android",
     "cap:apk": "cd android && ./gradlew assembleDebug"
   },
   "build": {
     "appId": "com.totalcontrole.erp",
-    "productName": "TotalControle ERP",
-    "copyright": "© TotalControle ERP",
+    "productName": "Total Controle - Gestão Empresarial",
+    "copyright": "© Total Controle - Gestão Empresarial",
     "files": [
       "electron/**/*",
       "public/icon-512.png",
       "build/icon.ico",
-      "package.json"
+      "package.json",
+      "build/icon.icns"
     ],
     "directories": {
       "output": "installers/release"
@@ -57,17 +58,17 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "TotalControle ERP",
+      "shortcutName": "Total Controle - Gestão Empresarial",
       "runAfterFinish": true,
-      "menuCategory": "TotalControle",
-      "uninstallDisplayName": "TotalControle ERP"
+      "menuCategory": "Total Controle - Gestão Empresarial",
+      "uninstallDisplayName": "Total Controle - Gestão Empresarial"
     },
     "mac": {
       "target": [
         "dmg",
         "zip"
       ],
-      "icon": "public/icon-512.png",
+      "icon": "build/icon.icns",
       "category": "public.app-category.business",
       "artifactName": "TotalControleERP-mac.${ext}"
     },
@@ -76,7 +77,7 @@
         "AppImage",
         "deb"
       ],
-      "maintainer": "TotalControle ERP <contato@totalcontroleerp.app>",
+      "maintainer": "Total Controle - Gestão Empresarial <contato@totalcontroleerp.app>",
       "icon": "public/icon-512.png",
       "category": "Office",
       "artifactName": "TotalControleERP-linux.${ext}"

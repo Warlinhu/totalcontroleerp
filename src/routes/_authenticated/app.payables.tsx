@@ -24,7 +24,7 @@ type Payable = {
 type Summary = { total: number; paid: number; nextDue: string | null; overdue: number };
 
 export const Route = createFileRoute("/_authenticated/app/payables")({
-  head: () => ({ meta: [{ title: "Contas a pagar — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Contas a pagar — Total Controle - Gestão Empresarial" }, { name: "description", content: "Contas a pagar — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Contas a pagar — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Contas a pagar — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: PayablesPage,
 });
 

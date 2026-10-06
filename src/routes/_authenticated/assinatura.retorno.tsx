@@ -14,9 +14,8 @@ import { BrandLogo } from "@/components/brand-logo";
 export const Route = createFileRoute("/_authenticated/assinatura/retorno")({
   head: () => ({
     meta: [
-      { title: "Confirmando pagamento — TotalControle ERP" },
-      { name: "description", content: "Estamos confirmando seu pagamento junto ao provedor." },
-    ],
+      { title: "Confirmando pagamento — Total Controle - Gestão Empresarial" },
+      { name: "description", content: "Estamos confirmando seu pagamento junto ao provedor." }, { property: "og:title", content: "Confirmando pagamento — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Estamos confirmando seu pagamento junto ao provedor." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ],
   }),
   component: ReturnPage,
 });

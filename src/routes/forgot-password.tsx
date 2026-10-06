@@ -11,9 +11,8 @@ import { BrandLogo } from "@/components/brand-logo";
 export const Route = createFileRoute("/forgot-password")({
   head: () => ({
     meta: [
-      { title: "Recuperar senha — TotalControle ERP" },
-      { name: "description", content: "Recupere o acesso à sua conta do TotalControle ERP." },
-    ],
+      { title: "Recuperar senha — Total Controle - Gestão Empresarial" },
+      { name: "description", content: "Recupere o acesso à sua conta do Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Recuperar senha — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Recupere o acesso à sua conta do Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ],
   }),
   component: ForgotPasswordPage,
 });

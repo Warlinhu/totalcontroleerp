@@ -13,7 +13,7 @@ import {
 import { formatDate } from "@/components/installments";
 
 export const Route = createFileRoute("/_authenticated/app/reminders")({
-  head: () => ({ meta: [{ title: "Lembretes — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Lembretes — Total Controle - Gestão Empresarial" }, { name: "description", content: "Lembretes — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Lembretes — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Lembretes — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: RemindersPage,
 });
 

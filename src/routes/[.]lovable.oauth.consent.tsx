@@ -23,6 +23,14 @@ function oauth(): SupabaseOAuth {
 }
 
 export const Route = createFileRoute("/.lovable/oauth/consent")({
+  head: () => ({ meta: [
+    { title: "Autorizar conexão — Total Controle - Gestão Empresarial" },
+    { name: "description", content: "Autorize uma conexão à sua conta no Total Controle - Gestão Empresarial." },
+    { property: "og:title", content: "Autorizar conexão — Total Controle - Gestão Empresarial" },
+    { property: "og:description", content: "Autorize uma conexão à sua conta no Total Controle - Gestão Empresarial." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+  ] }),
   ssr: false,
   validateSearch: (s: Record<string, unknown>) => ({
     authorization_id: typeof s.authorization_id === "string" ? s.authorization_id : "",
@@ -86,7 +94,7 @@ function Consent() {
           </div>
           <CardTitle>Conectar {clientName} à sua conta</CardTitle>
           <CardDescription>
-            Isso permite que {clientName} use o TotalControle ERP em seu nome, respeitando suas empresas e permissões.
+            Isso permite que {clientName} use o Total Controle - Gestão Empresarial em seu nome, respeitando suas empresas e permissões.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

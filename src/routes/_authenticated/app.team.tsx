@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 
 export const Route = createFileRoute("/_authenticated/app/team")({
-  head: () => ({ meta: [{ title: "Equipe — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Equipe — Total Controle - Gestão Empresarial" }, { name: "description", content: "Equipe — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Equipe — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Equipe — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: TeamPage,
 });
 

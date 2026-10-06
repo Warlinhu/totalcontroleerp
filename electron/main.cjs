@@ -1,4 +1,4 @@
-// TotalControle ERP — Electron desktop shell.
+// Total Controle - Gestão Empresarial — Electron desktop shell.
 //
 // Comportamento como programa instalado no Windows:
 //  - Instalador NSIS (electron-builder) cria atalhos no Menu Iniciar, Área
@@ -22,6 +22,8 @@ const {
   session,
 } = require("electron");
 const path = require("path");
+
+const APP_NAME = "Total Controle - Gestão Empresarial";
 
 const APP_URL =
   process.env.APP_URL || "https://totalcontroleerp.lovable.app";
@@ -69,13 +71,19 @@ function createWindow(startHidden = false) {
     minHeight: 600,
     show: !startHidden,
     backgroundColor: "#0b1220",
-    title: "TotalControle ERP",
+    title: APP_NAME,
     icon: ICON_PATH,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
     },
+  });
+
+  // Keep the native title independent from remote or cached page titles.
+  mainWindow.on("page-title-updated", (event) => {
+    event.preventDefault();
+    mainWindow.setTitle(APP_NAME);
   });
 
   const OFFLINE_PAGE = path.join(__dirname, "offline.html");
@@ -137,9 +145,9 @@ function createTray() {
   try {
     const icon = nativeImage.createFromPath(ICON_PATH);
     tray = new Tray(icon.isEmpty() ? nativeImage.createEmpty() : icon);
-    tray.setToolTip("TotalControle ERP");
+    tray.setToolTip("Total Controle - Gestão Empresarial");
     const menu = Menu.buildFromTemplate([
-      { label: "Abrir TotalControle", click: () => showWindow() },
+      { label: "Abrir Total Controle - Gestão Empresarial", click: () => showWindow() },
       { type: "separator" },
       { label: "Verificar atualizações", click: () => checkForUpdates(true) },
       { type: "separator" },
@@ -170,7 +178,7 @@ function setupAutoUpdater() {
     checkForUpdates = (manual = false) => {
       if (manual) {
         new Notification({
-          title: "TotalControle ERP",
+          title: APP_NAME,
           body: "Verificação de atualização indisponível em modo desenvolvimento.",
           icon: ICON_PATH,
         }).show();
@@ -196,7 +204,7 @@ function setupAutoUpdater() {
   autoUpdater.on("checking-for-update", () => {
     if (manualCheckInProgress) {
       new Notification({
-        title: "TotalControle ERP",
+        title: APP_NAME,
         body: "Procurando atualizações…",
         icon: ICON_PATH,
         silent: true,
@@ -207,7 +215,7 @@ function setupAutoUpdater() {
   autoUpdater.on("update-available", (info) => {
     new Notification({
       title: "Atualização disponível",
-      body: `Baixando TotalControle ${info?.version ?? "nova versão"}…`,
+      body: `Baixando Total Controle - Gestão Empresarial ${info?.version ?? "nova versão"}…`,
       icon: ICON_PATH,
     }).show();
   });
@@ -215,7 +223,7 @@ function setupAutoUpdater() {
   autoUpdater.on("update-not-available", () => {
     if (manualCheckInProgress) {
       new Notification({
-        title: "TotalControle ERP",
+        title: APP_NAME,
         body: "Você já está na versão mais recente.",
         icon: ICON_PATH,
       }).show();
@@ -225,7 +233,7 @@ function setupAutoUpdater() {
 
   autoUpdater.on("download-progress", (p) => {
     if (tray) {
-      tray.setToolTip(`TotalControle ERP — baixando ${Math.round(p.percent)}%`);
+      tray.setToolTip(`Total Controle - Gestão Empresarial — baixando ${Math.round(p.percent)}%`);
     }
   });
 
@@ -234,10 +242,10 @@ function setupAutoUpdater() {
     try {
       session.defaultSession.clearCache().catch(() => {});
     } catch {}
-    if (tray) tray.setToolTip("TotalControle ERP");
+    if (tray) tray.setToolTip("Total Controle - Gestão Empresarial");
     const n = new Notification({
       title: "Atualização pronta para instalar",
-      body: `Clique para atualizar o TotalControle ERP para ${info?.version ?? "a nova versão"}.`,
+      body: `Clique para atualizar o Total Controle - Gestão Empresarial para ${info?.version ?? "a nova versão"}.`,
       icon: ICON_PATH,
     });
     n.on("click", () => {

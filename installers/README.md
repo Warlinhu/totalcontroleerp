@@ -1,4 +1,4 @@
-# Instaladores — TotalControle ERP
+# Instaladores — Total Controle - Gestão Empresarial
 
 O sistema pode ser distribuído em três formatos:
 

@@ -9,7 +9,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "app.lovable.totalcontrole",
-  appName: "TotalControle ERP",
+  appName: "Total Controle - Gestão Empresarial",
   webDir: "dist",
   server: {
     url: "https://totalcontroleerp.lovable.app",

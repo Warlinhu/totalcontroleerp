@@ -17,7 +17,7 @@ type Product = {
 };
 
 export const Route = createFileRoute("/_authenticated/app/products")({
-  head: () => ({ meta: [{ title: "Produtos/Serviços — TotalControle ERP" }] }),
+  head: () => ({ meta: [{ title: "Produtos/Serviços — Total Controle - Gestão Empresarial" }, { name: "description", content: "Produtos/Serviços — Total Controle - Gestão Empresarial." }, { property: "og:title", content: "Produtos/Serviços — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Produtos/Serviços — Total Controle - Gestão Empresarial." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ] }),
   component: ProductsPage,
 });
 

@@ -1,0 +1,4 @@
+INSERT INTO public.app_releases (version, title, summary, category) VALUES
+('1.5.0','Assinaturas, links de pagamento e CNPJ','Assinatura mensal/anual via Mercado Pago, links de pagamento com valor personalizado e licença definitiva, validação automática de CNPJ/CPF e edição de recebimentos e despesas já lançados.','feature'),
+('1.6.0','Modo offline e nova identidade visual','Vendas, clientes e configurações agora ficam salvos no aparelho sem internet e sincronizam sozinhos quando a conexão volta. Nova logo e novo ícone no app, no celular e no Windows.','feature')
+ON CONFLICT (version) DO NOTHING;

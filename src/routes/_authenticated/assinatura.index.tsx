@@ -178,6 +178,11 @@ function SubscriptionPage() {
           </div>
         )}
 
+        {offerCode ? (
+          <div className="mx-auto max-w-2xl">
+            <PaymentOffers filterCode={offerCode} />
+          </div>
+        ) : (
         <div className="grid gap-6 md:grid-cols-2">
           <PlanCard
             title="Mensal"

@@ -52,7 +52,6 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
   const [kind, setKind] = useState<"subscription" | "lifetime">("lifetime");
   const [days, setDays] = useState("365");
   const [description, setDescription] = useState("");
-  const [onHome, setOnHome] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const list = useQuery({
@@ -87,7 +86,7 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
       kind,
       amount_cents: cents,
       duration_days: dur,
-      show_on_home: onHome,
+      show_on_home: false,
       created_by: userId,
     });
     setSaving(false);
@@ -125,8 +124,7 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
             <Link2 className="h-5 w-5" /> Links de pagamento
           </CardTitle>
           <CardDescription>
-            Crie quantos links quiser, com valor próprio. Marque para aparecer na página inicial e
-            escolha entre acesso por período ou licença definitiva.
+            Crie links com valor próprio, acesso por período ou licença definitiva.
           </CardDescription>
         </div>
         <div className="flex gap-2">
@@ -141,7 +139,7 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
               <DialogHeader>
                 <DialogTitle>Novo link de pagamento</DialogTitle>
                 <DialogDescription>
-                  O valor definido aqui é o cobrado do cliente e o exibido na página inicial.
+                  O valor definido aqui aparece somente ao abrir o link específico.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid gap-4">
@@ -180,10 +178,6 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
                   <Label>Descrição (opcional)</Label>
                   <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Pagamento único, acesso para sempre" />
                 </div>
-                <div className="flex items-center justify-between rounded-lg border p-3">
-                  <div className="text-sm">Mostrar na página inicial</div>
-                  <Switch checked={onHome} onCheckedChange={setOnHome} />
-                </div>
               </div>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
@@ -200,7 +194,6 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
               <TableHead>Oferta</TableHead>
               <TableHead className="text-right">Valor</TableHead>
               <TableHead>Acesso</TableHead>
-              <TableHead>Página inicial</TableHead>
               <TableHead>Ativo</TableHead>
               <TableHead className="w-28 text-right">Ações</TableHead>
             </TableRow>
@@ -208,7 +201,7 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
           <TableBody>
             {rows.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="py-6 text-center text-sm text-muted-foreground">
+                <TableCell colSpan={5} className="py-6 text-center text-sm text-muted-foreground">
                   Nenhum link criado ainda.
                 </TableCell>
               </TableRow>
@@ -223,9 +216,6 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
                   {r.kind === "lifetime"
                     ? <Badge>Definitivo</Badge>
                     : <Badge variant="secondary">{r.duration_days} dias</Badge>}
-                </TableCell>
-                <TableCell>
-                  <Switch checked={r.show_on_home} onCheckedChange={(v) => patch(r.id, { show_on_home: v })} />
                 </TableCell>
                 <TableCell>
                   <Switch checked={r.active} onCheckedChange={(v) => patch(r.id, { active: v })} />

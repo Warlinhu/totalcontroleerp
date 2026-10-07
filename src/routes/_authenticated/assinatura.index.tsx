@@ -83,10 +83,11 @@ function SubscriptionPage() {
     queryKey: ["my-subscription", user?.id],
     enabled: !!user,
     queryFn: async () => {
+      if (!user) return null;
       const { data, error } = await supabase
         .from("subscriptions")
         .select("status, cycle, current_period_end, first_month_discount_used")
-        .eq("user_id", user!.id)
+        .eq("user_id", user.id)
         .maybeSingle();
       if (error) throw error;
       return data;
@@ -157,7 +158,7 @@ function SubscriptionPage() {
               </CardTitle>
               <CardDescription>
                 Seu acesso está liberado até{" "}
-                {new Date(subQ.data!.current_period_end!).toLocaleDateString("pt-BR")}.
+                {subQ.data?.current_period_end ? new Date(subQ.data.current_period_end).toLocaleDateString("pt-BR") : ""}.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -168,11 +169,11 @@ function SubscriptionPage() {
           <div className="mb-10 text-center">
             <Badge className="mb-4">Acesso bloqueado</Badge>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Ative sua assinatura para usar o Total Controle - Gestão Empresarial
+               {offerCode ? "Total Controle - Gestão Empresarial" : "Ative sua assinatura para usar o Total Controle - Gestão Empresarial"}
             </h1>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
               Um único pagamento libera todas as suas empresas, em todos os dispositivos.
-              Cancele quando quiser — sem fidelidade.
+               {!offerCode && " Cancele quando quiser — sem fidelidade."}
             </p>
           </div>
         )}
@@ -212,13 +213,6 @@ function SubscriptionPage() {
         <p className="mt-6 text-center text-xs text-muted-foreground">
           Pagamento seguro via Mercado Pago — PIX, boleto ou cartão de crédito.
         </p>
-
-        {!offerCode && (
-          <div className="mt-12">
-            <h2 className="mb-4 text-center text-xl font-semibold">Ofertas especiais</h2>
-            <PaymentOffers filterCode={offerCode} />
-          </div>
-        )}
 
         <Card className="mx-auto mt-12 max-w-md">
           <CardHeader>

@@ -20,15 +20,17 @@ export type PublicOffer = {
   highlight: boolean;
 };
 
-export function usePublicOffers(onlyHome: boolean) {
+export function usePublicOffers(filterCode?: string) {
   return useQuery({
-    queryKey: ["public-offers", onlyHome],
+    queryKey: ["public-offers", filterCode],
+    enabled: Boolean(filterCode),
     queryFn: async () => {
-      let q = supabase
+      if (!filterCode) return [];
+      const q = supabase
         .from("payment_links")
         .select("id, code, name, description, kind, amount_cents, duration_days, highlight")
-        .eq("active", true);
-      if (onlyHome) q = q.eq("show_on_home", true);
+        .eq("active", true)
+        .eq("code", filterCode);
       const { data, error } = await q.order("amount_cents", { ascending: true });
       if (error) throw error;
       return (data ?? []) as PublicOffer[];
@@ -55,11 +57,11 @@ export async function trackOfferClick(paymentLinkId: string, ref?: string) {
 
 /** Cartões de oferta com botão de pagamento (usuário autenticado). */
 export function PaymentOffers({ filterCode }: { filterCode?: string | undefined }) {
-  const offers = usePublicOffers(false);
+  const offers = usePublicOffers(filterCode);
   const checkout = useServerFn(createLinkCheckout);
   const [busy, setBusy] = useState<string | null>(null);
 
-  const rows = (offers.data ?? []).filter((o) => !filterCode || o.code === filterCode);
+  const rows = filterCode ? (offers.data ?? []).filter((o) => o.code === filterCode) : [];
 
   // Conta o clique quando alguém abre o link da oferta (/assinatura?oferta=codigo).
   const trackedId = filterCode ? (offers.data ?? []).find((o) => o.code === filterCode)?.id : undefined;
@@ -67,7 +69,10 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
     if (trackedId) void trackOfferClick(trackedId, "link");
   }, [trackedId]);
 
-  if (rows.length === 0) return null;
+  if (!filterCode) return null;
+  if (offers.isPending) return <p className="text-center text-muted-foreground">Carregando oferta...</p>;
+  if (offers.isError) return <p className="text-center text-destructive">Não foi possível carregar esta oferta.</p>;
+  if (rows.length === 0) return <p className="text-center text-muted-foreground">Este link está indisponível.</p>;
 
   const buy = async (code: string) => {
     setBusy(code);
@@ -83,11 +88,11 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
   };
 
   return (
-    <div className="grid gap-5 sm:grid-cols-2">
+    <div className="mx-auto grid w-full max-w-md gap-5">
       {rows.map((o) => (
         <div
           key={o.id}
-          className={`relative overflow-hidden rounded-2xl border bg-card p-6 shadow-sm transition-shadow hover:shadow-md ${
+          className={`relative overflow-hidden rounded-2xl border bg-card p-6 text-center shadow-sm transition-shadow hover:shadow-md ${
             o.highlight ? "border-primary/50 ring-1 ring-primary/30" : ""
           }`}
         >
@@ -96,12 +101,12 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
               Oferta especial
             </div>
           )}
-          <div className="flex items-center gap-2 pr-24">
+           <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
             <Sparkles className="h-4 w-4 shrink-0 text-primary" />
-            <h3 className="truncate font-semibold">{o.name}</h3>
+            <h3 className="break-words font-semibold">{o.name}</h3>
             {o.kind === "lifetime" && <Badge variant="secondary">Definitivo</Badge>}
           </div>
-          <div className="mt-4 flex items-baseline gap-2">
+          <div className="mt-4 flex items-baseline justify-center gap-2">
             <span className="text-4xl font-extrabold tracking-tight">{formatBRL(o.amount_cents)}</span>
           </div>
           <p className="mt-1 text-sm font-medium text-primary">{offerAccessLabel(o)}</p>

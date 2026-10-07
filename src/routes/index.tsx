@@ -30,7 +30,7 @@ const DOWNLOADS = [
   { id: "windows", label: "Windows", ext: ".exe", size: "Windows x64", icon: Monitor, href: `${GH_RELEASE}/TotalControleERP-Setup.exe`, hint: "Baixe e execute o instalador para atualizar o aplicativo." },
   { id: "macos", label: "macOS", ext: ".zip", size: "Intel x64", icon: Apple, href: `${GH_RELEASE}/TotalControleERP-mac.zip`, hint: "Baixe, extraia o .zip e mova o app para Aplicativos." },
   { id: "linux", label: "Linux", ext: ".AppImage", size: "Linux x64", icon: Monitor, href: `${GH_RELEASE}/TotalControleERP-linux.AppImage`, hint: "Baixe, permita a execução e abra o aplicativo." },
-  { id: "android", label: "Android", ext: ".apk", size: "Debug build", icon: Smartphone, href: `${GH_RELEASE}/TotalControleERP.apk`, hint: "Baixe o APK no celular e permita instalar de fontes externas." },
+  { id: "android", label: "Android", ext: ".apk", size: "Debug build", icon: Smartphone, href: "https://github.com/Warlinhu/totalcontroleerp/releases/download/latest/TotalControleERP.apk", hint: "Baixe o APK no celular e permita instalar de fontes externas." },
 ];
 
 const FEATURES = [

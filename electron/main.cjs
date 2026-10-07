@@ -24,6 +24,7 @@ const {
 const path = require("path");
 
 const APP_NAME = "Total Controle - Gestão Empresarial";
+app.setName(APP_NAME);
 
 const APP_URL =
   process.env.APP_URL || "https://totalcontroleerp.lovable.app";
@@ -81,6 +82,17 @@ function createWindow(startHidden = false) {
   });
 
   // Keep the native title independent from remote or cached page titles.
+  if (process.platform === "win32") {
+    mainWindow.setAppDetails({
+      appId: "com.totalcontrole.erp",
+      appIconPath: process.execPath,
+      appIconIndex: 0,
+      relaunchCommand: `"${process.execPath}"`,
+      relaunchDisplayName: APP_NAME,
+    });
+    mainWindow.setIcon(ICON_PATH);
+  }
+
   mainWindow.on("page-title-updated", (event) => {
     event.preventDefault();
     mainWindow.setTitle(APP_NAME);

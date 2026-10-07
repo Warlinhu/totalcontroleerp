@@ -12,6 +12,14 @@ O sistema pode ser distribuído em três formatos:
 
 ## 1. Windows `.exe`
 
+O workflow oficial usa electron-builder e verifica as imagens incorporadas no executável antes de publicar. A versão 1.1.3 também define a identidade de reabertura na barra de tarefas e recria o atalho da área de trabalho com o ícone oficial. A atualização do site sozinha não altera um programa já instalado; é necessário instalar a nova versão. Um atalho antigo fixado na barra pode continuar usando o cache anterior: remova somente esse atalho e fixe novamente o programa atualizado.
+
+### Assinatura confiável e alertas do Windows
+
+Configure os secrets `WIN_CSC_LINK` (certificado de assinatura de código compatível com electron-builder, nunca um certificado autoassinado para distribuição pública) e `WIN_CSC_KEY_PASSWORD` no GitHub para assinar automaticamente o executável e o instalador. Credenciais não devem ser adicionadas ao código. Sem certificado, o workflow continua gerando instaladores não assinados; a assinatura confiável depende de um certificado ou serviço externo e pode ter custo.
+
+SmartScreen (aviso de editor desconhecido/reputação) não é igual a uma detecção de malware do Defender. A assinatura identifica o editor, mas não garante a remoção imediata de avisos de reputação. Se o Defender identificar uma ameaça, obtenha o nome da detecção e envie o arquivo exato para análise em https://www.microsoft.com/en-us/wdsi/filesubmission antes de distribuir. Não desative o antivírus nem recomende contornar a proteção. A captura de tela da barra de tarefas não identifica qual alerta ocorreu.
+
 Requer Node.js instalado localmente.
 
 ```bash

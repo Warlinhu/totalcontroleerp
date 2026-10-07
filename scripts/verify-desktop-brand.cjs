@@ -14,6 +14,11 @@ assert.ok(fs.existsSync(path.join(root, pkg.build.linux.icon)), "Missing Linux i
 assert.ok(pkg.build.files.includes("electron/**/*"), "Native icons must ship with the app");
 const main = fs.readFileSync(path.join(root, "electron/main.cjs"), "utf8");
 assert.ok(main.includes('path.join(__dirname, "icons", "icon.ico")'), "Window must use the bundled official Windows icon");
+assert.ok(main.includes("mainWindow.setAppDetails("), "Windows taskbar must use the installed application identity");
+assert.equal(pkg.build.win.signAndEditExecutable, true, "Windows executable icon editing must stay enabled");
+assert.equal(pkg.build.afterSign, "scripts/verify-windows-executable.cjs", "Verify actual executable resources before publishing");
+assert.equal(pkg.build.nsis.installerIcon, pkg.build.win.icon);
+assert.equal(pkg.build.nsis.uninstallerIcon, pkg.build.win.icon);
 for (const icon of [pkg.build.win.icon, pkg.build.mac.icon]) {
   assert.ok(icon.startsWith("electron/icons/"), "Native icons must not use ignored build output");
   for (const target of ["win", "mac"]) {

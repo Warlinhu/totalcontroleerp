@@ -10,6 +10,8 @@ Verification: page titles and icon formats validated; Android branding tested wi
 - [x] Verify official icon inclusion and bump native version for updates.
 
 ## Private offers and Windows installer
-- [ ] Show custom payment prices only through their specific links; center the offer and remove public listings.
-- [ ] Strengthen Windows executable/taskbar icon verification and prepare trusted signing without weakening Windows protection.
-- [ ] Verify payment presentation and packaging checks; document any external signing blocker.
+- [x] Show custom payment prices only through their specific links; center the offer and remove public listings.
+- [x] Strengthen Windows executable/taskbar icon verification and prepare trusted signing without weakening Windows protection.
+- [x] Verify source-level payment presentation and packaging checks; document external signing blocker.
+Verification: source regression checks passed; official PE icon fixture accepted and missing-icon fixture rejected; desktop configuration schema validated; native syntax and lock version 1.1.3 synchronized; preview reports build OK. Browser end-to-end verification attempted but Chromium is unavailable; existing E2E runner package is not installed. Real Windows installation/taskbar appearance and Defender behavior are unverified. The attached screenshot shows only the taskbar, not the security alert.
+- [ ] Configure trusted Windows signing and investigate the exact security alert — blocked on a trusted code-signing certificate/service in GitHub secrets and the user's full Windows detection message; signing alone does not guarantee SmartScreen reputation.

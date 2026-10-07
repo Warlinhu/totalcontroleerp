@@ -90,5 +90,5 @@ jobs:
         with:
           tag_name: latest
           name: Latest build
-          make_latest: "true"
+          make_latest: "false"
           files: TotalControleERP.apk

@@ -8,3 +8,8 @@ Verification: page titles and icon formats validated; Android branding tested wi
 ## Generic desktop icon correction
 - [x] Move native icons out of the globally ignored build folder and update packaging/runtime paths.
 - [x] Verify official icon inclusion and bump native version for updates.
+
+## Private offers and Windows installer
+- [ ] Show custom payment prices only through their specific links; center the offer and remove public listings.
+- [ ] Strengthen Windows executable/taskbar icon verification and prepare trusted signing without weakening Windows protection.
+- [ ] Verify payment presentation and packaging checks; document any external signing blocker.

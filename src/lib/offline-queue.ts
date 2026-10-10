@@ -274,9 +274,19 @@ async function apply(item: OutboxItem): Promise<void> {
     return;
   }
   if (item.kind === "insert") {
-    const { error } = item.payload["client_uuid"]
-      ? await table(item.table).upsert(item.payload, { onConflict: "client_uuid" })
-      : await table(item.table).insert(item.payload);
+    const clientUuid = item.payload["client_uuid"];
+    if (typeof clientUuid === "string" && clientUuid) {
+      // Idempotência manual: o índice único de client_uuid é parcial e não
+      // atende ao ON CONFLICT do PostgREST (erro 42P10), então verificamos antes.
+      const { data: existing, error: selErr } = await supabase
+        .from(item.table as never)
+        .select("id")
+        .eq("client_uuid" as never, clientUuid)
+        .maybeSingle();
+      if (selErr) throw selErr;
+      if (existing) return;
+    }
+    const { error } = await table(item.table).insert(item.payload);
     if (error) throw error;
     return;
   }

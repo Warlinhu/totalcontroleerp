@@ -67,7 +67,7 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
   });
 
   const publicUrl = (c: string) =>
-    `${typeof window === "undefined" ? "" : window.location.origin}/assinatura?oferta=${c}`;
+    `${typeof window === "undefined" ? "" : window.location.origin}/oferta?codigo=${c}`;
 
   const create = async () => {
     const cents = parseCents(amount);
@@ -209,7 +209,7 @@ export function PaymentLinksAdmin({ userId }: { userId: string }) {
               <TableRow key={r.id}>
                 <TableCell>
                   <div className="font-medium">{r.name}</div>
-                  <div className="text-xs text-muted-foreground">/assinatura?oferta={r.code}</div>
+                  <div className="text-xs text-muted-foreground">/oferta?codigo={r.code}</div>
                 </TableCell>
                 <TableCell className="text-right font-medium">{formatBRL(r.amount_cents)}</TableCell>
                 <TableCell>

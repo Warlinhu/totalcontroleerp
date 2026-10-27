@@ -62,7 +62,7 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
   const [busy, setBusy] = useState<string | null>(null);
 
   const rows = filterCode ? (offers.data ?? []) : [];
-...
+
   const trackedId = filterCode ? rows[0]?.id : undefined;
   useEffect(() => {
     if (trackedId) void trackOfferClick(trackedId, "link");

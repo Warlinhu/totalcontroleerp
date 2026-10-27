@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 
-const searchSchema = z.object({ invite: z.string().optional() });
+const searchSchema = z.object({ invite: z.string().optional(), nova: z.coerce.boolean().optional() });
 
 export const Route = createFileRoute("/_authenticated/onboarding")({
   validateSearch: searchSchema,
@@ -50,10 +50,10 @@ function OnboardingPage() {
   // If already has a company and no explicit invite pending, go to app.
   useEffect(() => {
     if (loading) return;
-    if (!search.invite && memberships.length > 0) {
+    if (!search.invite && !search.nova && memberships.length > 0) {
       navigate({ to: "/app", replace: true });
     }
-  }, [loading, memberships, search.invite, navigate]);
+  }, [loading, memberships, search.invite, search.nova, navigate]);
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();

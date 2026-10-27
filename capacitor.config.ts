@@ -1,4 +1,7 @@
 import type { CapacitorConfig } from "@capacitor/cli";
+import { readFileSync } from "fs";
+
+const APP_VERSION: string = JSON.parse(readFileSync("./package.json", "utf8")).version;
 
 // Mobile shell (Android/iOS) — o app carrega a URL publicada, então novas
 // versões publicadas no Lovable ficam disponíveis automaticamente sem precisar
@@ -18,6 +21,8 @@ const config: CapacitorConfig = {
     // normalmente e volta sozinho ao sistema quando a conexão retorna.
     errorPath: "offline.html",
   },
+  // Identifica a versão do APK instalado para sugerir atualizações.
+  appendUserAgent: `TotalControleAPK/${APP_VERSION}`,
   android: {
     backgroundColor: "#0b1220",
   },

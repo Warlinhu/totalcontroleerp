@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { installGlobalErrorHandlers, logAppError } from "@/lib/error-logger";
 import { PwaUpdatePrompt } from "@/components/pwa-update-prompt";
+import { ApkUpdatePrompt } from "@/components/apk-update-prompt";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/lib/theme-provider";
 
@@ -144,6 +145,7 @@ function RootComponent() {
         <Outlet />
         <Toaster richColors position="top-right" />
         <PwaUpdatePrompt />
+        <ApkUpdatePrompt />
       </ThemeProvider>
     </QueryClientProvider>
   );

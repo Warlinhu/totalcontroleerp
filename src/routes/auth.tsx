@@ -78,25 +78,70 @@ function AuthPage() {
     }
   };
 
+  /** Traduz os erros de autenticação para mensagens claras em português. */
+  const friendlyAuthError = (error: { message?: string; code?: string; status?: number }): string => {
+    const msg = (error.message ?? "").toLowerCase();
+    const code = (error.code ?? "").toLowerCase();
+    if (code === "invalid_credentials" || msg.includes("invalid login credentials")) {
+      return "E-mail ou senha incorretos. Confira os dados ou use \"Esqueci minha senha\".";
+    }
+    if (code === "email_not_confirmed" || msg.includes("email not confirmed")) {
+      return "Seu e-mail ainda não foi confirmado. Verifique sua caixa de entrada e o spam.";
+    }
+    if (code === "user_already_exists" || msg.includes("already registered") || msg.includes("already been registered")) {
+      return "Este e-mail já tem uma conta. Use a aba \"Entrar\" ou recupere a senha.";
+    }
+    if (code === "weak_password" || msg.includes("password")) {
+      return "Senha fraca ou inválida. Use pelo menos 6 caracteres.";
+    }
+    if (error.status === 429 || msg.includes("rate limit")) {
+      return "Muitas tentativas seguidas. Aguarde alguns minutos e tente de novo.";
+    }
+    if (msg.includes("fetch") || msg.includes("network")) {
+      return "Sem conexão com o servidor. Verifique sua internet e tente novamente.";
+    }
+    return error.message ?? "Erro inesperado. Tente novamente.";
+  };
+
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) toast.error("Não foi possível entrar", { description: error.message });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim().toLowerCase(),
+        password,
+      });
+      if (error) toast.error("Não foi possível entrar", { description: friendlyAuthError(error) });
+      // Sucesso: onAuthStateChange acima redireciona automaticamente.
+    } catch {
+      toast.error("Não foi possível entrar", { description: "Falha de conexão. Verifique sua internet." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: window.location.origin + "/auth" },
-    });
-    setLoading(false);
-    if (error) toast.error("Não foi possível criar a conta", { description: error.message });
-    else toast.success("Conta criada", { description: "Verifique seu e-mail se a confirmação estiver ativa." });
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.trim().toLowerCase(),
+        password,
+        options: { emailRedirectTo: window.location.origin + "/auth" },
+      });
+      if (error) {
+        toast.error("Não foi possível criar a conta", { description: friendlyAuthError(error) });
+      } else if (data.session) {
+        toast.success("Conta criada!", { description: "Entrando no sistema..." });
+        // onAuthStateChange redireciona automaticamente.
+      } else {
+        toast.success("Conta criada", { description: "Verifique seu e-mail se a confirmação estiver ativa." });
+      }
+    } catch {
+      toast.error("Não foi possível criar a conta", { description: "Falha de conexão. Verifique sua internet." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Package, Users, Truck, UserCog, HandCoins, Receipt,
   BellRing, Settings, LogOut, Building2, ChevronDown, ShieldAlert,
   LifeBuoy, MessageSquare, UserPlus, Sun, Moon, Monitor, Rows2, Rows3, Search, FileText,
-  ShoppingCart, Sparkles, Bell, Megaphone, Menu, Wallet, KeyRound, CreditCard,
+  ShoppingCart, Sparkles, Bell, Megaphone, Menu, Wallet, KeyRound, CreditCard, Archive,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetHeader } from "@/components/ui/sheet";
 import {
@@ -46,6 +46,7 @@ const SECTIONS: NavSection[] = [
       { to: "/app/debtors", label: "A receber", icon: HandCoins },
       { to: "/app/payables", label: "A pagar", icon: Receipt },
       { to: "/app/invoices", label: "Notas Fiscais", icon: FileText },
+      { to: "/app/reports", label: "Histórico e relatórios", icon: Archive },
       { to: "/app/reminders", label: "Lembretes", icon: BellRing },
     ],
   },

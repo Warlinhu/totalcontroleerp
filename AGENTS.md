@@ -9,6 +9,10 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
+## Historical reports
+- Use company-scoped browser queries with RLS and stable count-aware pagination for historical reports; never truncate exports to the visible page or delete records by age. Keep report categories mapped to existing business modules and aggregate financial totals separately by category, period and status to avoid double counting.
+- Export filtered reports as UTF-8 BOM CSV with spreadsheet-formula escaping or JSON via the shared file-delivery helper; keep native packaging dependencies unchanged.
+
 ## Native branding
 - Derive browser and native icons from the same current brand asset; keep generated ICO/ICNS under electron/icons (never the globally ignored build directory) and Android launcher resources in source control so CI does not require image tooling.
 - Preserve native app IDs, repository URLs and release filenames when changing display branding to retain update compatibility.

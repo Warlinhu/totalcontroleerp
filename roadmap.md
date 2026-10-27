@@ -1,4 +1,10 @@
 # Branding update
+## Histórico e relatórios
+- [x] Verificar persistência de longo prazo dos registros existentes.
+- [x] Adicionar pesquisa, filtros por categoria/período e totais dos relatórios.
+- [x] Exportar resultados completos em CSV e JSON e verificar testes e navegação.
+Verificação: dados existentes persistem na nuvem sem prazo de expiração identificado; exclusões manuais continuam destrutivas e não foi acrescentado backup automático. Sete testes passaram; consulta autenticada com seis registros reais, pesquisa, resumo, validação de período e downloads CSV/JSON conferidos no navegador; build OK. Configurações e dependências dos instaladores não foram alteradas; execução do GitHub não verificada nesta tarefa.
+
 - [x] Unify system name and page titles.
 - [x] Generate native and browser icons from the current logo.
 - [x] Apply icons to desktop and Android packaging without changing app identifiers.

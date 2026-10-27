@@ -1,4 +1,9 @@
 # Branding update
+## Histórico e relatórios
+- [ ] Verificar persistência de longo prazo dos registros existentes.
+- [ ] Adicionar pesquisa, filtros por categoria/período e totais dos relatórios.
+- [ ] Exportar resultados completos em CSV e JSON e verificar testes e navegação.
+
 - [x] Unify system name and page titles.
 - [x] Generate native and browser icons from the current logo.
 - [x] Apply icons to desktop and Android packaging without changing app identifiers.

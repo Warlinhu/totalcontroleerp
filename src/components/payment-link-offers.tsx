@@ -30,7 +30,7 @@ export function usePublicOffers(filterCode?: string) {
         .from("payment_links")
         .select("id, code, name, description, kind, amount_cents, duration_days, highlight")
         .eq("active", true)
-        .eq("code", filterCode);
+        .eq("code", String(filterCode).trim().toLowerCase());
       const { data, error } = await q.order("amount_cents", { ascending: true });
       if (error) throw error;
       return (data ?? []) as PublicOffer[];
@@ -61,10 +61,9 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
   const checkout = useServerFn(createLinkCheckout);
   const [busy, setBusy] = useState<string | null>(null);
 
-  const rows = filterCode ? (offers.data ?? []).filter((o) => o.code === filterCode) : [];
-
-  // Conta o clique quando alguém abre o link da oferta (/assinatura?oferta=codigo).
-  const trackedId = filterCode ? (offers.data ?? []).find((o) => o.code === filterCode)?.id : undefined;
+  const rows = filterCode ? (offers.data ?? []) : [];
+...
+  const trackedId = filterCode ? rows[0]?.id : undefined;
   useEffect(() => {
     if (trackedId) void trackOfferClick(trackedId, "link");
   }, [trackedId]);

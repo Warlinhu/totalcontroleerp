@@ -103,7 +103,15 @@ function createWindow(startHidden = false) {
 
   const loadApp = () => {
     showingOffline = false;
-    mainWindow.loadURL(APP_URL);
+    // Limpa o cache antes de carregar: garante que o programa sempre mostra
+    // a versão mais recente publicada do sistema, sem reinstalar.
+    mainWindow.webContents.session
+      .clearCache()
+      .catch(() => {})
+      .finally(() => {
+        if (!mainWindow || mainWindow.isDestroyed()) return;
+        mainWindow.loadURL(APP_URL);
+      });
   };
 
   const loadOffline = () => {

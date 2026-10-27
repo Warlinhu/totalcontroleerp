@@ -122,3 +122,89 @@ export function PaymentOffers({ filterCode }: { filterCode?: string | undefined 
     </div>
   );
 }
+
+/** Versão pública da oferta (rota /oferta): qualquer visitante vê o valor;
+ *  quem não está logado é levado a criar a conta e volta direto para pagar. */
+export function PublicOfferCheckout({ code }: { code: string }) {
+  const offers = usePublicOffers(code);
+  const checkout = useServerFn(createLinkCheckout);
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
+  const [loggedIn, setLoggedIn] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setLoggedIn(Boolean(data.session)));
+  }, []);
+
+  const rows = offers.data ?? [];
+  const trackedId = rows[0]?.id;
+  useEffect(() => {
+    if (trackedId) void trackOfferClick(trackedId, "link");
+  }, [trackedId]);
+
+  if (offers.isPending) return <p className="text-center text-muted-foreground">Carregando oferta...</p>;
+  if (offers.isError) return <p className="text-center text-destructive">Não foi possível carregar esta oferta.</p>;
+  if (rows.length === 0) return <p className="text-center text-muted-foreground">Este link está indisponível.</p>;
+
+  const o = rows[0];
+
+  const buy = async () => {
+    if (!loggedIn) {
+      navigate({ to: "/auth", search: { redirect: `/assinatura?oferta=${o.code}` } });
+      return;
+    }
+    setBusy(true);
+    try {
+      const res = await checkout({ data: { code: o.code } });
+      window.location.href = res.url;
+    } catch (err) {
+      toast.error("Não foi possível abrir o pagamento", {
+        description: err instanceof Error ? err.message : "Tente novamente em instantes.",
+      });
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="mx-auto grid w-full max-w-md gap-5">
+      <div
+        className={`relative overflow-hidden rounded-2xl border bg-card p-6 text-center shadow-sm transition-shadow hover:shadow-md ${
+          o.highlight ? "border-primary/50 ring-1 ring-primary/30" : ""
+        }`}
+      >
+        {o.highlight && (
+          <div className="absolute right-0 top-0 rounded-bl-xl bg-primary px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary-foreground">
+            Oferta especial
+          </div>
+        )}
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+          <Sparkles className="h-4 w-4 shrink-0 text-primary" />
+          <h3 className="break-words font-semibold">{o.name}</h3>
+          {o.kind === "lifetime" && <Badge variant="secondary">Definitivo</Badge>}
+        </div>
+        <div className="mt-4 flex items-baseline justify-center gap-2">
+          <span className="text-4xl font-extrabold tracking-tight">{formatBRL(o.amount_cents)}</span>
+        </div>
+        <p className="mt-1 text-sm font-medium text-primary">{offerAccessLabel(o)}</p>
+        {o.description && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{o.description}</p>}
+        <Button className="mt-6 w-full" size="lg" disabled={busy || loggedIn === null} onClick={buy}>
+          {busy ? (
+            <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Abrindo...</>
+          ) : loggedIn ? (
+            "Pagar agora"
+          ) : (
+            "Criar conta e pagar"
+          )}
+        </Button>
+        {!loggedIn && (
+          <p className="mt-2 text-center text-xs text-muted-foreground">
+            Você cria a conta em 1 minuto e volta direto para esta oferta.
+          </p>
+        )}
+        <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
+          <ShieldCheck className="h-3.5 w-3.5" /> Pagamento seguro via Mercado Pago
+        </p>
+      </div>
+    </div>
+  );
+}

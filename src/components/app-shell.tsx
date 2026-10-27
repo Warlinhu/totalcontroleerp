@@ -160,7 +160,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 </DropdownMenuItem>
               ))}
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate({ to: "/onboarding" })}>
+              <DropdownMenuItem onClick={() => navigate({ to: "/onboarding", search: { nova: true } })}>
                 + Criar outra empresa
               </DropdownMenuItem>
             </DropdownMenuContent>

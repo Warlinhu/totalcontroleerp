@@ -21,8 +21,14 @@ export const Route = createFileRoute("/_authenticated/assinatura/")({
       { title: "Assinatura — Total Controle - Gestão Empresarial" },
       { name: "description", content: "Ative sua assinatura do Total Controle - Gestão Empresarial e libere o sistema completo." }, { property: "og:title", content: "Assinatura — Total Controle - Gestão Empresarial" }, { property: "og:description", content: "Ative sua assinatura do Total Controle - Gestão Empresarial e libere o sistema completo." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }, ],
   }),
-  validateSearch: (search: Record<string, unknown>): { oferta?: string } =>
-    typeof search["oferta"] === "string" ? { oferta: search["oferta"] as string } : {},
+  validateSearch: (search: Record<string, unknown>): { oferta?: string } => {
+    const raw = search["oferta"];
+    if (typeof raw === "string" || typeof raw === "number") {
+      const v = String(raw).trim().toLowerCase();
+      return v ? { oferta: v } : {};
+    }
+    return {};
+  },
   component: SubscriptionPage,
 });
 

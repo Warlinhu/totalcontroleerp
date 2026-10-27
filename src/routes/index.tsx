@@ -223,7 +223,7 @@ function LandingPage() {
         <section className="border-t bg-gradient-hero py-20">
           <div className="mx-auto max-w-2xl px-4 text-center">
             <h2 className="text-3xl font-bold tracking-tight">
-              Comece hoje pagando {formatBRL(firstMonth)}
+              Comece hoje mesmo
             </h2>
             <p className="mt-3 text-muted-foreground">
               Cadastro em 2 minutos. Ative a assinatura e use o sistema completo no mesmo dia.

@@ -8,15 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BrandLogo } from "@/components/brand-logo";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { FALLBACK_PLAN, formatBRL, priceForCycle } from "@/lib/billing";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Total Controle - Gestão Empresarial" },
-      { name: "description", content: "PDV, financeiro, notas fiscais e relatórios num só sistema. Primeiro mês com 10% off e plano anual com 10% de desconto. Web, desktop e Android." },
+      { name: "description", content: "PDV, financeiro, notas fiscais e relatórios num só sistema. Web, desktop e Android." },
       { property: "og:title", content: "Total Controle - Gestão Empresarial" },
-      { property: "og:description", content: "PDV, contas a receber e pagar, notas fiscais e dashboard. Comece hoje com desconto." },
+      { property: "og:description", content: "PDV, contas a receber e pagar, notas fiscais e dashboard. Comece hoje." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -58,14 +57,6 @@ const FAQ = [
 ];
 
 function LandingPage() {
-
-
-  const plan = FALLBACK_PLAN;
-  const firstMonth = priceForCycle(plan, "monthly", true);
-  const normalMonth = plan.monthly_price_cents;
-  const yearly = priceForCycle(plan, "yearly", false);
-  const yearlyFull = normalMonth * 12;
-
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
@@ -90,25 +81,23 @@ function LandingPage() {
       <main className="flex-1">
         {/* Hero */}
         <section className="mx-auto max-w-4xl px-4 py-20 text-center sm:py-28">
-          <Badge className="mb-6"><Star className="mr-1 h-3 w-3" /> 1º mês com 10% de desconto</Badge>
+          <Badge className="mb-6"><Star className="mr-1 h-3 w-3" /> Comece hoje, sem complicação</Badge>
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            Sua empresa sob controle por{" "}
+            Sua empresa sob controle em{" "}
             <span className="bg-gradient-primary bg-clip-text text-transparent">
-              {formatBRL(normalMonth)}
-            </span>{" "}
-            por mês
+              um só lugar
+            </span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
             PDV, contas a receber e a pagar, notas fiscais, estoque e relatórios — tudo num
-            sistema só, que abre no computador e no celular. Comece hoje pagando{" "}
-            <strong className="text-foreground">{formatBRL(firstMonth)}</strong> no primeiro mês.
+            sistema só, que abre no computador e no celular.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild size="lg" className="text-base">
               <Link to="/auth">Quero começar agora <ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="text-base">
-              <a href="#planos">Ver planos e preços</a>
+              <a href="#planos">Ver planos</a>
             </Button>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
@@ -169,7 +158,7 @@ function LandingPage() {
         <section id="planos" className="border-t bg-muted/30 py-20">
           <div className="mx-auto max-w-4xl px-4">
             <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-3xl font-bold tracking-tight">Um preço justo, sem surpresa</h2>
+              <h2 className="text-3xl font-bold tracking-tight">Planos flexíveis, sem surpresa</h2>
               <p className="mt-3 text-muted-foreground">
                 O mesmo sistema completo nos dois planos. Escolha como prefere pagar.
               </p>
@@ -178,12 +167,8 @@ function LandingPage() {
             <div className="mt-12 grid gap-6 md:grid-cols-2">
               <div className="rounded-2xl border bg-card p-8">
                 <h3 className="text-lg font-semibold">Mensal</h3>
-                <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">{formatBRL(firstMonth)}</span>
-                  <span className="text-muted-foreground">no 1º mês</span>
-                </div>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Depois {formatBRL(normalMonth)}/mês. Cancele quando quiser.
+                <p className="mt-3 text-sm text-muted-foreground">
+                  Pagamento mês a mês, sem fidelidade. Cancele quando quiser.
                 </p>
                 <ul className="mt-6 space-y-2 text-sm">
                   {["Sistema completo liberado", "Empresas e usuários ilimitados", "Apps para PC e celular", "Suporte por chamados"].map((b) => (
@@ -196,14 +181,10 @@ function LandingPage() {
               </div>
 
               <div className="relative rounded-2xl border-2 border-primary bg-card p-8 shadow-elegant">
-                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">Economize {formatBRL(yearlyFull - yearly)}</Badge>
+                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">Mais vantajoso</Badge>
                 <h3 className="text-lg font-semibold">Anual</h3>
-                <div className="mt-3 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">{formatBRL(yearly)}</span>
-                  <span className="text-muted-foreground">/ano</span>
-                </div>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Equivale a {formatBRL(Math.round(yearly / 12))}/mês — 10% de desconto.
+                <p className="mt-3 text-sm text-muted-foreground">
+                  Um pagamento por ano, com desconto e preço travado no período.
                 </p>
                 <ul className="mt-6 space-y-2 text-sm">
                   {["Tudo do plano mensal", "12 meses de licença garantidos", "Preço travado no período", "Prioridade no suporte"].map((b) => (
@@ -242,7 +223,7 @@ function LandingPage() {
         <section className="border-t bg-gradient-hero py-20">
           <div className="mx-auto max-w-2xl px-4 text-center">
             <h2 className="text-3xl font-bold tracking-tight">
-              Comece hoje pagando {formatBRL(firstMonth)}
+              Comece hoje mesmo
             </h2>
             <p className="mt-3 text-muted-foreground">
               Cadastro em 2 minutos. Ative a assinatura e use o sistema completo no mesmo dia.

@@ -33,6 +33,7 @@ import { Route as AuthenticatedAppPayablesRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAppPosRouteImport } from './routes/_authenticated/app.pos'
 import { Route as AuthenticatedAppProductsRouteImport } from './routes/_authenticated/app.products'
 import { Route as AuthenticatedAppRemindersRouteImport } from './routes/_authenticated/app.reminders'
+import { Route as AuthenticatedAppReportsRouteImport } from './routes/_authenticated/app.reports'
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/app.settings'
 import { Route as AuthenticatedAppSuppliersRouteImport } from './routes/_authenticated/app.suppliers'
 import { Route as AuthenticatedAppSupportRouteImport } from './routes/_authenticated/app.support'
@@ -178,6 +179,11 @@ const AuthenticatedAppRemindersRoute =
     path: '/reminders',
     getParentRoute: () => AuthenticatedAppRoute,
   } as any)
+const AuthenticatedAppReportsRoute = AuthenticatedAppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedAppRoute,
+} as any)
 const AuthenticatedAppSettingsRoute =
   AuthenticatedAppSettingsRouteImport.update({
     id: '/settings',
@@ -290,6 +296,7 @@ export interface FileRoutesByFullPath {
   '/app/pos': typeof AuthenticatedAppPosRoute
   '/app/products': typeof AuthenticatedAppProductsRoute
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
+  '/app/reports': typeof AuthenticatedAppReportsRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/app/support': typeof AuthenticatedAppSupportRoute
@@ -329,6 +336,7 @@ export interface FileRoutesByTo {
   '/app/pos': typeof AuthenticatedAppPosRoute
   '/app/products': typeof AuthenticatedAppProductsRoute
   '/app/reminders': typeof AuthenticatedAppRemindersRoute
+  '/app/reports': typeof AuthenticatedAppReportsRoute
   '/app/settings': typeof AuthenticatedAppSettingsRoute
   '/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/app/support': typeof AuthenticatedAppSupportRoute
@@ -371,6 +379,7 @@ export interface FileRoutesById {
   '/_authenticated/app/pos': typeof AuthenticatedAppPosRoute
   '/_authenticated/app/products': typeof AuthenticatedAppProductsRoute
   '/_authenticated/app/reminders': typeof AuthenticatedAppRemindersRoute
+  '/_authenticated/app/reports': typeof AuthenticatedAppReportsRoute
   '/_authenticated/app/settings': typeof AuthenticatedAppSettingsRoute
   '/_authenticated/app/suppliers': typeof AuthenticatedAppSuppliersRoute
   '/_authenticated/app/support': typeof AuthenticatedAppSupportRoute
@@ -413,6 +422,7 @@ export interface FileRouteTypes {
     | '/app/pos'
     | '/app/products'
     | '/app/reminders'
+    | '/app/reports'
     | '/app/settings'
     | '/app/suppliers'
     | '/app/support'
@@ -452,6 +462,7 @@ export interface FileRouteTypes {
     | '/app/pos'
     | '/app/products'
     | '/app/reminders'
+    | '/app/reports'
     | '/app/settings'
     | '/app/suppliers'
     | '/app/support'
@@ -493,6 +504,7 @@ export interface FileRouteTypes {
     | '/_authenticated/app/pos'
     | '/_authenticated/app/products'
     | '/_authenticated/app/reminders'
+    | '/_authenticated/app/reports'
     | '/_authenticated/app/settings'
     | '/_authenticated/app/suppliers'
     | '/_authenticated/app/support'
@@ -696,6 +708,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppRemindersRouteImport
       parentRoute: typeof AuthenticatedAppRoute
     }
+    '/_authenticated/app/reports': {
+      id: '/_authenticated/app/reports'
+      path: '/reports'
+      fullPath: '/app/reports'
+      preLoaderRoute: typeof AuthenticatedAppReportsRouteImport
+      parentRoute: typeof AuthenticatedAppRoute
+    }
     '/_authenticated/app/settings': {
       id: '/_authenticated/app/settings'
       path: '/settings'
@@ -815,6 +834,7 @@ interface AuthenticatedAppRouteChildren {
   AuthenticatedAppPosRoute: typeof AuthenticatedAppPosRoute
   AuthenticatedAppProductsRoute: typeof AuthenticatedAppProductsRoute
   AuthenticatedAppRemindersRoute: typeof AuthenticatedAppRemindersRoute
+  AuthenticatedAppReportsRoute: typeof AuthenticatedAppReportsRoute
   AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
   AuthenticatedAppSuppliersRoute: typeof AuthenticatedAppSuppliersRoute
   AuthenticatedAppSupportRoute: typeof AuthenticatedAppSupportRoute
@@ -841,6 +861,7 @@ const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
   AuthenticatedAppPosRoute: AuthenticatedAppPosRoute,
   AuthenticatedAppProductsRoute: AuthenticatedAppProductsRoute,
   AuthenticatedAppRemindersRoute: AuthenticatedAppRemindersRoute,
+  AuthenticatedAppReportsRoute: AuthenticatedAppReportsRoute,
   AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
   AuthenticatedAppSuppliersRoute: AuthenticatedAppSuppliersRoute,
   AuthenticatedAppSupportRoute: AuthenticatedAppSupportRoute,

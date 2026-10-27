@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { filterReportRows, normalizeReportRow, REPORT_SOURCES, reportCsv, summarizeReportRows, readAllPages, csvCell } from "./reports";
+import { filterReportRows, normalizeReportRow, REPORT_SOURCES, reportCsv, summarizeReportRows, readAllPages, csvCell } from "../src/lib/reports";
 
 const rows = [
   normalizeReportRow(REPORT_SOURCES[0], { id: "s1", sold_at: "2020-01-01", total: 120, notes: "João" }),

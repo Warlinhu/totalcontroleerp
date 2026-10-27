@@ -9,7 +9,6 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-## Native branding
 ## Historical reports
 - Use company-scoped browser queries with RLS and stable count-aware pagination for historical reports; never truncate exports to the visible page or delete records by age. Keep report categories mapped to existing business modules and aggregate financial totals separately by category, period and status to avoid double counting.
 - Export filtered reports as UTF-8 BOM CSV with spreadsheet-formula escaping or JSON via the shared file-delivery helper; keep native packaging dependencies unchanged.
